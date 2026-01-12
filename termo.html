@@ -1,747 +1,103 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Termo Infinito — clone Wordle BR</title>
-    <style>
-      /* Reset e variáveis */
-      :root {
-        --bg: #0b1020cb;
-        --card: #0f1724;
-        --accent: #8b5cf6;
-        --success: #16a34a;
-        --present: #f59e0b;
-        --absent: #131314;
-        --text: #e6eef8;
-        --muted: #9ca3af;
-        --glass: rgba(255, 255, 255, 0.04);
-        --radius: 12px;
-        --transition: 200ms cubic-bezier(0.2, 0.9, 0.2, 1);
-      }
-      * {
-        box-sizing: border-box;
-        font-family: Inter, ui-sans-serif, system-ui, Segoe UI, Roboto,
-          "Helvetica Neue", Arial;
-      }
-      html,
-      body {
-        height: 100%;
-        margin: 0;
-        background: radial-gradient(
-            1200px 800px at 10% 10%,
-            rgba(139, 92, 246, 0.06),
-            transparent 5%
-          ),
-          linear-gradient(180deg, #071022 0%, var(--bg) 50%);
-        color: var(--text);
-      }
-      .app {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 32px;
-      }
-
-      /* Card principal */
-      .card {
-        width: 100%;
-        max-width: 760px;
-        background: linear-gradient(
-          180deg,
-          rgba(255, 255, 255, 0.02),
-          rgba(255, 255, 255, 0.01)
-        );
-        border-radius: 16px;
-        padding: 28px;
-        box-shadow: 0 10px 30px rgba(2, 6, 23, 0.6);
-        border: 1px solid rgba(255, 255, 255, 0.03);
-        position: relative;
-      }
-      header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 18px;
-      }
-      h1 {
-        font-size: 20px;
-        margin: 0;
-        letter-spacing: 1px;
-      }
-      .controls {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-      }
-      button.btn {
-        background: var(--glass);
-        color: var(--text);
-        border: 1px solid rgba(255, 255, 255, 0.04);
-        padding: 8px 12px;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: transform var(--transition), background var(--transition);
-      }
-      button.btn:active {
-        transform: translateY(1px) scale(0.998);
-      }
-
-      /* Grid */
-      .grid {
-        width: 100%;
-        max-width: 520px;
-        margin: 0 auto 18px;
-        display: grid;
-        grid-template-rows: repeat(6, 1fr);
-        gap: 15px;
-        justify-content: center;
-      }
-      .row {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 8px;
-        justify-items: center;
-      }
-      .tile {
-        width: 72px;
-        height: 72px;
-        background: rgba(255, 255, 255, 0.02);
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-        font-size: 26px;
-        color: var(--text);
-        text-transform: uppercase;
-        user-select: none;
-        transform-origin: center;
-        transition: transform 120ms ease, background-color var(--transition),
-          border-color var(--transition);
-        border: 2px solid rgba(255, 255, 255, 0.04);
-      }
-      .tile.small {
-        width: 58px;
-        height: 58px;
-        font-size: 20px;
-      }
-
-      /* Flip animation for reveal */
-      .tile.flip {
-        animation: flip 0.6s ease forwards;
-      }
-      @keyframes flip {
-        0% {
-          transform: rotateX(0);
-        }
-        50% {
-          transform: rotateX(-90deg);
-        }
-        100% {
-          transform: rotateX(0);
-        }
-      }
-
-      /* Colors */
-      .tile.correct {
-        background: linear-gradient(180deg, var(--success), #059669);
-        border-color: rgba(0, 0, 0, 0.2);
-        color: #fff;
-      }
-      .tile.present {
-        background: linear-gradient(180deg, var(--present), #d97706);
-        border-color: rgba(0, 0, 0, 0.2);
-        color: #fff;
-      }
-      .tile.absent {
-        background: var(--absent);
-        border-color: rgba(0, 0, 0, 0.2);
-        color: #fff;
-        opacity: 0.95;
-      }
-
-      /* Keyboard */
-      .keyboard {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        align-items: center;
-      }
-      .kb-row {
-        display: flex;
-        gap: 8px;
-      }
-      .key {
-        min-width: 44px;
-        padding: 10px 12px;
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.03);
-        cursor: pointer;
-        user-select: none;
-        font-weight: 600;
-        transition: transform var(--transition), background var(--transition);
-      }
-      .key.special {
-        min-width: 72px;
-      }
-      .key.small {
-        min-width: 38px;
-        padding: 8px 6px;
-      }
-      .key:active {
-        transform: translateY(1px);
-      }
-      .key.correct {
-        background: var(--success);
-        color: #fff;
-      }
-      .key.present {
-        background: var(--present);
-        color: #fff;
-      }
-      .key.absent {
-        background: var(--absent);
-        color: #fff;
-      }
-
-      /* Footer / stats */
-      .footer {
-        display: flex;
-        gap: 12px;
-        align-items: center;
-        justify-content: space-between;
-        margin-top: 18px;
-        color: var(--muted);
-        font-size: 13px;
-      }
-
-      /* Modal */
-      .modal {
-        position: fixed;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(2, 6, 23, 0.6);
-        backdrop-filter: blur(4px);
-        visibility: hidden;
-        opacity: 0;
-        transition: opacity 180ms;
-      }
-      .modal.open {
-        visibility: visible;
-        opacity: 1;
-      }
-      .modal .panel {
-        width: min(560px, 92%);
-        background: var(--card);
-        padding: 18px;
-        border-radius: 12px;
-        color: var(--text);
-      }
-
-      /* Tiny responsive */
-      @media (max-width: 640px) {
-        .tile {
-          width: 56px;
-          height: 56px;
-          font-size: 20px;
-        }
-        .tile.small {
-          width: 44px;
-          height: 44px;
-          font-size: 16px;
-        }
-        .key {
-          min-width: 36px;
-          padding: 8px 10px;
-        }
-      }
-
-      /* subtle pulse on success */
-      .win-banner {
-        position: absolute;
-        right: 22px;
-        top: 22px;
-        background: linear-gradient(90deg, var(--accent), #7c3aed);
-        padding: 8px 12px;
-        border-radius: 8px;
-        color: #fff;
-        font-weight: 700;
-        box-shadow: 0 6px 18px rgba(124, 58, 237, 0.18);
-      }
-    </style>
-  </head>
-  <body>
-    <div class="app">
-      <main class="card" role="application" aria-label="Termo Infinito">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Termo Infinito</title>
+    <meta name="description" content="Jogue o Termo Infinito, um clone premium do Wordle em português com palavras ilimitadas.">
+    
+    <!-- CSS Modular -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/grid.css">
+    <link rel="stylesheet" href="css/keyboard.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/utils.css">
+</head>
+<body>
+    <div class="app-container">
         <header>
-          <h1>Termo Infinito</h1>
-          <div class="controls">
-            <button class="btn" id="btn-new">Nova (Infinito)</button>
-            <button class="btn" id="btn-stats">Estatísticas</button>
-            <button class="btn" id="btn-share">Compartilhar</button>
-          </div>
+            <h1>TERMO</h1>
+            <div class="header-actions">
+                <button class="icon-button" id="btn-help-trigger" title="Como Jogar">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                </button>
+                <button class="icon-button" id="btn-stats-trigger" title="Estatísticas">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                </button>
+            </div>
         </header>
 
-        <section id="board" aria-hidden="false">
-          <div class="grid" id="grid" aria-live="polite"></div>
+        <section class="game-controls">
+            <nav class="mode-selector">
+                <button class="btn btn-secondary active-mode" data-mode="1" id="mode-mono">Solo</button>
+                <button class="btn btn-secondary" data-mode="2" id="mode-duo">Dueto</button>
+                <button class="btn btn-secondary" data-mode="4" id="mode-quartet">Quarteto</button>
+            </nav>
         </section>
 
-        <nav class="keyboard" aria-hidden="false" id="keyboard"></nav>
-
-        <div class="footer">
-          <div id="info">Tentativas: <span id="attempt">0</span>/6</div>
-          <div id="message" role="status" aria-live="polite"></div>
+        <div id="boards-container" class="boards-container">
+            <main id="grid" class="game-grid"></main>
         </div>
-
-        <div id="winBanner" class="win-banner" style="display: none">
-          Vitória! 🎉
-        </div>
-      </main>
+        <section id="keyboard" class="keyboard"></section>
     </div>
 
-    <!-- Modal estatísticas -->
-    <div
-      id="modal"
-      class="modal"
-      role="dialog"
-      aria-modal="true"
-      aria-hidden="true"
-    >
-      <div class="panel" role="document">
-        <h3>Estatísticas</h3>
-        <div id="statsContent" style="margin-top: 12px"></div>
-        <div
-          style="
-            display: flex;
-            gap: 8px;
-            justify-content: flex-end;
-            margin-top: 12px;
-          "
-        >
-          <button class="btn" id="btn-reset">Resetar</button>
-          <button class="btn" id="btn-close">Fechar</button>
+    <div id="toast" class="toast"></div>
+
+    <!-- Modals -->
+    <div id="help-modal" class="modal-overlay">
+        <div class="modal">
+            <h2>Como Jogar</h2>
+            <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">
+                Descubra a palavra certa em <b id="help-attempts">6</b> tentativas. Depois de cada tentativa, as peças mostram o quão perto você está.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="tile correct" style="width: 40px; height: 40px; font-size: 1.2rem; cursor: default;">T</div>
+                    <span style="font-size: 0.85rem;">A letra <b>T</b> está na posição correta.</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="tile present" style="width: 40px; height: 40px; font-size: 1.2rem; cursor: default;">E</div>
+                    <span style="font-size: 0.85rem;">A letra <b>E</b> está em outra posição.</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="tile absent" style="width: 40px; height: 40px; font-size: 1.2rem; cursor: default;">R</div>
+                    <span style="font-size: 0.85rem;">A letra <b>R</b> não faz parte da palavra.</span>
+                </div>
+            </div>
+            <button class="btn btn-primary" id="btn-close-help" style="width: 100%;">Entendido!</button>
         </div>
-      </div>
     </div>
 
-    <script type="module">
-      import { WORDS } from "./palavras.js";
-
-      let palavra = WORDS;
-
-      /* ====== Utilitários leves ====== */
-      const qs = (s) => document.querySelector(s);
-      const qsa = (s) => Array.from(document.querySelectorAll(s));
-
-      /* ====== Estado do jogo ====== */
-      const STATE = {
-        rows: 6,
-        cols: 5,
-        grid: [], // matriz de letras
-        currentRow: 0,
-        currentCol: 0,
-        target: "",
-        acceptWords: new Set(palavra), // validação simples com a mesma lista
-        status: "playing", // playing | won | lost
-      };
-
-      /* ====== Elementos DOM ====== */
-      const gridEl = qs("#grid");
-      const keyboardEl = qs("#keyboard");
-      const btnNew = qs("#btn-new");
-      const btnStats = qs("#btn-stats");
-      const modal = qs("#modal");
-      const btnClose = qs("#btn-close");
-      const btnReset = qs("#btn-reset");
-      const statsContent = qs("#statsContent");
-      const messageEl = qs("#message");
-      const attemptEl = qs("#attempt");
-      const btnShare = qs("#btn-share");
-      const winBanner = qs("#winBanner");
-
-      /* ====== Estatísticas em localStorage ====== */
-      const STATS_KEY = "termo_infinito_stats_v1";
-      const defaultStats = {
-        played: 0,
-        wins: 0,
-        currentStreak: 0,
-        maxStreak: 0,
-        distribution: {},
-      };
-      function loadStats() {
-        try {
-          return JSON.parse(localStorage.getItem(STATS_KEY)) || defaultStats;
-        } catch (e) {
-          return defaultStats;
-        }
-      }
-      function saveStats(s) {
-        localStorage.setItem(STATS_KEY, JSON.stringify(s));
-      }
-
-      /* ====== Inicialização do board visual e estado ====== */
-      function buildGridDOM() {
-        gridEl.innerHTML = "";
-        STATE.grid = Array.from({ length: STATE.rows }, () =>
-          Array.from({ length: STATE.cols }, () => "")
-        );
-        for (let r = 0; r < STATE.rows; r++) {
-          const row = document.createElement("div");
-          row.className = "row";
-          for (let c = 0; c < STATE.cols; c++) {
-            const t = document.createElement("div");
-            t.className = "tile";
-            t.setAttribute("data-row", r);
-            t.setAttribute("data-col", c);
-            row.appendChild(t);
-          }
-          gridEl.appendChild(row);
-        }
-        attemptEl.textContent = STATE.currentRow;
-      }
-
-      /* ====== Teclado na tela ====== */
-      const KEY_LAYOUT = ["QWERTYUIOP", "ASDFGHJKLÇ", "↵ZXCVBNM⌫"];
-      function buildKeyboard() {
-        keyboardEl.innerHTML = "";
-        for (const line of KEY_LAYOUT) {
-          const row = document.createElement("div");
-          row.className = "kb-row";
-          for (const ch of line) {
-            const key = document.createElement("div");
-            key.className = "key";
-            key.textContent = ch;
-            if (ch === "↵" || ch === "⌫") key.classList.add("special");
-            key.addEventListener("click", () => handleVirtualKey(ch));
-            row.appendChild(key);
-          }
-          keyboardEl.appendChild(row);
-        }
-      }
-
-      /* ====== Escolha aleatória da palavra alvo ====== */
-      function pickWord() {
-        const idx = Math.floor(Math.random() * palavra.length);
-        return WORDS[idx];
-      }
-
-      /* ====== Atualiza visual do tile (letras imputadas) ====== */
-      function renderGrid() {
-        for (let r = 0; r < STATE.rows; r++) {
-          for (let c = 0; c < STATE.cols; c++) {
-            const tile = gridEl.querySelector(
-              `.tile[data-row="${r}"][data-col="${c}"]`
-            );
-            tile.textContent = STATE.grid[r][c] || "";
-            tile.classList.toggle("small", window.innerWidth < 420);
-          }
-        }
-        attemptEl.textContent = STATE.currentRow;
-      }
-
-      /* ====== Entrada de teclado físico ====== */
-      window.addEventListener("keydown", (e) => {
-        if (
-          document.activeElement &&
-          (document.activeElement.tagName === "INPUT" ||
-            document.activeElement.tagName === "TEXTAREA")
-        )
-          return;
-
-        const k = e.key;
-
-        if (k === "Enter") return handleEnter();
-        if (k === "Backspace") return handleBackspace();
-
-        // aceita qualquer letra Unicode (com ou sem acento)
-        if (/^\p{Letter}$/u.test(k)) {
-          return handleLetter(k.toUpperCase());
-        }
-      });
-
-      /* ====== Tratadores de entrada virtual ====== */
-      function handleVirtualKey(ch) {
-        if (ch === "⌫") return handleBackspace();
-        if (ch === "↵") return handleEnter();
-        handleLetter(ch);
-      }
-
-      /* ====== Inserir letra ====== */
-      function handleLetter(letter) {
-        if (STATE.status !== "playing") return;
-        if (STATE.currentCol >= STATE.cols) return;
-        STATE.grid[STATE.currentRow][STATE.currentCol] = letter;
-        STATE.currentCol++;
-        renderGrid();
-      }
-
-      /* ====== Apagar letra ====== */
-      function handleBackspace() {
-        if (STATE.status !== "playing") {
-          // se jogo terminou, nova partida
-          return;
-        }
-        if (STATE.currentCol === 0) return;
-        STATE.currentCol--;
-        STATE.grid[STATE.currentRow][STATE.currentCol] = "";
-        renderGrid();
-      }
-
-      /* ====== Submeter palpite ====== */
-      function handleEnter() {
-        if (STATE.status !== "playing") return;
-        if (STATE.currentCol !== STATE.cols) {
-          showMessage("Palavra incompleta");
-          shakeRow(STATE.currentRow);
-          return;
-        }
-        const guess = STATE.grid[STATE.currentRow].join("").toUpperCase();
-        if (!STATE.acceptWords.has(guess)) {
-          showMessage("Palavra não encontrada");
-          shakeRow(STATE.currentRow);
-          return;
-        }
-        revealRow(guess, STATE.currentRow);
-      }
-
-      /* ====== Animação de shake se inválido ====== */
-      function shakeRow(row) {
-        const tiles = Array.from(
-          gridEl.querySelectorAll(`.tile[data-row="${row}"]`)
-        );
-        tiles.forEach((t, i) => {
-          t.animate(
-            [
-              { transform: "translateX(0)" },
-              { transform: "translateX(-8px)" },
-              { transform: "translateX(8px)" },
-              { transform: "translateX(0)" },
-            ],
-            { duration: 400, delay: i * 30 }
-          );
-        });
-      }
-
-      /* ====== Revela letras com animação e atualiza teclado ====== */
-      function revealRow(guess, row) {
-        const target = STATE.target;
-        const result = Array(STATE.cols).fill("absent");
-        const targetLetters = target.split("");
-
-        // Marca verdes (correct)
-        for (let i = 0; i < STATE.cols; i++) {
-          if (guess[i] === target[i]) {
-            result[i] = "correct";
-            targetLetters[i] = null;
-          }
-        }
-        // Marca amarelos (present)
-        for (let i = 0; i < STATE.cols; i++) {
-          if (result[i] === "correct") continue;
-          const idx = targetLetters.indexOf(guess[i]);
-          if (idx !== -1) {
-            result[i] = "present";
-            targetLetters[idx] = null;
-          }
-        }
-
-        // Aplica flip com delay
-        for (let i = 0; i < STATE.cols; i++) {
-          const tile = gridEl.querySelector(
-            `.tile[data-row="${row}"][data-col="${i}"]`
-          );
-          setTimeout(() => {
-            tile.classList.add("flip");
-            setTimeout(() => {
-              tile.classList.remove("flip");
-              tile.classList.add(result[i]);
-              // marca tecla
-              markKey(guess[i], result[i]);
-            }, 300);
-          }, i * 180);
-        }
-
-        // Verifica vitória/derrota depois das animações
-        setTimeout(() => {
-          const won = result.every((r) => r === "correct");
-          if (won) {
-            STATE.status = "won";
-            onGameEnd(true);
-          } else {
-            STATE.currentRow++;
-            STATE.currentCol = 0;
-            if (STATE.currentRow >= STATE.rows) {
-              STATE.status = "lost";
-              onGameEnd(false);
-            }
-          }
-          renderGrid();
-        }, STATE.cols * 180 + 350);
-      }
-
-      /* ====== Marca teclas com as cores melhores (priority correct > present > absent) ====== */
-      function markKey(letter, status) {
-        const keys = Array.from(qsa(".key")).filter(
-          (k) => k.textContent === letter
-        );
-        keys.forEach((k) => {
-          if (k.classList.contains("correct")) return;
-          if (k.classList.contains("present") && status === "absent") return;
-          k.classList.remove("absent", "present", "correct");
-          k.classList.add(status);
-        });
-      }
-
-      /* ====== Mensagens temporárias ====== */
-      let msgTimer = null;
-      function showMessage(txt, time = 1800) {
-        clearTimeout(msgTimer);
-        messageEl.textContent = txt;
-        msgTimer = setTimeout(() => (messageEl.textContent = ""), time);
-      }
-
-      /* ====== Encerramento de jogo e estatísticas ====== */
-      function onGameEnd(won) {
-        const stats = loadStats();
-        stats.played = (stats.played || 0) + 1;
-        if (won) {
-          stats.wins = (stats.wins || 0) + 1;
-          stats.currentStreak = (stats.currentStreak || 0) + 1;
-          stats.maxStreak = Math.max(
-            stats.maxStreak || 0,
-            stats.currentStreak || 0
-          );
-          // distribuição simples: baseada em tentativa atual (1-based)
-          const used = STATE.currentRow + 1;
-          stats.distribution[used] = (stats.distribution[used] || 0) + 1;
-          winBanner.style.display = "block";
-          setTimeout(() => {
-            winBanner.style.display = "none";
-          }, 1800);
-        } else {
-          stats.currentStreak = 0;
-          // registra derrota em distribuição como 0 ou 7 (opcional) - aqui não conta
-        }
-        saveStats(stats);
-        // mostra mensagem e após 1.5s inicia nova palavra automaticamente (infinito)
-        showMessage(
-          won
-            ? `Você acertou em ${
-                STATE.currentRow + 1
-              } tentativa(s)! Iniciando próxima...`
-            : `Acabou! Palavra: ${STATE.target}. Iniciando próxima...`,
-          2200
-        );
-        setTimeout(() => newGame(), 2200);
-      }
-
-      /* ====== Nova partida ====== */
-      function newGame() {
-        // limpa teclado
-        qsa(".key").forEach((k) =>
-          k.classList.remove("correct", "present", "absent")
-        );
-        STATE.target = pickWord();
-        STATE.currentRow = 0;
-        STATE.currentCol = 0;
-        STATE.status = "playing";
-        buildGridDOM();
-        renderGrid();
-        console.log("Target (debug):", STATE.target); // remover em produção
-      }
-
-      /* ====== Estatísticas UI ====== */
-      function openStats() {
-        const s = loadStats();
-        statsContent.innerHTML = `
-        <div>Jogos: ${s.played || 0}</div>
-        <div>Vitórias: ${s.wins || 0}</div>
-        <div>Streak atual: ${s.currentStreak || 0}</div>
-        <div>Maior streak: ${s.maxStreak || 0}</div>
-        <div style="margin-top:8px">Distribuição:</div>
-        <div style="display:flex;flex-direction:column;gap:4px;margin-top:6px">
-        ${[1, 2, 3, 4, 5, 6]
-          .map((i) => `<div>${i}: ${s.distribution?.[i] || 0}</div>`)
-          .join("")}
+    <div id="stats-modal" class="modal-overlay">
+        <div class="modal">
+            <h2 id="stats-title">Estatísticas</h2>
+            <div class="stats-container">
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-played">0</span>
+                    <span class="stat-label">Jogados</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-wins">0%</span>
+                    <span class="stat-label">Vitórias</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-streak">0</span>
+                    <span class="stat-label">Sequência</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-max-streak">0</span>
+                    <span class="stat-label">Melhor</span>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-secondary" id="btn-close-stats">Fechar</button>
+                <button class="btn btn-secondary" id="btn-share">Compartilhar</button>
+                <button class="btn btn-primary" id="btn-new-game">Novo Jogo</button>
+            </div>
         </div>
-      `;
-        modal.classList.add("open");
-        modal.setAttribute("aria-hidden", "false");
-      }
+    </div>
 
-      /* ====== Reset estatísticas ====== */
-      function resetStats() {
-        saveStats(defaultStats);
-        openStats();
-      }
-
-      /* ====== Compartilhar resultado como emoji grid ====== */
-      function shareResult() {
-        const stats = loadStats();
-        const lines = [];
-        lines.push(`Termo Infinito — joguei #${stats.played || 0}`);
-        // monta últimos N rows: não temos histórico detalhado por jogo simples; gerar placeholder
-        // Em vez disso, compartilha vitória/derrota e tentativa atual se terminou
-        lines.push(`Palavra: ${STATE.status === "won" ? "Acertou" : "—"}`);
-        // como alternativa, criamos grid simples com cores do jogo atual (parcial)
-        for (let r = 0; r < STATE.rows; r++) {
-          const tiles = Array.from(
-            gridEl.querySelectorAll(`.tile[data-row="${r}"]`)
-          );
-          if (tiles.every((t) => t.textContent === "")) break;
-          const row = tiles
-            .map((t) => {
-              if (t.classList.contains("correct")) return "🟩";
-              if (t.classList.contains("present")) return "🟨";
-              if (t.classList.contains("absent")) return "⬛";
-              return "⬜";
-            })
-            .join("");
-          lines.push(row);
-        }
-        const payload = lines.join("\n");
-        // tenta usar Web Share API ou copia para clipboard
-        if (navigator.share) {
-          navigator
-            .share({ text: payload })
-            .catch(() =>
-              navigator.clipboard
-                .writeText(payload)
-                .then(() => showMessage("Resultado copiado!"))
-            );
-        } else {
-          navigator.clipboard
-            .writeText(payload)
-            .then(() => showMessage("Resultado copiado!"));
-        }
-      }
-
-      /* ====== Bindings de botões ====== */
-      btnNew.addEventListener("click", () => newGame());
-      btnStats.addEventListener("click", () => openStats());
-      btnClose.addEventListener("click", () => {
-        modal.classList.remove("open");
-        modal.setAttribute("aria-hidden", "true");
-      });
-      btnReset.addEventListener("click", () => {
-        if (confirm("Resetar estatísticas?")) resetStats();
-      });
-      btnShare.addEventListener("click", () => shareResult());
-
-      /* ====== Setup inicial ====== */
-      function init() {
-        buildKeyboard();
-        buildGridDOM();
-        newGame();
-      }
-
-      init();
-    </script>
-  </body>
+    <!-- JS Principal (Module) -->
+    <script type="module" src="game.js"></script>
+</body>
 </html>
