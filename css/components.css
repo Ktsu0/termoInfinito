@@ -21,8 +21,8 @@
     background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    padding: 40px;
-    width: 90%;
+    padding: clamp(20px, 5vw, 40px);
+    width: 95%;
     max-width: 480px;
     box-shadow: var(--shadow-xl);
     transform: scale(0.9) translateY(20px);
@@ -43,7 +43,7 @@
 .stats-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    gap: clamp(10px, 3vw, 20px);
     margin-bottom: 32px;
 }
 
@@ -79,10 +79,19 @@
 }
 
 .game-controls {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    z-index: 150; /* Higher than header (100) and modals (100) */
+    display: flex;
+    justify-content: center;
+    margin: 8px 0;
+    z-index: 150;
+}
+
+@media (min-width: 480px) {
+    .game-controls {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        margin: 0;
+    }
 }
 
 .mode-selector {
@@ -98,12 +107,20 @@
     border: none;
     background: transparent;
     color: var(--text-muted);
-    padding: 8px 20px;
+    padding: 8px 16px;
     border-radius: 100px;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+}
+
+@media (min-width: 480px) {
+    .mode-selector button {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+    }
 }
 
 .mode-selector button.active-mode {
