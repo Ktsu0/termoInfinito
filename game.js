@@ -4,22 +4,22 @@ import { buildMultipleGridsDOM, buildKeyboardDOM } from "./js/components.js";
 
 class TermoGame {
     constructor() {
-        this.mode = parseInt(localStorage.getItem("termo_mode")) || 1; 
+        this.mode = parseInt(localStorage.getItem("termo_mode")) || 1;
         this.rows = 6;
         this.cols = 5;
         this.currentRow = 0;
         this.currentCol = 0;
-        
+
         this.targets = [];
         this.normalizedTargets = [];
-        this.grids = []; 
-        this.solvedBoards = []; 
-        
+        this.grids = [];
+        this.solvedBoards = [];
+
         this.status = "playing";
         this.words = WORDS;
-        this.acceptWords = new Set(this.words.map(w => normalizeWord(w)));
+        this.acceptWords = new Set(this.words.map((w) => normalizeWord(w)));
         this.stats = StatsManager.load();
-        
+
         this.initDOM();
         this.newGame(this.mode); // Inicia com o modo salvo
         this.setupEventListeners();
@@ -31,27 +31,27 @@ class TermoGame {
         this.toastEl = document.getElementById("toast");
         this.statsModal = document.getElementById("stats-modal");
         this.helpModal = document.getElementById("help-modal");
-        
+
         if (!localStorage.getItem("termo_visited")) {
             this.showHelp();
             localStorage.setItem("termo_visited", "true");
         }
-        
+
         buildKeyboardDOM(this.keyboardEl, (key) => this.handleInput(key));
     }
 
     newGame(mode) {
         this.mode = parseInt(mode);
         localStorage.setItem("termo_mode", this.mode); // Salva a preferência
-        this.rows = this.mode === 1 ? 6 : (this.mode === 2 ? 7 : 9); 
+        this.rows = this.mode === 1 ? 6 : this.mode === 2 ? 7 : 9;
         this.currentRow = 0;
         this.currentCol = 0;
         this.status = "playing";
-        
+
         this.targets = [];
         this.normalizedTargets = [];
         this.solvedBoards = Array(this.mode).fill(false);
-        this.grids = Array.from({ length: this.mode }, () => 
+        this.grids = Array.from({ length: this.mode }, () =>
             Array.from({ length: this.rows }, () => Array(this.cols).fill(""))
         );
 
@@ -64,8 +64,14 @@ class TermoGame {
             this.normalizedTargets.push(normalizeWord(word));
         }
 
-        buildMultipleGridsDOM(this.mode, this.rows, this.cols, this.containerEl, (b, r, c) => this.selectTile(b, r, c));
-        
+        buildMultipleGridsDOM(
+            this.mode,
+            this.rows,
+            this.cols,
+            this.containerEl,
+            (b, r, c) => this.selectTile(b, r, c)
+        );
+
         this.updateRowVisuals();
         this.updateActiveTileVisual();
         this.updateModeButtons();
@@ -85,8 +91,11 @@ class TermoGame {
     }
 
     updateModeButtons() {
-        document.querySelectorAll(".mode-selector button").forEach(btn => {
-            btn.classList.toggle("active-mode", parseInt(btn.dataset.mode) === this.mode);
+        document.querySelectorAll(".mode-selector button").forEach((btn) => {
+            btn.classList.toggle(
+                "active-mode",
+                parseInt(btn.dataset.mode) === this.mode
+            );
         });
     }
 
@@ -97,10 +106,14 @@ class TermoGame {
     }
 
     updateActiveTileVisual() {
-        document.querySelectorAll(".tile").forEach(t => t.classList.remove("active"));
+        document
+            .querySelectorAll(".tile")
+            .forEach((t) => t.classList.remove("active"));
         for (let b = 0; b < this.mode; b++) {
             if (this.solvedBoards[b]) continue;
-            const activeTile = document.getElementById(`tile-${b}-${this.currentRow}-${this.currentCol}`);
+            const activeTile = document.getElementById(
+                `tile-${b}-${this.currentRow}-${this.currentCol}`
+            );
             if (activeTile) activeTile.classList.add("active");
         }
     }
@@ -119,11 +132,13 @@ class TermoGame {
             for (let b = 0; b < this.mode; b++) {
                 if (this.solvedBoards[b]) continue;
                 this.grids[b][this.currentRow][this.currentCol] = letter;
-                const tile = document.getElementById(`tile-${b}-${this.currentRow}-${this.currentCol}`);
+                const tile = document.getElementById(
+                    `tile-${b}-${this.currentRow}-${this.currentCol}`
+                );
                 tile.textContent = letter;
                 tile.setAttribute("data-state", "toggled");
             }
-            
+
             if (this.currentCol < this.cols - 1) {
                 this.currentCol++;
             }
@@ -136,15 +151,17 @@ class TermoGame {
         if (!anyActiveGrid) return;
 
         const currentTileContent = anyActiveGrid[this.currentRow][this.currentCol];
-        
+
         if (currentTileContent === "" && this.currentCol > 0) {
             this.currentCol--;
         }
-        
+
         for (let b = 0; b < this.mode; b++) {
             if (this.solvedBoards[b]) continue;
             this.grids[b][this.currentRow][this.currentCol] = "";
-            const tile = document.getElementById(`tile-${b}-${this.currentRow}-${this.currentCol}`);
+            const tile = document.getElementById(
+                `tile-${b}-${this.currentRow}-${this.currentCol}`
+            );
             tile.textContent = "";
             tile.removeAttribute("data-state");
         }
@@ -152,8 +169,11 @@ class TermoGame {
     }
 
     submitGuess() {
-        const isRowFull = this.grids.some((g, i) => !this.solvedBoards[i] && g[this.currentRow].every(l => l !== ""));
-        
+        const isRowFull = this.grids.some(
+            (g, i) =>
+            !this.solvedBoards[i] && g[this.currentRow].every((l) => l !== "")
+        );
+
         if (!isRowFull) {
             this.showToast("Letras insuficientes");
             this.shakeRows();
@@ -176,12 +196,15 @@ class TermoGame {
 
     revealRows(guess, normalizedGuess) {
         const row = this.currentRow;
-        
+
         for (let b = 0; b < this.mode; b++) {
             if (this.solvedBoards[b]) continue;
 
-            const result = this.calculateResult(normalizedGuess, this.normalizedTargets[b]);
-            
+            const result = this.calculateResult(
+                normalizedGuess,
+                this.normalizedTargets[b]
+            );
+
             for (let i = 0; i < this.cols; i++) {
                 const tile = document.getElementById(`tile-${b}-${row}-${i}`);
                 setTimeout(() => {
@@ -206,7 +229,7 @@ class TermoGame {
         this.updateRowVisuals();
 
         setTimeout(() => {
-            const allSolved = this.solvedBoards.every(s => s);
+            const allSolved = this.solvedBoards.every((s) => s);
             if (allSolved) this.endGame(true);
             else if (this.currentRow === this.rows) this.endGame(false);
             else this.updateActiveTileVisual();
@@ -238,12 +261,20 @@ class TermoGame {
     }
 
     updateKey(letter, state) {
-        const key = document.querySelector(`.key[data-key="${letter.toUpperCase()}"]`);
+        const key = document.querySelector(
+            `.key[data-key="${letter.toUpperCase()}"]`
+        );
         if (!key) return;
 
         if (state === "correct") key.className = "key correct";
-        else if (state === "present" && !key.classList.contains("correct")) key.className = "key present";
-        else if (state === "absent" && !key.classList.contains("correct") && !key.classList.contains("present")) key.className = "key absent";
+        else if (state === "present" && !key.classList.contains("correct"))
+            key.className = "key present";
+        else if (
+            state === "absent" &&
+            !key.classList.contains("correct") &&
+            !key.classList.contains("present")
+        )
+            key.className = "key absent";
     }
 
     shakeRows() {
@@ -266,16 +297,22 @@ class TermoGame {
         this.status = win ? "won" : "lost";
         const modeStats = this.stats[this.mode];
         modeStats.played++;
-        
+
         if (win) {
             modeStats.wins++;
             modeStats.currentStreak++;
-            modeStats.maxStreak = Math.max(modeStats.currentStreak, modeStats.maxStreak);
-            modeStats.distribution[this.currentRow] = (modeStats.distribution[this.currentRow] || 0) + 1;
+            modeStats.maxStreak = Math.max(
+                modeStats.currentStreak,
+                modeStats.maxStreak
+            );
+            modeStats.distribution[this.currentRow] =
+                (modeStats.distribution[this.currentRow] || 0) + 1;
             this.showToast("Excelente!");
         } else {
             modeStats.currentStreak = 0;
-            const reveal = this.targets.filter((t, i) => !this.solvedBoards[i]).join(", ");
+            const reveal = this.targets
+                .filter((t, i) => !this.solvedBoards[i])
+                .join(", ");
             this.showToast(`As palavras eram: ${reveal}`);
         }
         StatsManager.save(this.stats);
@@ -284,42 +321,67 @@ class TermoGame {
 
     showStats() {
         const modeStats = this.stats[this.mode];
-        const modeName = this.mode === 1 ? "Solo" : (this.mode === 2 ? "Duo" : "Quarteto");
-        
-        document.getElementById("stats-title").textContent = `Estatísticas - ${modeName}`;
+        const modeName =
+            this.mode === 1 ? "Solo" : this.mode === 2 ? "Duo" : "Quarteto";
+
+        document.getElementById(
+            "stats-title"
+        ).textContent = `Estatísticas - ${modeName}`;
         document.getElementById("stat-played").textContent = modeStats.played;
-        document.getElementById("stat-wins").textContent = Math.round((modeStats.wins / modeStats.played || 0) * 100) + "%";
-        document.getElementById("stat-streak").textContent = modeStats.currentStreak;
-        document.getElementById("stat-max-streak").textContent = modeStats.maxStreak;
+        document.getElementById("stat-wins").textContent =
+            Math.round((modeStats.wins / modeStats.played || 0) * 100) + "%";
+        document.getElementById("stat-streak").textContent =
+            modeStats.currentStreak;
+        document.getElementById("stat-max-streak").textContent =
+            modeStats.maxStreak;
         this.statsModal.classList.add("active");
     }
 
-    closeStats() { this.statsModal.classList.remove("active"); }
-    showHelp() { 
-        document.getElementById("help-attempts").textContent = this.rows;
-        this.helpModal.classList.add("active"); 
+    closeStats() {
+        this.statsModal.classList.remove("active");
     }
-    closeHelp() { this.helpModal.classList.remove("active"); }
+    showHelp() {
+        document.getElementById("help-attempts").textContent = this.rows;
+        this.helpModal.classList.add("active");
+    }
+    closeHelp() {
+        this.helpModal.classList.remove("active");
+    }
 
     setupEventListeners() {
-        window.addEventListener("keydown", (e) => this.handleInput(e.key.toUpperCase()));
-        document.getElementById("btn-close-stats").onclick = () => this.closeStats();
+        window.addEventListener("keydown", (e) =>
+            this.handleInput(e.key.toUpperCase())
+        );
+        document.getElementById("btn-close-stats").onclick = () =>
+            this.closeStats();
         document.getElementById("btn-close-help").onclick = () => this.closeHelp();
         document.getElementById("btn-help-trigger").onclick = () => this.showHelp();
-        document.getElementById("btn-new-game").onclick = () => { this.closeStats(); this.newGame(this.mode); };
-        document.getElementById("btn-stats-trigger").onclick = () => this.showStats();
-        
-        document.querySelectorAll(".mode-selector button").forEach(btn => {
+        document.getElementById("btn-new-game").onclick = () => {
+            this.closeStats();
+            this.newGame(this.mode);
+        };
+        document.getElementById("btn-stats-trigger").onclick = () =>
+            this.showStats();
+
+        document.querySelectorAll(".mode-selector button").forEach((btn) => {
             btn.onclick = () => this.newGame(btn.dataset.mode);
         });
 
         document.getElementById("btn-share").onclick = () => {
-            const text = generateShareText(this.status, this.currentRow, this.cols, this.mode);
+            const text = generateShareText(
+                this.status,
+                this.currentRow,
+                this.cols,
+                this.mode
+            );
             if (navigator.share) navigator.share({ text });
-            else navigator.clipboard.writeText(text).then(() => this.showToast("Copiado!"));
+            else
+                navigator.clipboard
+                .writeText(text)
+                .then(() => this.showToast("Copiado!"));
         };
 
-        document.querySelectorAll(".modal-overlay").forEach(overlay => {
+        document.querySelectorAll(".modal-overlay").forEach((overlay) => {
             overlay.onclick = (e) => {
                 if (e.target === overlay) {
                     this.closeStats();
