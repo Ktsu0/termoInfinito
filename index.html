@@ -85,38 +85,27 @@
 
     <div id="toast" class="toast"></div>
     <div id="help-modal" class="modal-overlay">
-      <div class="modal">
-        <h2>Como Jogar</h2>
-        <p
-          style="
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            line-height: 1.5;
-            margin-bottom: 20px;
-          "
-        >
-          Descubra a palavra certa em <b id="help-attempts">6</b> tentativas.
-          Depois de cada tentativa, as peças mostram o quão perto você está.
-        </p>
-        <div
-          style="
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 25px;
-          "
-        >
-          <div style="display: flex; align-items: center; gap: 10px">
-            <div
-              class="tile correct"
-              style="
-                width: 40px;
-                height: 40px;
-                font-size: 1.2rem;
-                cursor: default;
-              "
-            >
-              T
+        <div class="modal">
+            <h2>Como Jogar</h2>
+            <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">
+                Descubra a palavra certa em <b id="help-attempts">6</b> tentativas. Depois de cada tentativa, as peças mostram o quão perto você está.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="tile correct" style="width: 40px; height: 40px; font-size: 1.2rem; cursor: default;">T</div>
+                    <span style="font-size: 0.85rem;">A letra <b>T</b> está
+                            na posição correta.</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="tile present" style="width: 40px; height: 40px; font-size: 1.2rem; cursor: default;">E</div>
+                    <span style="font-size: 0.85rem;">A letra <b>E</b> está
+                            em outra posição.</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="tile absent" style="width: 40px; height: 40px; font-size: 1.2rem; cursor: default;">R</div>
+                    <span style="font-size: 0.85rem;">A letra <b>R</b> não
+                            faz parte da palavra.</span>
+                </div>
             </div>
             <span style="font-size: 0.85rem"
               >A letra <b>T</b> está na posição correta.</span
@@ -162,25 +151,32 @@
     </div>
 
     <div id="stats-modal" class="modal-overlay">
-      <div class="modal">
-        <h2 id="stats-title">Estatísticas</h2>
-        <div class="stats-container">
-          <div class="stat-item">
-            <span class="stat-value" id="stat-played">0</span>
-            <span class="stat-label">Jogados</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-value" id="stat-wins">0%</span>
-            <span class="stat-label">Vitórias</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-value" id="stat-streak">0</span>
-            <span class="stat-label">Sequência</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-value" id="stat-max-streak">0</span>
-            <span class="stat-label">Melhor</span>
-          </div>
+        <div class="modal">
+            <h2 id="stats-title">Estatísticas</h2>
+            <div class="stats-container">
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-played">0</span>
+                    <span class="stat-label">Jogados</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-wins">0%</span>
+                    <span class="stat-label">Vitórias</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-streak">0</span>
+                    <span class="stat-label">Sequência</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-max-streak">0</span>
+                    <span class="stat-label">Melhor</span>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-secondary" id="btn-close-stats">Fechar</button>
+                <button class="btn btn-secondary" id="btn-share">Compartilhar</button>
+                <button class="btn btn-primary" id="btn-new-game">Novo
+                        Jogo</button>
+            </div>
         </div>
         <div class="action-buttons">
           <button class="btn btn-secondary" id="btn-close-stats">Fechar</button>

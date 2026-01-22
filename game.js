@@ -57,6 +57,7 @@ class TermoGame {
       Array.from({ length: this.rows }, () => Array(this.cols).fill(""))
     );
 
+    // Pick unique random words
     const wordsCopy = [...this.words];
     for (let i = 0; i < this.mode; i++) {
       const idx = Math.floor(Math.random() * wordsCopy.length);
@@ -73,10 +74,18 @@ class TermoGame {
       (b, r, c) => this.selectTile(b, r, c)
     );
 
+    this.resetKeyboardVisuals();
     this.updateRowVisuals();
     this.updateActiveTileVisual();
     this.updateModeButtons();
     console.log("Targets:", this.targets);
+  }
+
+  resetKeyboardVisuals() {
+    if (!this.keyboardEl) return;
+    this.keyboardEl.querySelectorAll(".key").forEach((key) => {
+      key.classList.remove("correct", "present", "absent");
+    });
   }
 
   updateRowVisuals() {
@@ -181,6 +190,7 @@ class TermoGame {
       return;
     }
 
+    // Use guess from first unsolved board (they are all the same)
     const firstUnsolvedIdx = this.solvedBoards.indexOf(false);
     const guess = this.grids[firstUnsolvedIdx][this.currentRow].join("");
     const normalizedGuess = normalizeWord(guess);
@@ -266,15 +276,19 @@ class TermoGame {
     );
     if (!key) return;
 
-    if (state === "correct") key.className = "key correct";
-    else if (state === "present" && !key.classList.contains("correct"))
-      key.className = "key present";
-    else if (
+    if (state === "correct") {
+      key.classList.remove("present", "absent");
+      key.classList.add("correct");
+    } else if (state === "present" && !key.classList.contains("correct")) {
+      key.classList.remove("absent");
+      key.classList.add("present");
+    } else if (
       state === "absent" &&
       !key.classList.contains("correct") &&
       !key.classList.contains("present")
-    )
-      key.className = "key absent";
+    ) {
+      key.classList.add("absent");
+    }
   }
 
   shakeRows() {
