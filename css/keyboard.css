@@ -1,83 +1,83 @@
 .keyboard {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    width: 100%;
-    max-width: 500px;
-    margin: 5px auto;
-    padding: 0 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  max-width: 500px;
+  margin: 5px auto;
+  padding: 0 5px;
 }
 
 .keyboard-row {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
 }
 
 .key {
-    background-color: var(--key-bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    padding: 10px 0; /* Further reduced from 14px */
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-    user-select: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: var(--key-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  padding: 10px 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  user-select: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .key:hover {
-    background-color: #2d3748;
-    transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.2);
+  background-color: #2d3748;
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .key:active {
-    transform: translateY(0) scale(0.96);
-    background-color: #1a202c;
+  transform: translateY(0) scale(0.96);
+  background-color: #1a202c;
 }
 
 .key.large {
-    flex: 1.6;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    background-color: rgba(255, 255, 255, 0.1);
+  flex: 1.6;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-.key.correct { 
-    background-color: var(--success); 
-    border-color: var(--success);
-    color: white;
+.key.correct {
+  background-color: var(--success);
+  border-color: var(--success);
+  color: white;
 }
 
-.key.present { 
-    background-color: var(--warning); 
-    border-color: var(--warning);
-    color: white;
+.key.present {
+  background-color: var(--warning);
+  border-color: var(--warning);
+  color: white;
 }
 
-.key.absent { 
-    background-color: var(--absent); 
-    opacity: 0.4;
-    border-color: transparent;
+.key.absent {
+  background-color: var(--absent);
+  opacity: 0.4;
+  border-color: transparent;
 }
 
 @media (max-width: 480px) {
-    .keyboard {
-        gap: 6px;
-    }
-    .keyboard-row {
-        gap: 4px;
-    }
-    .key {
-        padding: 16px 0;
-        font-size: 0.85rem;
-    }
+  .keyboard {
+    gap: 6px;
+  }
+  .keyboard-row {
+    gap: 4px;
+  }
+  .key {
+    padding: 16px 0;
+    font-size: 0.85rem;
+  }
 }

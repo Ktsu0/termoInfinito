@@ -1,103 +1,193 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Termo Infinito</title>
-    <meta name="description" content="Jogue o Termo Infinito, um clone premium do Wordle em português com palavras ilimitadas.">
-    
-    <!-- CSS Modular -->
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/grid.css">
-    <link rel="stylesheet" href="css/keyboard.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/utils.css">
-</head>
-<body>
+    <meta
+      name="description"
+      content="Jogue o Termo Infinito, um clone premium do Wordle em português com palavras ilimitadas."
+    />
+    <script type="module" src="game.js"></script>
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/grid.css" />
+    <link rel="stylesheet" href="css/keyboard.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/utils.css" />
+  </head>
+  <body>
     <div class="app-container">
-        <header>
-            <h1>TERMO</h1>
-            <div class="header-actions">
-                <button class="icon-button" id="btn-help-trigger" title="Como Jogar">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                </button>
-                <button class="icon-button" id="btn-stats-trigger" title="Estatísticas">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                </button>
-            </div>
-        </header>
-
-        <section class="game-controls">
-            <nav class="mode-selector">
-                <button class="btn btn-secondary active-mode" data-mode="1" id="mode-mono">Solo</button>
-                <button class="btn btn-secondary" data-mode="2" id="mode-duo">Dueto</button>
-                <button class="btn btn-secondary" data-mode="4" id="mode-quartet">Quarteto</button>
-            </nav>
-        </section>
-
-        <div id="boards-container" class="boards-container">
-            <main id="grid" class="game-grid"></main>
+      <header>
+        <h1>TERMO</h1>
+        <div class="header-actions">
+          <button class="icon-button" id="btn-help-trigger" title="Como Jogar">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </button>
+          <button
+            class="icon-button"
+            id="btn-stats-trigger"
+            title="Estatísticas"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg>
+          </button>
         </div>
-        <section id="keyboard" class="keyboard"></section>
+      </header>
+
+      <section class="game-controls">
+        <nav class="mode-selector">
+          <button
+            class="btn btn-secondary active-mode"
+            data-mode="1"
+            id="mode-mono"
+          >
+            Solo
+          </button>
+          <button class="btn btn-secondary" data-mode="2" id="mode-duo">
+            Dueto
+          </button>
+          <button class="btn btn-secondary" data-mode="4" id="mode-quartet">
+            Quarteto
+          </button>
+        </nav>
+      </section>
+
+      <div id="boards-container" class="boards-container">
+        <main id="grid" class="game-grid"></main>
+      </div>
+      <section id="keyboard" class="keyboard"></section>
     </div>
 
     <div id="toast" class="toast"></div>
-
-    <!-- Modals -->
     <div id="help-modal" class="modal-overlay">
-        <div class="modal">
-            <h2>Como Jogar</h2>
-            <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">
-                Descubra a palavra certa em <b id="help-attempts">6</b> tentativas. Depois de cada tentativa, as peças mostram o quão perto você está.
-            </p>
-            <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px;">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <div class="tile correct" style="width: 40px; height: 40px; font-size: 1.2rem; cursor: default;">T</div>
-                    <span style="font-size: 0.85rem;">A letra <b>T</b> está na posição correta.</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <div class="tile present" style="width: 40px; height: 40px; font-size: 1.2rem; cursor: default;">E</div>
-                    <span style="font-size: 0.85rem;">A letra <b>E</b> está em outra posição.</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <div class="tile absent" style="width: 40px; height: 40px; font-size: 1.2rem; cursor: default;">R</div>
-                    <span style="font-size: 0.85rem;">A letra <b>R</b> não faz parte da palavra.</span>
-                </div>
+      <div class="modal">
+        <h2>Como Jogar</h2>
+        <p
+          style="
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 20px;
+          "
+        >
+          Descubra a palavra certa em <b id="help-attempts">6</b> tentativas.
+          Depois de cada tentativa, as peças mostram o quão perto você está.
+        </p>
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+          "
+        >
+          <div style="display: flex; align-items: center; gap: 10px">
+            <div
+              class="tile correct"
+              style="
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                cursor: default;
+              "
+            >
+              T
             </div>
-            <button class="btn btn-primary" id="btn-close-help" style="width: 100%;">Entendido!</button>
+            <span style="font-size: 0.85rem"
+              >A letra <b>T</b> está na posição correta.</span
+            >
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px">
+            <div
+              class="tile present"
+              style="
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                cursor: default;
+              "
+            >
+              E
+            </div>
+            <span style="font-size: 0.85rem"
+              >A letra <b>E</b> está em outra posição.</span
+            >
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px">
+            <div
+              class="tile absent"
+              style="
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                cursor: default;
+              "
+            >
+              R
+            </div>
+            <span style="font-size: 0.85rem"
+              >A letra <b>R</b> não faz parte da palavra.</span
+            >
+          </div>
         </div>
+        <button class="btn btn-primary" id="btn-close-help" style="width: 100%">
+          Entendido!
+        </button>
+      </div>
     </div>
 
     <div id="stats-modal" class="modal-overlay">
-        <div class="modal">
-            <h2 id="stats-title">Estatísticas</h2>
-            <div class="stats-container">
-                <div class="stat-item">
-                    <span class="stat-value" id="stat-played">0</span>
-                    <span class="stat-label">Jogados</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value" id="stat-wins">0%</span>
-                    <span class="stat-label">Vitórias</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value" id="stat-streak">0</span>
-                    <span class="stat-label">Sequência</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value" id="stat-max-streak">0</span>
-                    <span class="stat-label">Melhor</span>
-                </div>
-            </div>
-            <div class="action-buttons">
-                <button class="btn btn-secondary" id="btn-close-stats">Fechar</button>
-                <button class="btn btn-secondary" id="btn-share">Compartilhar</button>
-                <button class="btn btn-primary" id="btn-new-game">Novo Jogo</button>
-            </div>
+      <div class="modal">
+        <h2 id="stats-title">Estatísticas</h2>
+        <div class="stats-container">
+          <div class="stat-item">
+            <span class="stat-value" id="stat-played">0</span>
+            <span class="stat-label">Jogados</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value" id="stat-wins">0%</span>
+            <span class="stat-label">Vitórias</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value" id="stat-streak">0</span>
+            <span class="stat-label">Sequência</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value" id="stat-max-streak">0</span>
+            <span class="stat-label">Melhor</span>
+          </div>
         </div>
+        <div class="action-buttons">
+          <button class="btn btn-secondary" id="btn-close-stats">Fechar</button>
+          <button class="btn btn-secondary" id="btn-share">Compartilhar</button>
+          <button class="btn btn-primary" id="btn-new-game">Novo Jogo</button>
+        </div>
+      </div>
     </div>
-
-    <!-- JS Principal (Module) -->
-    <script type="module" src="game.js"></script>
-</body>
+  </body>
 </html>
