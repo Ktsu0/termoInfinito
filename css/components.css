@@ -19,13 +19,13 @@
 
 .modal {
   background: var(--card-bg);
-  border: 1px solid var(--border);
+  border: 0.0625rem solid var(--border);
   border-radius: var(--radius-lg);
-  padding: clamp(20px, 5vw, 40px);
+  padding: clamp(1.25rem, 5vw, 2.5rem);
   width: 95%;
-  max-width: 480px;
+  max-width: 30rem;
   box-shadow: var(--shadow-xl);
-  transform: scale(0.9) translateY(20px);
+  transform: scale(0.9) translateY(1.25rem);
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -35,7 +35,7 @@
 
 .modal h2 {
   font-size: 1.75rem;
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
   text-align: center;
   font-weight: 700;
 }
@@ -43,8 +43,8 @@
 .stats-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: clamp(10px, 3vw, 20px);
-  margin-bottom: 32px;
+  gap: clamp(0.625rem, 3vw, 1.25rem);
+  margin-bottom: 2rem;
 }
 
 .stat-item {
@@ -63,16 +63,16 @@
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-top: 4px;
+  margin-top: 0.25rem;
 }
 
 .action-buttons {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0.75rem;
 }
 
-@media (min-width: 480px) {
+@media (min-width: 30rem) {
   .action-buttons {
     flex-direction: row;
   }
@@ -81,25 +81,25 @@
 .game-controls {
   display: flex;
   justify-content: center;
-  margin: 8px 0;
+  margin: 0.5rem 0;
   z-index: 150;
 }
 
-@media (min-width: 480px) {
+@media (min-width: 30rem) {
   .game-controls {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 1.25rem;
+    left: 1.25rem;
     margin: 0;
   }
 }
 
 .mode-selector {
   background: rgba(15, 23, 42, 0.6);
-  padding: 6px;
-  border-radius: 100px;
-  border: 1px solid var(--border);
-  backdrop-filter: blur(10px);
+  padding: 0.375rem;
+  border-radius: 6.25rem;
+  border: 0.0625rem solid var(--border);
+  backdrop-filter: blur(0.625rem);
   display: inline-flex;
 }
 
@@ -107,8 +107,8 @@
   border: none;
   background: transparent;
   color: var(--text-muted);
-  padding: 8px 16px;
-  border-radius: 100px;
+  padding: 0.5rem 1rem;
+  border-radius: 6.25rem;
   font-weight: 600;
   font-size: 0.85rem;
   cursor: pointer;
@@ -116,9 +116,9 @@
   white-space: nowrap;
 }
 
-@media (min-width: 480px) {
+@media (min-width: 30rem) {
   .mode-selector button {
-    padding: 8px 20px;
+    padding: 0.5rem 1.25rem;
     font-size: 0.9rem;
   }
 }
@@ -126,11 +126,11 @@
 .mode-selector button.active-mode {
   background: var(--primary);
   color: white;
-  box-shadow: 0 4px 12px var(--primary-glow);
+  box-shadow: 0 0.25rem 0.75rem var(--primary-glow);
 }
 
 .btn {
-  padding: 14px 24px;
+  padding: 0.875rem 1.5rem;
   border: none;
   border-radius: var(--radius-md);
   font-weight: 600;
@@ -139,7 +139,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 0.5rem;
   font-size: 0.95rem;
   flex: 1;
 }
@@ -147,18 +147,18 @@
 .btn-primary {
   background: var(--primary);
   color: white;
-  box-shadow: 0 4px 15px var(--primary-glow);
+  box-shadow: 0 0.25rem 0.9rem var(--primary-glow);
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px var(--primary-glow);
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0.375rem 1.25rem var(--primary-glow);
 }
 
 .btn-secondary {
   background: rgba(255, 255, 255, 0.05);
   color: var(--text);
-  border: 1px solid var(--border);
+  border: 0.0625rem solid var(--border);
 }
 
 .btn-secondary:hover {

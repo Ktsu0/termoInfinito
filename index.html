@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Termo Infinito</title>
+    <title>Termo Infinito - Jogo de Palavras Online Gratuito</title>
+    <link rel="icon" href="/assets/t.png" type="image/png">
+
     <meta
       name="description"
       content="Jogue o Termo Infinito, um clone premium do Wordle em português com palavras ilimitadas."
@@ -81,6 +83,7 @@
         <main id="grid" class="game-grid"></main>
       </div>
       <section id="keyboard" class="keyboard"></section>
+      <footer class="version-display">Made by Wagner • v1.0.0</footer>
     </div>
 
     <div id="toast" class="toast"></div>
@@ -93,61 +96,21 @@
             <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px;">
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <div class="tile correct" style="width: 40px; height: 40px; font-size: 1.2rem; cursor: default;">T</div>
-                    <span style="font-size: 0.85rem;">A letra <b>T</b> está
-                            na posição correta.</span>
+                    <span style="font-size: 0.85rem;">A letra <b>T</b> está na posição correta.</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <div class="tile present" style="width: 40px; height: 40px; font-size: 1.2rem; cursor: default;">E</div>
-                    <span style="font-size: 0.85rem;">A letra <b>E</b> está
-                            em outra posição.</span>
+                    <span style="font-size: 0.85rem;">A letra <b>E</b> está em outra posição.</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <div class="tile absent" style="width: 40px; height: 40px; font-size: 1.2rem; cursor: default;">R</div>
-                    <span style="font-size: 0.85rem;">A letra <b>R</b> não
-                            faz parte da palavra.</span>
+                    <span style="font-size: 0.85rem;">A letra <b>R</b> não faz parte da palavra.</span>
                 </div>
             </div>
-            <span style="font-size: 0.85rem"
-              >A letra <b>T</b> está na posição correta.</span
-            >
-          </div>
-          <div style="display: flex; align-items: center; gap: 10px">
-            <div
-              class="tile present"
-              style="
-                width: 40px;
-                height: 40px;
-                font-size: 1.2rem;
-                cursor: default;
-              "
-            >
-              E
-            </div>
-            <span style="font-size: 0.85rem"
-              >A letra <b>E</b> está em outra posição.</span
-            >
-          </div>
-          <div style="display: flex; align-items: center; gap: 10px">
-            <div
-              class="tile absent"
-              style="
-                width: 40px;
-                height: 40px;
-                font-size: 1.2rem;
-                cursor: default;
-              "
-            >
-              R
-            </div>
-            <span style="font-size: 0.85rem"
-              >A letra <b>R</b> não faz parte da palavra.</span
-            >
-          </div>
+            <button class="btn btn-primary" id="btn-close-help" style="width: 100%">
+              Entendido!
+            </button>
         </div>
-        <button class="btn btn-primary" id="btn-close-help" style="width: 100%">
-          Entendido!
-        </button>
-      </div>
     </div>
 
     <div id="stats-modal" class="modal-overlay">
@@ -178,12 +141,8 @@
                         Jogo</button>
             </div>
         </div>
-        <div class="action-buttons">
-          <button class="btn btn-secondary" id="btn-close-stats">Fechar</button>
-          <button class="btn btn-secondary" id="btn-share">Compartilhar</button>
-          <button class="btn btn-primary" id="btn-new-game">Novo Jogo</button>
         </div>
-      </div>
+    </div>
     </div>
   </body>
 </html>

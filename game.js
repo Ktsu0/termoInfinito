@@ -54,7 +54,7 @@ class TermoGame {
     this.normalizedTargets = [];
     this.solvedBoards = Array(this.mode).fill(false);
     this.grids = Array.from({ length: this.mode }, () =>
-      Array.from({ length: this.rows }, () => Array(this.cols).fill(""))
+      Array.from({ length: this.rows }, () => Array(this.cols).fill("")),
     );
 
     // Pick unique random words
@@ -71,14 +71,14 @@ class TermoGame {
       this.rows,
       this.cols,
       this.containerEl,
-      (b, r, c) => this.selectTile(b, r, c)
+      (b, r, c) => this.selectTile(b, r, c),
     );
 
     this.resetKeyboardVisuals();
     this.updateRowVisuals();
     this.updateActiveTileVisual();
     this.updateModeButtons();
-    console.log("Targets:", this.targets);
+    // console.log("Targets:", this.targets); // Cheat disabled
   }
 
   resetKeyboardVisuals() {
@@ -104,7 +104,7 @@ class TermoGame {
     document.querySelectorAll(".mode-selector button").forEach((btn) => {
       btn.classList.toggle(
         "active-mode",
-        parseInt(btn.dataset.mode) === this.mode
+        parseInt(btn.dataset.mode) === this.mode,
       );
     });
   }
@@ -122,7 +122,7 @@ class TermoGame {
     for (let b = 0; b < this.mode; b++) {
       if (this.solvedBoards[b]) continue;
       const activeTile = document.getElementById(
-        `tile-${b}-${this.currentRow}-${this.currentCol}`
+        `tile-${b}-${this.currentRow}-${this.currentCol}`,
       );
       if (activeTile) activeTile.classList.add("active");
     }
@@ -143,7 +143,7 @@ class TermoGame {
         if (this.solvedBoards[b]) continue;
         this.grids[b][this.currentRow][this.currentCol] = letter;
         const tile = document.getElementById(
-          `tile-${b}-${this.currentRow}-${this.currentCol}`
+          `tile-${b}-${this.currentRow}-${this.currentCol}`,
         );
         tile.textContent = letter;
         tile.setAttribute("data-state", "toggled");
@@ -170,7 +170,7 @@ class TermoGame {
       if (this.solvedBoards[b]) continue;
       this.grids[b][this.currentRow][this.currentCol] = "";
       const tile = document.getElementById(
-        `tile-${b}-${this.currentRow}-${this.currentCol}`
+        `tile-${b}-${this.currentRow}-${this.currentCol}`,
       );
       tile.textContent = "";
       tile.removeAttribute("data-state");
@@ -181,7 +181,7 @@ class TermoGame {
   submitGuess() {
     const isRowFull = this.grids.some(
       (g, i) =>
-        !this.solvedBoards[i] && g[this.currentRow].every((l) => l !== "")
+        !this.solvedBoards[i] && g[this.currentRow].every((l) => l !== ""),
     );
 
     if (!isRowFull) {
@@ -212,7 +212,7 @@ class TermoGame {
 
       const result = this.calculateResult(
         normalizedGuess,
-        this.normalizedTargets[b]
+        this.normalizedTargets[b],
       );
 
       for (let i = 0; i < this.cols; i++) {
@@ -227,10 +227,13 @@ class TermoGame {
       }
 
       if (normalizedGuess === this.normalizedTargets[b]) {
-        setTimeout(() => {
-          this.solvedBoards[b] = true;
-          document.getElementById(`grid-${b}`).classList.add("solved");
-        }, this.cols * 150 + 400);
+        setTimeout(
+          () => {
+            this.solvedBoards[b] = true;
+            document.getElementById(`grid-${b}`).classList.add("solved");
+          },
+          this.cols * 150 + 400,
+        );
       }
     }
 
@@ -238,12 +241,15 @@ class TermoGame {
     this.currentCol = 0;
     this.updateRowVisuals();
 
-    setTimeout(() => {
-      const allSolved = this.solvedBoards.every((s) => s);
-      if (allSolved) this.endGame(true);
-      else if (this.currentRow === this.rows) this.endGame(false);
-      else this.updateActiveTileVisual();
-    }, this.cols * 150 + 500);
+    setTimeout(
+      () => {
+        const allSolved = this.solvedBoards.every((s) => s);
+        if (allSolved) this.endGame(true);
+        else if (this.currentRow === this.rows) this.endGame(false);
+        else this.updateActiveTileVisual();
+      },
+      this.cols * 150 + 500,
+    );
   }
 
   calculateResult(guess, target) {
@@ -272,7 +278,7 @@ class TermoGame {
 
   updateKey(letter, state) {
     const key = document.querySelector(
-      `.key[data-key="${letter.toUpperCase()}"]`
+      `.key[data-key="${letter.toUpperCase()}"]`,
     );
     if (!key) return;
 
@@ -317,7 +323,7 @@ class TermoGame {
       modeStats.currentStreak++;
       modeStats.maxStreak = Math.max(
         modeStats.currentStreak,
-        modeStats.maxStreak
+        modeStats.maxStreak,
       );
       modeStats.distribution[this.currentRow] =
         (modeStats.distribution[this.currentRow] || 0) + 1;
@@ -338,9 +344,8 @@ class TermoGame {
     const modeName =
       this.mode === 1 ? "Solo" : this.mode === 2 ? "Duo" : "Quarteto";
 
-    document.getElementById(
-      "stats-title"
-    ).textContent = `Estatísticas - ${modeName}`;
+    document.getElementById("stats-title").textContent =
+      `Estatísticas - ${modeName}`;
     document.getElementById("stat-played").textContent = modeStats.played;
     document.getElementById("stat-wins").textContent =
       Math.round((modeStats.wins / modeStats.played || 0) * 100) + "%";
@@ -364,7 +369,7 @@ class TermoGame {
 
   setupEventListeners() {
     window.addEventListener("keydown", (e) =>
-      this.handleInput(e.key.toUpperCase())
+      this.handleInput(e.key.toUpperCase()),
     );
     document.getElementById("btn-close-stats").onclick = () =>
       this.closeStats();
@@ -386,7 +391,7 @@ class TermoGame {
         this.status,
         this.currentRow,
         this.cols,
-        this.mode
+        this.mode,
       );
       if (navigator.share) navigator.share({ text });
       else

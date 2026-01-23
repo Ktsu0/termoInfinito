@@ -18,6 +18,7 @@ export const WORDS = [
   "JUNTO",
   "LIMPO",
   "MAGIA",
+  "LESTE",
   "MÁGOA",
   "NOSSO",
   "UNIÃO",
@@ -1115,6 +1116,6 @@ export const WORDS = [
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
       .replace(/[^A-Z0-9]/gi, "")
-      .toUpperCase()
+      .toUpperCase(),
   )
   .filter((w, i, a) => w.length === 5 && a.indexOf(w) === i);
