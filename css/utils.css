@@ -141,16 +141,6 @@ h1 {
   border-color: rgba(255, 255, 255, 0.2);
 }
 
-.version-display {
-  text-align: center;
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  padding: 0.5rem;
-  margin-top: auto;
-  width: 100%;
-  opacity: 0.6;
-}
-
 @keyframes toastSlideIn {
   from {
     transform: translateX(-50%) translateY(-1.25rem);
