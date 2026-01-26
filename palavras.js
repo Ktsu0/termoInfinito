@@ -138,6 +138,14 @@ export const WORDS = [
   "RITMO",
   "SALAO",
   "TURMA",
+  "TURNO",
+  "MOTEL",
+  "NADAR",
+  "PISCA",
+  "MESMA",
+  "CELTA",
+  "SELVA",
+  "MAJOR",
   "ÚNICO",
   "ÍCONE",
   "VIRAR",
@@ -1116,6 +1124,6 @@ export const WORDS = [
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
       .replace(/[^A-Z0-9]/gi, "")
-      .toUpperCase(),
+      .toUpperCase()
   )
   .filter((w, i, a) => w.length === 5 && a.indexOf(w) === i);
