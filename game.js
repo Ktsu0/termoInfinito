@@ -54,7 +54,7 @@ class TermoGame {
     this.normalizedTargets = [];
     this.solvedBoards = Array(this.mode).fill(false);
     this.grids = Array.from({ length: this.mode }, () =>
-      Array.from({ length: this.rows }, () => Array(this.cols).fill(""))
+      Array.from({ length: this.rows }, () => Array(this.cols).fill("")),
     );
 
     // Pick unique random words
@@ -71,7 +71,7 @@ class TermoGame {
       this.rows,
       this.cols,
       this.containerEl,
-      (b, r, c) => this.selectTile(b, r, c)
+      (b, r, c) => this.selectTile(b, r, c),
     );
 
     this.resetKeyboardVisuals();
@@ -104,7 +104,7 @@ class TermoGame {
     document.querySelectorAll(".mode-selector button").forEach((btn) => {
       btn.classList.toggle(
         "active-mode",
-        parseInt(btn.dataset.mode) === this.mode
+        parseInt(btn.dataset.mode) === this.mode,
       );
     });
   }
@@ -122,7 +122,7 @@ class TermoGame {
     for (let b = 0; b < this.mode; b++) {
       if (this.solvedBoards[b]) continue;
       const activeTile = document.getElementById(
-        `tile-${b}-${this.currentRow}-${this.currentCol}`
+        `tile-${b}-${this.currentRow}-${this.currentCol}`,
       );
       if (activeTile) activeTile.classList.add("active");
     }
@@ -143,7 +143,7 @@ class TermoGame {
         if (this.solvedBoards[b]) continue;
         this.grids[b][this.currentRow][this.currentCol] = letter;
         const tile = document.getElementById(
-          `tile-${b}-${this.currentRow}-${this.currentCol}`
+          `tile-${b}-${this.currentRow}-${this.currentCol}`,
         );
         tile.textContent = letter;
         tile.setAttribute("data-state", "toggled");
@@ -170,7 +170,7 @@ class TermoGame {
       if (this.solvedBoards[b]) continue;
       this.grids[b][this.currentRow][this.currentCol] = "";
       const tile = document.getElementById(
-        `tile-${b}-${this.currentRow}-${this.currentCol}`
+        `tile-${b}-${this.currentRow}-${this.currentCol}`,
       );
       tile.textContent = "";
       tile.removeAttribute("data-state");
@@ -181,7 +181,7 @@ class TermoGame {
   async submitGuess() {
     const isRowFull = this.grids.some(
       (g, i) =>
-        !this.solvedBoards[i] && g[this.currentRow].every((l) => l !== "")
+        !this.solvedBoards[i] && g[this.currentRow].every((l) => l !== ""),
     );
 
     if (!isRowFull) {
@@ -194,9 +194,15 @@ class TermoGame {
     const guess = this.grids[firstUnsolvedIdx][this.currentRow].join("");
     const normalizedGuess = normalizeWord(guess);
 
+    // Verificação local rápida antes de mostrar o toast de "Verificando"
+    if (this.acceptWords.has(normalizedGuess)) {
+      this.revealRows(guess, normalizedGuess);
+      return;
+    }
+
     this.showToast("Verificando...");
 
-    // Chamada real para a API
+    // Chamada para a API (se não estiver na lista local)
     const wordExists = await this.isValidWord(normalizedGuess);
 
     if (!wordExists) {
@@ -216,7 +222,7 @@ class TermoGame {
 
       const result = this.calculateResult(
         normalizedGuess,
-        this.normalizedTargets[b]
+        this.normalizedTargets[b],
       );
 
       for (let i = 0; i < this.cols; i++) {
@@ -231,10 +237,13 @@ class TermoGame {
       }
 
       if (normalizedGuess === this.normalizedTargets[b]) {
-        setTimeout(() => {
-          this.solvedBoards[b] = true;
-          document.getElementById(`grid-${b}`).classList.add("solved");
-        }, this.cols * 150 + 400);
+        setTimeout(
+          () => {
+            this.solvedBoards[b] = true;
+            document.getElementById(`grid-${b}`).classList.add("solved");
+          },
+          this.cols * 150 + 400,
+        );
       }
     }
 
@@ -242,20 +251,37 @@ class TermoGame {
     this.currentCol = 0;
     this.updateRowVisuals();
 
-    setTimeout(() => {
-      const allSolved = this.solvedBoards.every((s) => s);
-      if (allSolved) this.endGame(true);
-      else if (this.currentRow === this.rows) this.endGame(false);
-      else this.updateActiveTileVisual();
-    }, this.cols * 150 + 500);
+    setTimeout(
+      () => {
+        const allSolved = this.solvedBoards.every((s) => s);
+        if (allSolved) this.endGame(true);
+        else if (this.currentRow === this.rows) this.endGame(false);
+        else this.updateActiveTileVisual();
+      },
+      this.cols * 150 + 500,
+    );
   }
 
   async isValidWord(word) {
+    // 1. Verificação local primeiro (instantânea e offline)
+    if (this.acceptWords.has(word)) {
+      return true;
+    }
+
     const cleanWord = word.trim().toLowerCase();
 
     try {
-      // Usando a Free Dictionary API (v2)
-      const response = await fetch(`https://api.dictionaryapi.dev${cleanWord}`);
+      // 2. Usando a Free Dictionary API (v2) com a URL correta para pt-BR
+      // Adicionamos um timeout para a API não travar a experiência do usuário
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 segundos de limite
+
+      const response = await fetch(
+        `https://api.dictionaryapi.dev/api/v2/entries/pt-BR/${cleanWord}`,
+        { signal: controller.signal },
+      );
+
+      clearTimeout(timeoutId);
 
       // Essa API retorna status 200 se achar e 404 se não achar
       if (response.ok) {
@@ -265,8 +291,11 @@ class TermoGame {
 
       return false;
     } catch (error) {
-      console.error("Erro na API alternativa:", error);
-      // Se a API cair, você pode liberar a palavra para não travar o jogo
+      console.warn(
+        "API de dicionário indisponível ou lenta, permitindo palavra:",
+        error,
+      );
+      // Se a API cair ou demorar muito, liberamos a palavra para não travar o jogo
       return true;
     }
   }
@@ -302,7 +331,7 @@ class TermoGame {
 
   updateKey(letter, state) {
     const key = document.querySelector(
-      `.key[data-key="${letter.toUpperCase()}"]`
+      `.key[data-key="${letter.toUpperCase()}"]`,
     );
     if (!key) return;
 
@@ -332,9 +361,13 @@ class TermoGame {
   }
 
   showToast(msg) {
+    if (this.toastTimeout) clearTimeout(this.toastTimeout);
     this.toastEl.textContent = msg;
     this.toastEl.classList.add("visible");
-    setTimeout(() => this.toastEl.classList.remove("visible"), 2000);
+    this.toastTimeout = setTimeout(() => {
+      this.toastEl.classList.remove("visible");
+      this.toastTimeout = null;
+    }, 2000);
   }
 
   endGame(win) {
@@ -347,7 +380,7 @@ class TermoGame {
       modeStats.currentStreak++;
       modeStats.maxStreak = Math.max(
         modeStats.currentStreak,
-        modeStats.maxStreak
+        modeStats.maxStreak,
       );
       modeStats.distribution[this.currentRow] =
         (modeStats.distribution[this.currentRow] || 0) + 1;
@@ -368,9 +401,8 @@ class TermoGame {
     const modeName =
       this.mode === 1 ? "Solo" : this.mode === 2 ? "Duo" : "Quarteto";
 
-    document.getElementById(
-      "stats-title"
-    ).textContent = `Estatísticas - ${modeName}`;
+    document.getElementById("stats-title").textContent =
+      `Estatísticas - ${modeName}`;
     document.getElementById("stat-played").textContent = modeStats.played;
     document.getElementById("stat-wins").textContent =
       Math.round((modeStats.wins / modeStats.played || 0) * 100) + "%";
@@ -394,7 +426,7 @@ class TermoGame {
 
   setupEventListeners() {
     window.addEventListener("keydown", (e) =>
-      this.handleInput(e.key.toUpperCase())
+      this.handleInput(e.key.toUpperCase()),
     );
     document.getElementById("btn-close-stats").onclick = () =>
       this.closeStats();
@@ -416,7 +448,7 @@ class TermoGame {
         this.status,
         this.currentRow,
         this.cols,
-        this.mode
+        this.mode,
       );
       if (navigator.share) navigator.share({ text });
       else
