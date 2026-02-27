@@ -76,48 +76,73 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.75rem 0;
+  padding: 1.5vh 3vw;
   position: relative;
   background: rgba(3, 7, 18, 0.4);
-  backdrop-filter: blur(0.75rem);
-  border-bottom: 0.0625rem solid var(--glass-border);
-  margin-bottom: 0.5rem;
-  z-index: 10;
+  backdrop-filter: blur(1vh);
+  border-bottom: 0.1vh solid var(--glass-border);
+  margin-bottom: 1vh;
+  z-index: 100;
 }
 
 .header-actions {
   position: absolute;
-  right: 0.625rem;
+  right: 2vw;
   display: flex;
-  gap: 0.5rem;
+  gap: 1vw;
   align-items: center;
 }
 
 h1 {
-  font-size: clamp(1.4rem, 5vw, 1.8rem);
+  font-size: clamp(1.2rem, 5.5vw, 4vh);
   font-weight: 800;
-  letter-spacing: 0.0625rem;
+  letter-spacing: 0.5vw;
   background: linear-gradient(to bottom, #fff, #9ca3af);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 0.625rem rgba(99, 102, 241, 0.3));
+  filter: drop-shadow(0 0 1vh rgba(99, 102, 241, 0.3));
+  text-transform: uppercase;
+  margin: 0 auto;
 }
 
-@media (max-width: 30rem) {
+@media (max-width: 48rem) {
   header {
-    padding: 0.5rem 0;
-    margin-bottom: 0.25rem;
+    padding: 1vh 2vw;
+    justify-content: flex-start;
   }
+  
+  h1 {
+    margin: 0;
+    font-size: clamp(1.1rem, 5vw, 1.5rem);
+    letter-spacing: 0.2vw;
+  }
+  
   .header-actions {
-    right: 0.3125rem;
+    right: 1.5vw;
   }
+}
+
+@media (max-width: 25rem) {
+  h1 {
+    font-size: clamp(1rem, 4.5vw, 1.3rem);
+    max-width: 45%;
+  }
+  
+  .header-actions {
+    gap: 0.8vw;
+  }
+  
   .icon-button {
-    padding: 0.5rem;
+    padding: 0;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 0.5rem;
   }
+
   .icon-button svg {
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 1.2rem;
+    height: 1.2rem;
   }
 }
 
@@ -142,20 +167,29 @@ h1 {
 }
 
 .button-text {
-  max-width: 0;
-  opacity: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  font-size: 0.85rem;
-  font-weight: 600;
-  transition: max-width 0.3s ease, opacity 0.3s ease, margin-left 0.3s ease;
-  margin-left: 0;
+  display: none !important;
 }
 
-.icon-button:hover .button-text {
-  max-width: 250px;
-  opacity: 1;
-  margin-left: 0.5rem;
+.icon-button {
+  background: rgba(255, 255, 255, 0.03);
+  border: 0.1vh solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 1.2vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1vh;
+  transition: all 0.3s ease;
+  width: clamp(2.5rem, 8vw, 3.5rem);
+  height: clamp(2.5rem, 8vw, 3.5rem);
+}
+
+.icon-button:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  transform: translateY(-0.2vh);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 @keyframes toastSlideIn {

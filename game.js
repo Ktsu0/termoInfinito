@@ -17,7 +17,6 @@ class TermoGame {
 
     this.status = "playing";
     this.words = WORDS;
-    this.acceptWords = new Set(this.words.map((w) => normalizeWord(w)));
     this.stats = StatsManager.load();
 
     this.initDOM();
@@ -191,25 +190,10 @@ class TermoGame {
     }
 
     const firstUnsolvedIdx = this.solvedBoards.indexOf(false);
+    if (firstUnsolvedIdx === -1) return;
+
     const guess = this.grids[firstUnsolvedIdx][this.currentRow].join("");
     const normalizedGuess = normalizeWord(guess);
-
-    // Verificação local rápida antes de mostrar o toast de "Verificando"
-    if (this.acceptWords.has(normalizedGuess)) {
-      this.revealRows(guess, normalizedGuess);
-      return;
-    }
-
-    this.showToast("Verificando...");
-
-    // Chamada para a API (se não estiver na lista local)
-    const wordExists = await this.isValidWord(normalizedGuess);
-
-    if (!wordExists) {
-      this.showToast("Palavra não existe no dicionário");
-      this.shakeRows();
-      return;
-    }
 
     this.revealRows(guess, normalizedGuess);
   }
@@ -260,44 +244,6 @@ class TermoGame {
       },
       this.cols * 150 + 500,
     );
-  }
-
-  async isValidWord(word) {
-    // 1. Verificação local primeiro (instantânea e offline)
-    if (this.acceptWords.has(word)) {
-      return true;
-    }
-
-    const cleanWord = word.trim().toLowerCase();
-
-    try {
-      // 2. Usando a Free Dictionary API (v2) com a URL correta para pt-BR
-      // Adicionamos um timeout para a API não travar a experiência do usuário
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 segundos de limite
-
-      const response = await fetch(
-        `https://api.dictionaryapi.dev/api/v2/entries/pt-BR/${cleanWord}`,
-        { signal: controller.signal },
-      );
-
-      clearTimeout(timeoutId);
-
-      // Essa API retorna status 200 se achar e 404 se não achar
-      if (response.ok) {
-        const data = await response.json();
-        return data && data.length > 0;
-      }
-
-      return false;
-    } catch (error) {
-      console.warn(
-        "API de dicionário indisponível ou lenta, permitindo palavra:",
-        error,
-      );
-      // Se a API cair ou demorar muito, liberamos a palavra para não travar o jogo
-      return true;
-    }
   }
 
   calculateResult(guess, target) {

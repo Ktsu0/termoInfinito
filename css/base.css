@@ -51,4 +51,27 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  /* Melhora o scroll nos modais e containers */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Base adjustment for ultra-wide or large screens */
+@media (min-width: 1440px) {
+  :root {
+    font-size: 18px;
+  }
+}
+
+/* Tablet and small desktops */
+@media (max-width: 1024px) {
+  :root {
+    font-size: 15px;
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+  :root {
+    font-size: 14px;
+  }
 }
