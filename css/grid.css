@@ -1,12 +1,15 @@
+/* ============================================================
+   BOARDS CONTAINER - base layout
+   ============================================================ */
 .boards-container {
   display: flex;
   flex-wrap: wrap;
-  gap: clamp(2vw, 3vh, 5vw);
+  gap: clamp(0.5rem, 1.5vw, 1.5rem);
   justify-content: center;
   align-content: center;
   width: 100%;
   margin: 0 auto;
-  padding: 1.5vh 2vw;
+  padding: 1rem 1vw 0.5rem;   /* top padding: breathing room from header */
   flex: 1;
   overflow-y: auto;
   scrollbar-width: thin;
@@ -22,14 +25,17 @@
   border-radius: 0.625rem;
 }
 
+/* ============================================================
+   GAME GRID (individual board card)
+   ============================================================ */
 .game-grid {
   display: grid;
   grid-template-rows: repeat(var(--rows, 6), 1fr);
-  gap: clamp(0.5vh, 1vh, 1.5vh);
+  gap: clamp(0.25rem, 0.6vh, 0.45rem);
   width: min-content;
-  padding: clamp(1vh, 2vw, 3vh);
+  padding: clamp(0.6rem, 1.2vh, 1rem);
   background: var(--card-bg);
-  border-radius: 2vh;
+  border-radius: 1.2vh;
   border: 0.1vw solid var(--glass-border);
   backdrop-filter: blur(2vh);
   box-shadow: var(--shadow-xl);
@@ -43,10 +49,13 @@
   pointer-events: none;
 }
 
+/* ============================================================
+   GRID ROW
+   ============================================================ */
 .grid-row {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 0.375rem;
+  gap: clamp(0.2rem, 0.4vw, 0.375rem);
   opacity: 0.3;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -56,13 +65,16 @@
   opacity: 1;
 }
 
+/* ============================================================
+   TILE - base (Solo mode)
+   ============================================================ */
 .tile {
-  --tile-size: clamp(2.5rem, 7.5vh, 4rem);
+  --tile-size: clamp(2.5rem, 7vh, 3.8rem);
   width: var(--tile-size);
   height: var(--tile-size);
-  border: 0.3vh solid var(--border);
+  border: 0.15vh solid var(--border);
   background: rgba(31, 41, 55, 0.4);
-  border-radius: 1vh;
+  border-radius: 0.7vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -75,13 +87,6 @@
   color: var(--text);
   position: relative;
   box-shadow: inset 0 0 1vh rgba(255, 255, 255, 0.02);
-}
-
-@media (max-width: 30rem) {
-  .tile {
-    --tile-size: clamp(2.25rem, 11vw, 3.25rem);
-    border-radius: 0.5rem;
-  }
 }
 
 .tile.active {
@@ -118,88 +123,221 @@
   opacity: 0.8;
 }
 
-.mode-duo .tile {
-  --tile-size: clamp(2rem, 6.5vh, 3rem);
+/* ============================================================
+   MODE: DUO  (7 rows, 2 boards side-by-side)
+   .mode-duo is added directly ON .boards-container by JS
+   ============================================================ */
+.boards-container.mode-duo .tile {
+  --tile-size: clamp(2rem, 5.5vh, 3rem);
 }
 
-.mode-quartet .tile {
-  --tile-size: clamp(1.5rem, 5vh, 2.625rem);
-  border-radius: 0.375rem;
-  border-width: 0.0625rem;
+/* ============================================================
+   MODE: QUARTET  (9 rows, 4 boards)
+   .mode-quartet is added directly ON .boards-container by JS.
+
+   DESKTOP (≥ 900px):  4 boards side by side in ONE row
+     Available height on 1080p screen:
+       ~1080 - 60(header) - 50(nav) - 160(kbd) - padding ≈ 780px for boards
+       9 rows + 8 gaps(4px) + 2×pad(10px) ≤ 780 → tile ≤ ~78px → cap at 3vh
+       3vh on 1080 = 32.4px — fits comfortably
+
+     Available width per board on 1920px:
+       (1920 - 4×gaps - padding) / 4 ≈ 450px per board
+       5 tiles + 4 gaps(5px) + 2×pad(15px) = 5t + 50 ≤ 450 → t ≤ 80px
+       → no width constraint; height drives tile size
+
+   TABLET (< 900px):   2×2 grid
+   MOBILE (< 650px):   2×2 tighter
+   TINY   (< 340px):   1 column
+   ============================================================ */
+
+/* --- Quartet DESKTOP: 4 in a row ----------------------------- */
+.boards-container.mode-quartet {
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.5rem, 1.2vw, 1.2rem);
+  padding: 1rem 0.5rem 0.5rem;
 }
 
-@media (max-width: 37.5rem) {
-  .mode-duo .tile,
-  .mode-quartet .tile {
-    --tile-size: clamp(1.75rem, 11vw, 2.625rem);
-  }
+.boards-container.mode-quartet .tile {
+  /*
+    Drive by vh (height) since that's the tighter constraint when 4 are
+    in a row.  3vh on 1080p ≈ 32px — 9 rows × 32 + gaps + padding < 780px ✓
+    Clamp min so it never gets too tiny on short screens.
+  */
+  --tile-size: clamp(1.6rem, 3.3vh, 2.6rem);
+  border-radius: 0.4rem;
+  border-width: 0.05rem;
 }
 
-@media (max-width: 1024px) {
-  .boards-container {
-    padding: 5px;
-  }
+.boards-container.mode-quartet .game-grid {
+  padding: clamp(0.4rem, 0.8vh, 0.85rem);
+  gap: clamp(0.2rem, 0.4vh, 0.4rem);
+  border-radius: 0.9rem;
 }
 
-@media (max-width: 850px) {
+/* ============================================================
+   RESPONSIVE BREAKPOINTS
+   ============================================================ */
+
+/* --- Tablets portrait (≤ 900px): switch quartet to 2×2 ------- */
+@media (max-width: 900px) {
+
+  /* Solo: column */
   .boards-container {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     overflow-y: auto;
+    padding-top: 0.75rem;
   }
 
-  .mode-duo .boards-container {
+  /* Duo: side-by-side */
+  .boards-container.mode-duo {
     flex-direction: row;
     flex-wrap: wrap;
-  }
-}
-
-@media (max-width: 650px) {
-  .boards-container,
-  .mode-duo .boards-container {
-    flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
   }
 
-  .mode-quartet .boards-container {
+  /* Quartet → 2×2 grid on tablet */
+  .boards-container.mode-quartet {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    flex-direction: unset;   /* cancel desktop flex */
+    flex-wrap: unset;
+    align-items: start;
+    justify-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0.5rem 0.5rem;
+  }
+
+  .boards-container.mode-quartet .tile {
+    --tile-size: clamp(1.3rem, min(3vh, 4vw), 2.4rem);
+  }
+
+  .boards-container.mode-quartet .game-grid {
+    padding: clamp(0.4rem, 1vw, 0.75rem);
+    gap: clamp(0.18rem, 0.5vh, 0.38rem);
   }
 }
 
-@media (max-width: 480px) {
-  .mode-quartet .boards-container {
-    grid-template-columns: 1fr;
+/* --- Large phones portrait (≤ 650px) ------------------------- */
+@media (max-width: 650px) {
+  .boards-container {
+    flex-direction: column;
+    padding-top: 0.5rem;
   }
-  .game-grid {
-    padding: 8px;
-    gap: 4px;
+
+  .boards-container.mode-duo {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Quartet: tight 2-column grid */
+  .boards-container.mode-quartet {
+    gap: 0.4rem;
+    padding: 0.5rem 0.25rem 0.25rem;
+  }
+
+  .boards-container.mode-quartet .tile {
+    --tile-size: clamp(1.1rem, min(8vw, 3.8vh), 2rem);
+  }
+
+  .boards-container.mode-quartet .game-grid {
+    padding: clamp(0.25rem, 1vw, 0.5rem);
+    gap: clamp(0.14rem, 0.5vw, 0.3rem);
+    border-radius: 0.7rem;
   }
 }
 
-/* Landscape orientation on mobile gadgets */
+/* --- Small phones (≤ 420px) ---------------------------------- */
+@media (max-width: 420px) {
+  .boards-container.mode-quartet {
+    gap: 0.25rem;
+    padding: 0.4rem 0.2rem 0.2rem;
+  }
+
+  .boards-container.mode-quartet .tile {
+    --tile-size: clamp(1rem, min(7.5vw, 3.5vh), 1.8rem);
+  }
+
+  .boards-container.mode-quartet .game-grid {
+    padding: 0.25rem;
+    gap: 0.13rem;
+    border-radius: 0.6rem;
+  }
+
+  /* Solo generic tile */
+  .tile {
+    --tile-size: clamp(2.25rem, 11vw, 3.25rem);
+    border-radius: 0.5rem;
+  }
+}
+
+/* --- Very small phones (≤ 340px): 1 column ------------------- */
+@media (max-width: 340px) {
+  .boards-container.mode-quartet {
+    grid-template-columns: 1fr !important;
+  }
+
+  .boards-container.mode-quartet .tile {
+    --tile-size: clamp(1.75rem, 14vw, 2.5rem);
+  }
+}
+
+/* --- Landscape mobile (height ≤ 500px) ----------------------- */
 @media (max-height: 500px) and (orientation: landscape) {
   .boards-container {
     flex-direction: row;
+    align-items: flex-start;
+    padding: 0.2rem;
+    gap: 0.4rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  /* Quartet in landscape: 4 in a row with tiny tiles */
+  .boards-container.mode-quartet {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    display: flex;
     align-items: center;
-    padding-top: 0.5rem;
+    gap: 0.3rem;
   }
+
   .tile {
-    --tile-size: clamp(1.5rem, 15vh, 2.5rem);
+    --tile-size: clamp(1.2rem, 10vh, 1.8rem);
   }
+
+  .boards-container.mode-quartet .tile {
+    --tile-size: clamp(0.9rem, 7.5vh, 1.5rem);
+  }
+
   header {
-    padding: 0.25rem 0;
+    padding: 0.15rem 0;
   }
 }
 
-/* Tall screens (like iPhone with aspect ratio > 2) */
-@media (min-height: 800px) {
-  .boards-container {
-    padding-top: 3rem;
+/* --- Tall narrow phones (h ≥ 800px, w ≤ 430px) --------------- */
+@media (min-height: 800px) and (max-width: 430px) {
+  .boards-container.mode-quartet {
+    gap: 0.5rem;
   }
+
+  .boards-container.mode-quartet .tile {
+    --tile-size: clamp(1.15rem, min(8vw, 4vh), 2rem);
+  }
+}
+
+/* --- Large desktop screens (h ≥ 800px, w ≥ 431px) ------------ */
+@media (min-height: 800px) and (min-width: 431px) {
+  .boards-container {
+    padding-top: 1.5rem;
+  }
+
   .keyboard {
-    margin-bottom: 2rem;
+    margin-bottom: 0.75rem;
   }
 }
