@@ -360,7 +360,7 @@ class CrackTheCode {
       revealDigits.innerHTML = this.secretCode
         .map(
           (d) =>
-            `<div class="tile correct" style="width: 3rem; height: 3rem; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; cursor: default; margin: 0 4px;">${d}</div>`,
+            `<div class="tile correct" style="width: 3rem; height: 3rem; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; cursor: default; margin: 0 0.5vw;">${d}</div>`,
         )
         .join("");
     }
@@ -389,7 +389,7 @@ class CrackTheCode {
       div.style.backgroundColor =
         colors[Math.floor(Math.random() * colors.length)];
       div.style.animationDelay = Math.random() * 4 + "s";
-      div.style.width = Math.random() * 10 + 5 + "px";
+      div.style.width = Math.random() * 1 + 0.5 + "vw";
       div.style.height = div.style.width;
       container.appendChild(div);
     }

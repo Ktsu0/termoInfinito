@@ -321,7 +321,7 @@ function createConfetti() {
     div.style.backgroundColor =
       colors[Math.floor(Math.random() * colors.length)];
     div.style.animationDelay = Math.random() * 4 + "s";
-    div.style.width = Math.random() * 10 + 5 + "px";
+    div.style.width = Math.random() * 1 + 0.5 + "vw";
     div.style.height = div.style.width;
     container.appendChild(div);
   }

@@ -4,11 +4,6 @@ export const CONEXO_THEMES = [
     words: ["BALELA", "CAÔ", "MIGUÉ", "CASCATA"],
   },
   {
-    theme: "Podem ser estourados",
-    words: ["BALÃO", "PIPOCA", "ESPINHA", "CHAMPANHE"],
-  },
-  { theme: "Vêm em pares", words: ["MEIAS", "SAPATOS", "LUVAS", "BRINCOS"] },
-  {
     theme: "Terminam com 'BOLA'",
     words: ["CEBOLA", "CARAMBOLA", "REBOLA", "PARÁBOLA"],
   },
@@ -16,14 +11,10 @@ export const CONEXO_THEMES = [
     theme: "Têm apenas a vogal 'A'",
     words: ["BANANA", "ARARA", "BACANA", "CABANA"],
   },
-  {
-    theme: "Seguem a palavra 'PONTO DE'",
-    words: ["VISTA", "PARTIDA", "ÔNIBUS", "ENCONTRO"],
-  },
   { theme: "Palíndromos", words: ["RADAR", "OSSO", "OVO", "SALAS"] },
   {
     theme: "Podem ser abertos",
-    words: ["PORTA", "JANELA", "LIVRO", "APETITE"],
+    words: ["PORTA", "JANELA", "LIVRO", "COFRE"],
   },
   {
     theme: "Coisas que giram",
@@ -34,36 +25,10 @@ export const CONEXO_THEMES = [
     words: ["ALHO", "SERROTE", "PENTE", "ENGRENAGEM"],
   },
   {
-    theme: "Termos do Voleibol",
-    words: ["MANCHETE", "SAQUE", "BLOQUEIO", "RODÍZIO"],
-  },
-  { theme: "Raças de Cachorro", words: ["PUG", "BEAGLE", "BOXER", "POODLE"] },
-  {
     theme: "Usados no pulso",
     words: ["RELÓGIO", "PULSEIRA", "ALGEMA", "MUNHEQUEIRA"],
   },
-  { theme: "Tipos de Nó", words: ["DIREITO", "CEGO", "CORREDIÇO", "FORCA"] },
-  {
-    theme: "Estilos de Natação",
-    words: ["CRAWL", "COSTAS", "PEITO", "MEDLEY"],
-  },
   { theme: "Partes de um Rio", words: ["LEITO", "FOZ", "MARGEM", "NASCENTE"] },
-  {
-    theme: "Possuem Teclas",
-    words: ["PIANO", "ÓRGÃO", "SINTETIZADOR", "CRAVO"],
-  },
-  {
-    theme: "Conjugações do verbo IR",
-    words: ["FOI", "FUI", "IREMOS", "VAMOS"],
-  },
-  {
-    theme: "Laboratório de Química",
-    words: ["BECKER", "PIPETA", "PROVETA", "TUBO"],
-  },
-  {
-    theme: "Marcas Extintas de Carro no Brasil",
-    words: ["GURGEL", "LADA", "DKW", "WILLYS"],
-  },
   {
     theme: "Acham que é legume, mas é fruta",
     words: ["TOMATE", "PIMENTÃO", "ABÓBORA", "BERINJELA"],
@@ -81,35 +46,29 @@ export const CONEXO_THEMES = [
     words: ["SACI", "CURUPIRA", "BOITATÁ", "IARA"],
   },
   {
-    theme: "Tempos Verbais",
-    words: ["PRESENTE", "PRETÉRITO", "FUTURO", "GERÚNDIO"],
-  },
-  {
-    theme: "Gírias Populares de 'Dinheiro'",
-    words: ["GRANA", "TUTU", "BUFUNFA", "VINTÉM"],
+    theme: "Gírias para 'Dinheiro'",
+    words: ["GRANA", "BUFUNFA", "DINDIN", "MANGOS"],
   },
   {
     theme: "Componentes de um Carro",
-    words: ["VELAS", "FREIO", "EMBREAGEM", "RADIADOR"],
+    words: ["VOLANTE", "FREIO", "EMBREAGEM", "RADIADOR"],
   },
-  { theme: "Pintores Famosos", words: ["PICASSO", "DALÍ", "MONET", "TARSILA"] },
   { theme: "Signos do Zodíaco", words: ["TOURO", "GÊMEOS", "CÂNCER", "ÁRIES"] },
   {
     theme: "Presentes em um Tribunal",
-    words: ["JUIZ", "RÉU", "ADVOGADO", "MARTELO"],
+    words: ["JUIZ", "RÉU", "ADVOGADO", "PROMOTOR"],
   },
-  { theme: "Marcas de Cosméticos", words: ["AVON", "NATURA", "MAC", "EUDORA"] },
   {
     theme: "Acessórios de Praia",
-    words: ["SUNGA", "BIQUÍNI", "MAIÔ", "ESTEIRA"],
+    words: ["GUARDA-SOL", "CADEIRA", "ESTEIRA", "PROTETOR"],
   },
   {
     theme: "Frutas que são Roxas",
     words: ["UVA", "AMEIXA", "JABUTICABA", "MIRTILO"],
   },
   {
-    theme: "Esportes Olímpicos",
-    words: ["JUDÔ", "ESGRIMA", "GOLFE", "TRIATLO"],
+    theme: "Esportes com Bola",
+    words: ["FUTEBOL", "BASQUETE", "VÔLEI", "TÊNIS"],
   },
   {
     theme: "Gírias para dizer 'Louco'",
@@ -121,55 +80,217 @@ export const CONEXO_THEMES = [
   },
   { theme: "Gêneros de Filmes", words: ["TERROR", "COMÉDIA", "AÇÃO", "DRAMA"] },
   {
-    theme: "Seguidores de Palavra - De Ouro",
+    theme: "Seguidores da palavra 'Ouro'",
     words: ["BODAS", "MINA", "CORRENTE", "MEDALHA"],
   },
   {
     theme: "Acompanham o Cafézinho",
     words: ["PÃO DE QUEIJO", "BOLO", "BISCOITO", "TORRADA"],
   },
+  { theme: "Jogos de Cartas", words: ["POKER", "TRUCO", "UNO", "PACIÊNCIA"] },
   {
-    theme: "Jogos Clássicos de Cartas",
-    words: ["POKER", "TRUCO", "BURRO", "PACIÊNCIA"],
+    theme: "Possuem Botões",
+    words: ["CONTROLE", "RÁDIO", "CAMISA", "ELEVADOR"],
   },
   {
-    theme: "Tipos de Nuvens",
-    words: ["CUMULUS", "CIRRUS", "STRATUS", "NIMBUS"],
+    theme: "Sinais de Pontuação",
+    words: ["VÍRGULA", "PONTO", "ASPAS", "TRAVESSÃO"],
   },
   {
-    theme: "Nomes de Ventos Forte",
-    words: ["BRISA", "FURACÃO", "CICLONE", "TORNADO"],
+    theme: "Itens de Acampamento",
+    words: ["BARRACA", "CANIVETE", "LANTERNA", "REPELENTE"],
   },
   {
-    theme: "Palavras indicando 'Rápido'",
-    words: ["VELOZ", "ÁGIL", "CÉLERE", "LIGEIRO"],
+    theme: "Coisas que fazem chorar",
+    words: ["CEBOLA", "BOLETO", "SAUDADE", "TRISTEZA"],
+  },
+  { theme: "Tipos de Chá", words: ["CAMOMILA", "HORTELÃ", "MATE", "BOLDO"] },
+  {
+    theme: "Instrumentos de Corda",
+    words: ["VIOLÃO", "GUITARRA", "BAIXO", "VIOLINO"],
   },
   {
-    theme: "Possuem Botões (Mas não Roupa)",
-    words: ["CONTROLE", "RÁDIO", "ELEVADOR", "TECLADO"],
+    theme: "Cores do Arco-íris",
+    words: ["AZUL", "AMARELO", "VERMELHO", "VIOLETA"],
+  },
+  { theme: "Dias da Semana", words: ["SEGUNDA", "TERÇA", "SÁBADO", "DOMINGO"] },
+  { theme: "Dedos da Mão", words: ["POLEGAR", "INDICADOR", "MÉDIO", "MÍNIMO"] },
+  {
+    theme: "Estações do Ano",
+    words: ["PRIMAVERA", "VERÃO", "OUTONO", "INVERNO"],
   },
   {
-    theme: "Têm Cordas para Tocar",
-    words: ["HARPA", "BALALAIKA", "RAQUETE", "BERIMBAU"],
+    theme: "Países da América do Sul",
+    words: ["BRASIL", "URUGUAI", "ARGENTINA", "CHILE"],
   },
   {
-    theme: "Sinais Básicos de Pontuação",
-    words: ["VÍRGULA", "INTERROGAÇÃO", "ASPAS", "TRAVESSÃO"],
+    theme: "Sentidos Humanos",
+    words: ["VISÃO", "AUDIÇÃO", "OLFATO", "PALADAR"],
+  },
+  { theme: "Planetas", words: ["TERRA", "MARTE", "JÚPITER", "SATURNO"] },
+  {
+    theme: "Materiais Escolares",
+    words: ["CADERNO", "LÁPIS", "BORRACHA", "CANETA"],
+  },
+  { theme: "Partes da Árvore", words: ["RAÍZ", "CAULE", "FOLHA", "FRUTO"] },
+  {
+    theme: "Animais de Estimação",
+    words: ["CACHORRO", "GATO", "PÁSSARO", "PEIXE"],
+  },
+  { theme: "Animais da Fazenda", words: ["VACA", "PORCO", "CAVALO", "OVELHA"] },
+  {
+    theme: "Doces de Festa",
+    words: ["BRIGADEIRO", "BEIJINHO", "CAJUZINHO", "SUSPIRO"],
   },
   {
-    theme: "Itens Fundamentais de Camping",
-    words: ["SACO DE DORMIR", "CANIVETE", "LANTERNA", "ISOLANTE"],
+    theme: "Tipos de Bebidas",
+    words: ["ÁGUA", "SUCO", "REFRIGERANTE", "CERVEJA"],
   },
   {
-    theme: "Coisas que Fazem a pessoa chorar",
-    words: ["GÁS LACRIMOGÊNEO", "BOLETO", "SAUDADE", "DESPEDIDA"],
+    theme: "Profissões de Saúde",
+    words: ["MÉDICO", "ENFERMEIRO", "DENTISTA", "FISIOTERAPEUTA"],
   },
   {
-    theme: "Tipos Diversos de Chá",
-    words: ["CAMOMILA", "HORTELÃ", "MATE", "BOLDO"],
+    theme: "Super-heróis",
+    words: ["BATMAN", "SUPERMAN", "HOMEM-ARANHA", "HULK"],
   },
   {
-    theme: "Gêneros e Formatos Literários",
-    words: ["ROMANCE", "CRÔNICA", "CONTO", "POESIA"],
+    theme: "Ferramentas Básicas",
+    words: ["MARTELO", "ALICATE", "CHAVE DE FENDA", "SERROTE"],
+  },
+  {
+    theme: "Móveis de Quarto",
+    words: ["CAMA", "GUARDA-ROUPA", "CRIADO-MUDO", "CÔMODA"],
+  },
+  {
+    theme: "Insetos Voadores",
+    words: ["MOSQUITO", "ABELHA", "BORBOLETA", "MOSCA"],
+  },
+  {
+    theme: "Utensílios de Cozinha",
+    words: ["PANELA", "FRIGIDEIRA", "FACA", "RALADOR"],
+  },
+  { theme: "Roupas de Frio", words: ["CASACO", "BLUSA", "CACHECOL", "GORRO"] },
+  {
+    theme: "Animais com Chifres",
+    words: ["BOI", "RINOCERONTE", "CABRA", "ALCE"],
+  },
+  {
+    theme: "Esportes Radicais",
+    words: ["SURFE", "SKATE", "PARAQUEDISMO", "RAPEL"],
+  },
+  { theme: "Partes do Rosto", words: ["OLHO", "NARIZ", "BOCA", "ORELHA"] },
+  {
+    theme: "Produtos de Higiene",
+    words: ["SABONETE", "SHAMPOO", "DESODORANTE", "COTONETE"],
+  },
+  { theme: "Elementos da Natureza", words: ["ÁGUA", "TERRA", "FOGO", "AR"] },
+  {
+    theme: "Redes Sociais",
+    words: ["INSTAGRAM", "TIKTOK", "FACEBOOK", "TWITTER"],
+  },
+  {
+    theme: "Personagens da Turma da Mônica",
+    words: ["MÔNICA", "CEBOLINHA", "CASCÃO", "MAGALI"],
+  },
+  {
+    theme: "Marcas de Carros",
+    words: ["FIAT", "CHEVROLET", "VOLKSWAGEN", "FORD"],
+  },
+  {
+    theme: "Dinossauros",
+    words: ["TIRANOSSAURO", "TRICERÁTOPS", "VELOCIRAPTOR", "ESTEGOSSAURO"],
+  },
+  {
+    theme: "Répteis Voadores (Pterossauros)",
+    words: ["PTERODÁCTILO", "PTERANODONTE", "QUETZALCOATLUS", "DIMORFODONTE"],
+  },
+  {
+    theme: "Répteis Marinhos Pré-históricos",
+    words: ["MOSASSAURO", "PLESIOSSAURO", "ICTIOSSAURO", "KRONOSSAURO"],
+  },
+  {
+    theme: "Animais Extintos",
+    words: ["DODÔ", "MAMUTE", "TIGRE-DENTES-DE-SABRE", "PREGUIÇA-GIGANTE"],
+  },
+  {
+    theme: "Animais Herbívoros",
+    words: ["GIRAFA", "ELEFANTE", "ZEBRA", "COELHO"],
+  },
+  { theme: "Animais Carnívoros", words: ["LEÃO", "TIGRE", "LOBO", "ONÇA"] },
+  {
+    theme: "Animais que mais matam Humanos",
+    words: ["MOSQUITO", "COBRA", "CROCODILO", "HIPOPÓTAMO"],
+  },
+  { theme: "Continentes", words: ["ÁFRICA", "AMÉRICA", "EUROPA", "ÁSIA"] },
+  {
+    theme: "Formas Geométricas",
+    words: ["QUADRADO", "CÍRCULO", "TRIÂNGULO", "RETÂNGULO"],
+  },
+  { theme: "Rios Famosos", words: ["AMAZONAS", "NILO", "GANGES", "SENA"] },
+  {
+    theme: "Monumentos Famosos",
+    words: ["CRISTO REDENTOR", "TORRE EIFFEL", "COLISEU", "TAJ MAHAL"],
+  },
+  { theme: "Moedas Mundiais", words: ["REAL", "DÓLAR", "EURO", "IENE"] },
+  {
+    theme: "Idiomas mais falados",
+    words: ["MANDARIM", "INGLÊS", "ESPANHOL", "HINDI"],
+  },
+  {
+    theme: "Bebidas Mais Consumidas no Mundo",
+    words: ["ÁGUA", "CHÁ", "CAFÉ", "CERVEJA"],
+  },
+  {
+    theme: "Animais Mais Pesados Terrestres",
+    words: ["ELEFANTE", "HIPOPÓTAMO", "RINOCERONTE", "GIRAFA"],
+  },
+  {
+    theme: "Maiores Países do Mundo",
+    words: ["RÚSSIA", "CANADÁ", "CHINA", "BRASIL"],
+  },
+  {
+    theme: "Menores Países do Mundo",
+    words: ["VATICANO", "MÔNACO", "NAURU", "TUVALU"],
+  },
+  {
+    theme: "Coisas Associadas a Azar",
+    words: ["GATO PRETO", "ESPELHO", "ESCADA", "SEXTA-FEIRA"],
+  },
+  {
+    theme: "Símbolos de Sorte",
+    words: ["TREVO", "FERRADURA", "PIMENTA", "COELHO"],
+  },
+  {
+    theme: "Invenções Históricas",
+    words: ["RODA", "FOGO", "ESCRITA", "INTERNET"],
+  },
+  {
+    theme: "Órgãos mais pesados do Corpo Humano",
+    words: ["PELE", "FÍGADO", "CÉREBRO", "PULMÃO"],
+  },
+  {
+    theme: "Animais Mais Venenosos",
+    words: ["ÁGUA-VIVA", "POLVO", "ARANHA", "COBRA"],
+  },
+  {
+    theme: "Metais Mais Valiosos",
+    words: ["RÓDIO", "PLATINA", "OURO", "PALÁDIO"],
+  },
+  {
+    theme: "Cidades Mais Antigas",
+    words: ["DAMASCO", "JERICÓ", "ATENAS", "JERUSALÉM"],
+  },
+  {
+    theme: "Temperos Mais Caros",
+    words: ["AÇAFRÃO", "BAUNILHA", "CARDAMOMO", "CRAVO"],
+  },
+  {
+    theme: "Fobias Comuns",
+    words: ["ARACNOFOBIA", "ACROFOBIA", "CLAUSTROFOBIA", "TRIPOFOBIA"],
+  },
+  {
+    theme: "Animais que vivem mais (+100 anos)",
+    words: ["TARTARUGA", "BALEIA", "TUBARÃO", "ÁGUA-VIVA"],
   },
 ];
