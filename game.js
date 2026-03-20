@@ -30,6 +30,7 @@ class TermoGame {
     this.toastEl = document.getElementById("toast");
     this.statsModal = document.getElementById("stats-modal");
     this.helpModal = document.getElementById("help-modal");
+    this.btnHeaderNew = document.getElementById("btn-persistent-new-game");
 
     if (!localStorage.getItem("termo_visited")) {
       this.showHelp();
@@ -46,6 +47,7 @@ class TermoGame {
     this.currentRow = 0;
     this.currentCol = 0;
     this.status = "playing";
+    if (this.btnHeaderNew) this.btnHeaderNew.classList.remove("visible");
 
     buildKeyboardDOM(this.keyboardEl, (key) => this.handleInput(key));
 
@@ -339,6 +341,7 @@ class TermoGame {
       this.showToast(`As palavras eram: ${reveal}`);
     }
     StatsManager.save(this.stats);
+    if (this.btnHeaderNew) this.btnHeaderNew.classList.add("visible");
     setTimeout(() => this.showStats(), 1500);
   }
 
@@ -376,12 +379,20 @@ class TermoGame {
     );
     document.getElementById("btn-close-stats").onclick = () =>
       this.closeStats();
+    const closeX = document.getElementById("btn-close-stats-x");
+    if (closeX) closeX.onclick = () => this.closeStats();
+
     document.getElementById("btn-close-help").onclick = () => this.closeHelp();
     document.getElementById("btn-help-trigger").onclick = () => this.showHelp();
-    document.getElementById("btn-new-game").onclick = () => {
+    
+    const startNewGame = () => {
       this.closeStats();
       this.newGame(this.mode);
     };
+
+    document.getElementById("btn-new-game").onclick = startNewGame;
+    if (this.btnHeaderNew) this.btnHeaderNew.onclick = startNewGame;
+
     document.getElementById("btn-stats-trigger").onclick = () =>
       this.showStats();
 

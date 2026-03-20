@@ -46,6 +46,7 @@ class CrackTheCode {
     this.modal = document.getElementById("game-modal");
     this.helpModal = document.getElementById("help-modal");
     this.statsModal = document.getElementById("stats-modal");
+    this.btnHeaderNew = document.getElementById("btn-persistent-new-game");
 
     this.init();
     this.setupEventListeners();
@@ -85,6 +86,7 @@ class CrackTheCode {
     this.currentRow = 0;
     this.currentCol = 0;
     this.gameOver = false;
+    if (this.btnHeaderNew) this.btnHeaderNew.classList.remove("visible");
 
     this.grid.style.setProperty("--rows", this.maxAttempts);
     this.createGrid();
@@ -326,6 +328,7 @@ class CrackTheCode {
     }
 
     CodeStatsManager.save(this.stats);
+    if (this.btnHeaderNew) this.btnHeaderNew.classList.add("visible");
 
     setTimeout(() => {
       this.showGameResultModal(win);
@@ -360,7 +363,7 @@ class CrackTheCode {
       revealDigits.innerHTML = this.secretCode
         .map(
           (d) =>
-            `<div class="tile correct" style="width: 3rem; height: 3rem; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; cursor: default; margin: 0 0.5vw;">${d}</div>`,
+            `<div class="tile correct reveal-tile">${d}</div>`,
         )
         .join("");
     }
@@ -417,13 +420,22 @@ class CrackTheCode {
       this.helpModal.classList.add("active");
     document.getElementById("btn-stats-trigger").onclick = () =>
       this.showStats();
+    // Modal close buttons (X)
+    const closeGameX = document.getElementById("btn-close-modal-x");
+    if (closeGameX) closeGameX.onclick = () => this.modal.classList.remove("active");
+
+    const closeStatsX = document.getElementById("btn-close-stats-x");
+    if (closeStatsX) closeStatsX.onclick = () => this.statsModal.classList.remove("active");
+
+    // Static close buttons inside modals
     document.getElementById("btn-close-help").onclick = () =>
       this.helpModal.classList.remove("active");
     document.getElementById("btn-close-stats").onclick = () =>
       this.statsModal.classList.remove("active");
 
-    // Modal overlays
+    // Modal overlays (click outside to close)
     [this.modal, this.helpModal, this.statsModal].forEach((m) => {
+      if (!m) return;
       m.onclick = (e) => {
         if (e.target === m) m.classList.remove("active");
       };
@@ -445,11 +457,13 @@ class CrackTheCode {
       else if (!isNaN(e.key) && e.key.trim() !== "") this.handleNumber(e.key);
     };
 
-    // Global restart in modal
-    document.getElementById("btn-new-mission").onclick = () => {
+    const startNewGame = () => {
       this.modal.classList.remove("active");
       this.newGame();
     };
+
+    document.getElementById("btn-new-mission").onclick = startNewGame;
+    if (this.btnHeaderNew) this.btnHeaderNew.onclick = startNewGame;
   }
 }
 

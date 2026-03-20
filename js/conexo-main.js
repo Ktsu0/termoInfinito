@@ -28,9 +28,9 @@ const ConexoStatsManager = {
 };
 
 const levels = {
-  easy: { numThemes: 4, time: 180 }, // 16 words, 3 min
-  medium: { numThemes: 6, time: 180 }, // 24 words, 3 min
-  hard: { numThemes: 8, time: 150 }, // 32 words, 2.5 min
+  easy: { numThemes: 4, time: 120 }, // 16 words, 2 min
+  medium: { numThemes: 6, time: 150 }, // 24 words, 2.5 min
+  hard: { numThemes: 7, time: 150 }, // 28 words, 2.5 min
 };
 
 let gameStats = ConexoStatsManager.load();
@@ -60,6 +60,7 @@ const btnCloseHelp = document.getElementById("btn-close-help");
 const statsModal = document.getElementById("stats-modal");
 const btnStatsTrigger = document.getElementById("btn-stats-trigger");
 const btnCloseStats = document.getElementById("btn-close-stats");
+const btnHeaderNew = document.getElementById("btn-persistent-new-game");
 
 function showStats() {
   const diffStats = gameStats[currentLevel];
@@ -107,15 +108,41 @@ function setupEventListeners() {
   btnCloseStats.addEventListener("click", () => {
     statsModal.classList.remove("active");
   });
+
+  const closeGameX = document.getElementById("btn-close-modal-x");
+  if (closeGameX) closeGameX.onclick = () => gameModal.classList.remove("active");
+
+  const closeStatsX = document.getElementById("btn-close-stats-x");
+  if (closeStatsX) closeStatsX.onclick = () => statsModal.classList.remove("active");
+
+  const startNewGame = () => {
+    gameModal.classList.remove("active");
+    initGame(currentLevel);
+  };
+
+  btnNewGame.addEventListener("click", startNewGame);
+  if (btnHeaderNew) btnHeaderNew.onclick = startNewGame;
+
+  // Modal overlays (click outside to close)
+  [gameModal, helpModal, statsModal].forEach((m) => {
+    if (!m) return;
+    m.onclick = (e) => {
+      if (e.target === m) m.classList.remove("active");
+    };
+  });
 }
 
 function initGame(levelKey) {
   isGameOver = false;
   isTimerStarted = false;
   clearInterval(timerInterval);
+  if (btnHeaderNew) btnHeaderNew.classList.remove("visible");
 
   const levelSettings = levels[levelKey];
   timeRemaining = levelSettings.time;
+
+  // Add level class for specific CSS styling
+  container.className = `boards-container conexo-container level-${levelKey}`;
 
   // Select random themes
   const shuffledThemes = [...CONEXO_THEMES].sort(() => 0.5 - Math.random());
@@ -302,6 +329,7 @@ function endGame(isWin) {
   }
 
   ConexoStatsManager.save(gameStats);
+  if (btnHeaderNew) btnHeaderNew.classList.add("visible");
 
   setTimeout(() => {
     gameModal.classList.add("active");

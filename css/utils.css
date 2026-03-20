@@ -76,13 +76,14 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1.5vh 3vw;
+  padding: clamp(1vh, 2vh, 3vh) 3vw;
   position: relative;
   background: rgba(3, 7, 18, 0.4);
   backdrop-filter: blur(1vh);
   border-bottom: 0.1vh solid var(--glass-border);
-  margin-bottom: 1vh;
+  margin-bottom: 0.5vh;
   z-index: 100;
+  flex-shrink: 0;
 }
 
 .header-actions {
@@ -182,7 +183,7 @@ h1 {
   border-radius: 1vh;
   transition: all 0.3s ease;
   width: clamp(2.5rem, 8vw, 3.5rem);
-  height: clamp(2.5rem, 8vw, 3.5rem);
+  height: clamp(2.5rem, 8vw, 3rem);
 }
 
 .icon-button:hover {

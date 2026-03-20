@@ -19,14 +19,42 @@
 
 .modal {
   background: var(--card-bg);
-  border: 0.0625rem solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: clamp(1.25rem, 5vw, 2.5rem);
-  width: 95%;
-  max-width: 30rem;
+  border: 1px solid var(--glass-border);
+  border-radius: 2rem;
+  padding: clamp(1.5rem, 4vh, 2.5rem);
+  width: min(92%, 32rem);
+  max-height: 90vh;
+  overflow-y: auto;
   box-shadow: var(--shadow-xl);
-  transform: scale(0.9) translateY(1.25rem);
+  transform: scale(0.9) translateY(20px);
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  backdrop-filter: blur(3vh);
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  color: var(--text-muted);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text);
+  transform: rotate(90deg) scale(1.1);
+  border-color: var(--primary);
 }
 
 .modal-overlay.active .modal {
@@ -34,10 +62,19 @@
 }
 
 .modal h2 {
-  font-size: 1.75rem;
-  margin-bottom: 1.5rem;
+  font-size: clamp(1.75rem, 5vh, 2.5rem);
+  margin-bottom: 1rem;
   text-align: center;
   font-weight: 700;
+}
+
+.modal p#modal-text {
+  text-align: center;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  display: block;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 .stats-container {
@@ -85,11 +122,12 @@
   z-index: 150;
 }
 
-@media (min-width: 30rem) {
+@media (min-width: 60rem) {
   .game-controls {
     position: absolute;
-    top: 1.25rem;
-    left: 1.25rem;
+    top: 6%;
+    left: 2vw;
+    transform: translateY(-50%);
     margin: 0;
   }
 }
@@ -163,4 +201,35 @@
 
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.08);
+}
+
+.btn-header-new {
+  display: none;
+  background: var(--primary);
+  color: white;
+  height: clamp(2.5rem, 8vw, 3rem);
+  padding: 0 1.5rem;
+  border-radius: 1vh;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0.25rem 0.7rem var(--primary-glow);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+}
+
+.btn-header-new:hover {
+  transform: translateY(-0.2vh);
+  box-shadow: 0 0.5rem 1.2rem var(--primary-glow);
+  filter: brightness(1.1);
+}
+
+.btn-header-new.visible {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.5s ease-out;
 }
