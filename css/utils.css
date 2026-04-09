@@ -68,7 +68,8 @@
   height: 100dvh;
   animation: fadeIn 0.8s ease-out;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 header {
@@ -76,21 +77,23 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: clamp(1vh, 2vh, 3vh) 3vw;
+  padding: clamp(0.5rem, 1.5vh, 1.2rem) clamp(1rem, 3vw, 2.5rem);
   position: relative;
   background: rgba(3, 7, 18, 0.4);
-  backdrop-filter: blur(1vh);
-  border-bottom: 0.1vh solid var(--glass-border);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--glass-border);
   margin-bottom: 0.5vh;
   z-index: 100;
   flex-shrink: 0;
+  min-height: clamp(3rem, 8vh, 4.5rem);
 }
 
 .header-actions {
   position: absolute;
-  right: 2vw;
+  right: clamp(0.75rem, 2vw, 2rem);
   display: flex;
-  gap: 1vw;
+  gap: clamp(0.25rem, 1vw, 0.75rem);
   align-items: center;
 }
 
@@ -107,90 +110,88 @@ h1 {
   margin: 0 auto;
 }
 
+/* Tablets e celulares: <= 768px */
 @media (max-width: 48rem) {
   header {
-    padding: 1vh 2vw;
+    padding: clamp(0.4rem, 1.2vh, 0.8rem) clamp(0.75rem, 2vw, 1.5rem);
     justify-content: flex-start;
   }
-  
+
   h1 {
     margin: 0;
-    font-size: clamp(1.1rem, 5vw, 1.5rem);
-    letter-spacing: 0.2vw;
+    font-size: clamp(1rem, 5vw, 1.4rem);
+    letter-spacing: 0.15vw;
   }
-  
+
   .header-actions {
-    right: 1.5vw;
+    right: clamp(0.5rem, 1.5vw, 1.2rem);
+    gap: clamp(0.2rem, 0.8vw, 0.5rem);
   }
 }
 
+/* Celulares muito pequenos: <= 320px */
 @media (max-width: 25rem) {
   h1 {
-    font-size: clamp(1rem, 4.5vw, 1.3rem);
+    font-size: clamp(0.9rem, 4.5vw, 1.2rem);
     max-width: 45%;
-  }
-  
-  .header-actions {
-    gap: 0.8vw;
-  }
-  
-  .icon-button {
-    padding: 0;
-    width: 2.2rem;
-    height: 2.2rem;
-    border-radius: 0.5rem;
-  }
-
-  .icon-button svg {
-    width: 1.2rem;
-    height: 1.2rem;
+    letter-spacing: 0.05vw;
   }
 }
 
-.icon-button {
-  background: rgba(255, 255, 255, 0.03);
-  border: 0.0625rem solid var(--border);
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 0.625rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.75rem;
-  transition: all 0.3s ease;
-}
+/* Landscape em celulares: header compacto para não roubar espaço do jogo */
+@media (max-height: 500px) and (orientation: landscape) {
+  header {
+    padding: 0.3rem 1.5vw;
+    margin-bottom: 0.2vh;
+    min-height: 2.5rem;
+  }
 
-.icon-button:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text);
-  transform: translateY(-0.125rem);
-  border-color: rgba(255, 255, 255, 0.2);
+  h1 {
+    font-size: clamp(0.85rem, 3vw, 1.1rem);
+  }
 }
 
 .button-text {
   display: none !important;
 }
 
+/* Botões de ícone no header — definição ÚNICA */
 .icon-button {
-  background: rgba(255, 255, 255, 0.03);
-  border: 0.1vh solid var(--border);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
   color: var(--text-muted);
   cursor: pointer;
-  padding: 1.2vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 1vh;
-  transition: all 0.3s ease;
-  width: clamp(2.5rem, 8vw, 3.5rem);
-  height: clamp(2.5rem, 8vw, 3rem);
+  border-radius: 0.75rem;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+  width: clamp(2.2rem, 6vw, 3rem);
+  height: clamp(2.2rem, 6vw, 3rem);
+  flex-shrink: 0;
+  touch-action: manipulation;
+}
+
+.icon-button svg {
+  width: clamp(1rem, 3vw, 1.4rem);
+  height: clamp(1rem, 3vw, 1.4rem);
+  flex-shrink: 0;
 }
 
 .icon-button:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.09);
   color: var(--text);
-  transform: translateY(-0.2vh);
+  transform: translateY(-2px);
   border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Em touch: desativa o hover que pode ficar "preso" */
+@media (hover: none) {
+  .icon-button:hover {
+    transform: none;
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--border);
+  }
 }
 
 @keyframes toastSlideIn {
