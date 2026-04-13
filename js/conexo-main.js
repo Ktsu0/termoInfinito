@@ -2,6 +2,7 @@ import { CONEXO_THEMES } from "./conexo-words.js";
 
 const ConexoStatsManager = {
   KEY: "conexo_game_stats",
+  HISTORY_KEY: "conexo_theme_history",
 
   load() {
     const stats = localStorage.getItem(this.KEY);
@@ -25,6 +26,20 @@ const ConexoStatsManager = {
   save(allStats) {
     localStorage.setItem(this.KEY, JSON.stringify(allStats));
   },
+
+  getHistory() {
+    const history = localStorage.getItem(this.HISTORY_KEY);
+    return history ? JSON.parse(history) : [];
+  },
+
+  saveHistory(history) {
+    // Mantém os últimos 30 temas para garantir variedade
+    const maxHistory = 30;
+    if (history.length > maxHistory) {
+      history = history.slice(history.length - maxHistory);
+    }
+    localStorage.setItem(this.HISTORY_KEY, JSON.stringify(history));
+  },
 };
 
 const levels = {
@@ -44,6 +59,17 @@ let timerInterval = null;
 let timeRemaining = 0;
 let isGameOver = false;
 let isTimerStarted = false;
+
+/**
+ * Embaralha um array usando o algoritmo Fisher-Yates
+ */
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
 
 // DOM Elements
 const container = document.getElementById("conexo-container");
@@ -144,11 +170,28 @@ function initGame(levelKey) {
   // Add level class for specific CSS styling
   container.className = `boards-container conexo-container level-${levelKey}`;
 
-  // Select random themes
-  const shuffledThemes = [...CONEXO_THEMES].sort(() => 0.5 - Math.random());
-  activeThemes = shuffledThemes.slice(0, levelSettings.numThemes);
+  // Seleção inteligente de temas
+  const history = ConexoStatsManager.getHistory();
+  
+  // Filtra temas que não apareceram recentemente
+  let availableThemes = CONEXO_THEMES.filter(t => !history.includes(t.theme));
+  
+  // Se muitos temas foram jogados e não sobraram o suficiente, limpa uma parte do histórico
+  if (availableThemes.length < levelSettings.numThemes) {
+    availableThemes = [...CONEXO_THEMES];
+  }
 
-  // Extract and shuffle words
+  // Embaralha todos os temas disponíveis
+  shuffleArray(availableThemes);
+  
+  // Pega os temas para a rodada
+  activeThemes = availableThemes.slice(0, levelSettings.numThemes);
+  
+  // Salva no histórico
+  const newHistory = [...history, ...activeThemes.map(t => t.theme)];
+  ConexoStatsManager.saveHistory(newHistory);
+
+  // Extrai e embaralha as palavras
   allWords = [];
   activeThemes.forEach((t) => {
     t.words.forEach((word) => {
@@ -159,7 +202,7 @@ function initGame(levelKey) {
     });
   });
 
-  allWords.sort(() => 0.5 - Math.random());
+  shuffleArray(allWords);
 
   selectedWords = [];
   solvedThemes = [];
@@ -167,6 +210,7 @@ function initGame(levelKey) {
   updateTimerDisplay();
   renderGrid();
 }
+
 
 function startTimer() {
   timerDisplay.classList.remove("low-time");

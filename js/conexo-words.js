@@ -293,4 +293,157 @@ export const CONEXO_THEMES = [
     theme: "Animais que vivem mais (+100 anos)",
     words: ["TARTARUGA", "BALEIA", "TUBARÃO", "ÁGUA-VIVA"],
   },
+  {
+    theme: "Planetas que possuem Anéis",
+    words: ["SATURNO", "JÚPITER", "URANO", "NETUNO"],
+  },
+  {
+    theme: "Países que falam Português",
+    words: ["ANGOLA", "MOÇAMBIQUE", "CABO VERDE", "TIMOR-LESTE"],
+  },
+  {
+    theme: "Fenômenos Atmosféricos",
+    words: ["AURORA", "TORNADO", "ARCO-ÍRIS", "NEVOEIRO"],
+  },
+  {
+    theme: "Frutas que as pessoas acham que são legumes",
+    words: ["TOMATE", "PEPINO", "PIMENTÃO", "ABOBRINHA"],
+  },
+  {
+    theme: "Maiores Satélites do Sistema Solar",
+    words: ["GANIMEDES", "TITÃ", "CALISTO", "IO"],
+  },
+  {
+    theme: "Animais que Mudam de Cor",
+    words: ["CAMALEÃO", "POLVO", "SÉPIA", "LINGUADO"],
+  },
+  {
+    theme: "Pedras Preciosas",
+    words: ["DIAMANTE", "RUBI", "ESMERALDA", "SAFIRA"],
+  },
+  {
+    theme: "Grandes Desertos do Mundo",
+    words: ["SAARA", "GOBI", "ATACAMA", "KALAHARI"],
+  },
+  {
+    theme: "Animais que põem ovos (e não são aves)",
+    words: ["ORNITORRINCO", "TARTARUGA", "JACARÉ", "COBRA"],
+  },
+  {
+    theme: "Invenções que mudaram o mundo",
+    words: ["LÂMPADA", "PENICILINA", "TELEFONE", "AVIÃO"],
+  },
+  {
+    theme: "Matérias que terminam em 'ICA'",
+    words: ["MATEMÁTICA", "FÍSICA", "QUÍMICA", "INFORMÁTICA"],
+  },
+  {
+    theme: "Matérias frequentemente 'temidas'",
+    words: ["CÁLCULO", "ESTATÍSTICA", "GRAMÁTICA", "FILOSOFIA"],
+  },
+  {
+    theme: "Gírias para Amigos",
+    words: ["PARCEIRO", "CHAPA", "TRUTA", "IRMÃO"],
+  },
+  {
+    theme: "Formas de preparar Ovos",
+    words: ["FRITO", "COZIDO", "MEXIDO", "POCHÊ"],
+  },
+  {
+    theme: "Podem ser 'quebrados'",
+    words: ["RECORDE", "PROMESSA", "SILÊNCIO", "CORAÇÃO"],
+  },
+  {
+    theme: "Possuem 'pernas', mas não andam",
+    words: ["MESA", "CADEIRA", "COMPASSO", "CALÇA"],
+  },
+  {
+    theme: "Têm 'folhas', mas não são árvores",
+    words: ["LIVRO", "CADERNO", "PORTA", "BARALHO"],
+  },
+  {
+    theme: "Partes de um Sapato",
+    words: ["CADARÇO", "SOLADO", "PALMILHA", "LÍNGUA"],
+  },
+  {
+    theme: "Tipos de Massa",
+    words: ["PENNE", "FUSILLI", "TALHARIM", "NHOQUE"],
+  },
+  {
+    theme: "Instrumentos de Corda",
+    words: ["VIOLÃO", "GUITARRA", "BAIXO", "VIOLA"],
+  },
+  {
+    theme: "Instrumentos de Sopro",
+    words: ["FLAUTA", "SAXOFONE", "TROMBONE", "CLARINETE"],
+  },
+  {
+    theme: "Instrumentos de Percussão",
+    words: ["BATERIA", "CAIXA", "PANDERO", "TAMBOR"],
+  },
+  {
+    theme: "Instrumentos de Teclas",
+    words: ["PIANO", "TECLADO", "ÓRGÃO", "SINTETIZADOR"],
+  },
+  {
+    theme: "Tipos de Café",
+    words: ["ESPRESSO", "CAPPUCCINO", "LATTE", "MACCHIATO"],
+  },
+  {
+    theme: "Acompanhamentos de Churrasco",
+    words: ["FAROFA", "VINAGRETE", "ARROZ", "PÃO DE ALHO"],
+  },
+  {
+    theme: "Cortes de Carne Bovina",
+    words: ["ALCATRA", "CONTRAFILÉ", "MAMINHA", "FRALDINHA"],
+  },
+  {
+    theme: "Tipos de Pão",
+    words: ["FRANCÊS", "INTEGRAL", "CENOURA", "CORN BREAD"],
+  },
+  {
+    theme: "Acompanhamentos de Hambúrguer",
+    words: ["BATATA FRITA", "CEBOLA FRITA", "QUEIJO", "BACON"],
+  },
+  {
+    theme: "Tipos de Queijo",
+    words: ["MUSSARELA", "PARMESÃO", "PRATO", "GOUDA"],
+  },
+
+  {
+    theme: "Tipos de Pizza",
+    words: ["MARGHERITA", "CALABRESA", "PORTUGUESA", "FRANGO"],
+  },
+  {
+    theme: "Tipos de Salada",
+    words: ["MAIONESE", "ALFACE", "TOMATE", "CEBOLA"],
+  },
+  {
+    theme: "Acompanhamentos de Macarrão",
+    words: ["MOLHO", "QUEIJO", "CARNE", "LEGUMES"],
+  },
+  {
+    theme: "Tipos de Molho",
+    words: ["MAIONESE", "KETCHUP", "MOSTARDA", "BARBECUE"],
+  },
+  {
+    theme: "Tipos de Sorvete",
+    words: ["BAUNILHA", "COCO RALADO", "MORANGO", "FLORESTA NEGRA"],
+  },
+  {
+    theme: "Tipos de Cobertura de Bolo",
+    words: ["GANACHE", "BUTTERCREAM", "GLACE", "MARSHMALLOW"],
+  },
+  {
+    theme: "Tipos de Bolacha",
+    words: ["MAIZENA", "MARIA", "INTEGRAL", "CHOCOLATE"],
+  },
+  {
+    theme: "Tipos de Pipoca",
+    words: ["SALGADA", "DOCE", "CARAMELO", "CHOCOLATE"],
+  },
+  {
+    theme: "Tipos de Batata Chips",
+    words: ["SALGADA", "DOCE", "CARAMELO", "CHOCOLATE"],
+  },
 ];
