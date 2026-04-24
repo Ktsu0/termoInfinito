@@ -8,17 +8,50 @@ export const CONEXO_THEMES = [
     words: ["CEBOLA", "CARAMBOLA", "REBOLA", "PARÁBOLA"],
   },
   {
+    theme: "Terminam com 'MÃO'",
+    words: ["SERMÃO", "CORRIMÃO", "MAMÃO", "SUSSURRÃO"]
+  },
+  {
+    theme: "Terminam com 'TELA'",
+    words: ["SENTINELA", "CAUTELA", "CARTELA", "COSTELA"]
+  },
+  {
+    theme: "Terminam com 'LÃO'",
+    words: ["BALÃO", "VILÃO", "ESCALÃO", "SALÃO"]
+  },
+  {
+    theme: "Terminam com 'RRO'",
+    words: ["FORRÓ", "BEZERRO", "BURRO", "SOCORRO"]
+  },
+  {
+    theme: "Terminam com 'ATO'",
+    words: ["SAPATO", "RATO", "ORFANATO", "CONTATO"]
+  },
+  {
+    theme: "Terminam com 'AVE'",
+    words: ["AERONAVE", "SUAVE", "TRAVE", "GRAVE"]
+  },
+  {
+    theme: "Terminam com 'ANA'",
+    words: ["SAVANA", "INSANA", "SEMANA", "ROMANA"]
+  },
+  {
+    theme: "Terminam com 'ADA'",
+    words: ["COCADA", "ALMOFADA", "RISADA", "EMBOSCADA"]
+  },
+  
+  {
     theme: "Têm apenas a vogal 'A'",
     words: ["BANANA", "ARARA", "BACANA", "CABANA"],
   },
   { theme: "Palíndromos", words: ["RADAR", "OSSO", "OVO", "SALAS"] },
   {
     theme: "Podem ser abertos",
-    words: ["PORTA", "JANELA", "LIVRO", "COFRE"],
+    words: ["LATA", "JANELA", "CONTA", "COFRE"],
   },
   {
     theme: "Coisas que giram",
-    words: ["RODA", "PIÃO", "VENTOINHA", "CARROSSEL"],
+    words: ["DISCO", "MOINHO", "VENTOINHA", "CARROSSEL"],
   },
   {
     theme: "Têm dentes mas não mordem",
@@ -34,16 +67,8 @@ export const CONEXO_THEMES = [
     words: ["TOMATE", "PIMENTÃO", "ABÓBORA", "BERINJELA"],
   },
   {
-    theme: "Tipos de Queijo",
-    words: ["MUSSARELA", "PARMESÃO", "PROVOLONE", "GORGONZOLA"],
-  },
-  {
     theme: "Medidas Culinárias",
     words: ["XÍCARA", "COLHER", "PITADA", "GRAMA"],
-  },
-  {
-    theme: "Figuras do Folclore",
-    words: ["SACI", "CURUPIRA", "BOITATÁ", "IARA"],
   },
   {
     theme: "Gírias para 'Dinheiro'",
@@ -53,14 +78,14 @@ export const CONEXO_THEMES = [
     theme: "Componentes de um Carro",
     words: ["VOLANTE", "FREIO", "EMBREAGEM", "RADIADOR"],
   },
-  { theme: "Signos do Zodíaco", words: ["TOURO", "GÊMEOS", "CÂNCER", "ÁRIES"] },
+  { theme: "Signos do Zodíaco", words: ["TOURO", "GÊMEOS", "SAGITÁRIO", "ÁRIES"] },
   {
     theme: "Presentes em um Tribunal",
     words: ["JUIZ", "RÉU", "ADVOGADO", "PROMOTOR"],
   },
   {
     theme: "Acessórios de Praia",
-    words: ["GUARDA-SOL", "CADEIRA", "ESTEIRA", "PROTETOR"],
+    words: ["GUARDA-SOL", "OCULOS DE SOL", "CHINELO", "PROTETOR"],
   },
   {
     theme: "Frutas que são Roxas",
@@ -79,6 +104,30 @@ export const CONEXO_THEMES = [
     words: ["GELO", "MANTEIGA", "SORVETE", "CHOCOLATE"],
   },
   { theme: "Gêneros de Filmes", words: ["TERROR", "COMÉDIA", "AÇÃO", "DRAMA"] },
+    {
+    theme: "Gêneros Literários",
+    words: ["SUSPENSE", "ROMANCE", "FICÇÃO CIENTÍFICA", "FANTASIA"]
+  },
+  {
+    theme: "Partes Físicas do Livro",
+    words: ["CAPA", "LOMBADA", "ORELHA", "FOLHA"]
+  },
+  {
+    theme: "Tipos de Obras Acadêmicas",
+    words: ["TESE", "DICIONÁRIO", "ATLAS", "ENCICLOPÉDIA"]
+  },
+  {
+    theme: "Livros de Imagens",
+    words: ["QUADRINHOS", "MANGÁ", "ÁLBUM", "CATÁLOGO"]
+  },
+  {
+    theme: "Classificação por Volume",
+    words: ["TRILOGIA", "SAGA", "ANTOLOGIA", "COLEÇÃO"]
+  },
+  {
+    theme: "Estilos de Narrativa",
+    words: ["CONTO", "CRÔNICA", "POESIA", "BIOGRAFIA"]
+  },
   {
     theme: "Seguidores da palavra 'Ouro'",
     words: ["BODAS", "MINA", "CORRENTE", "MEDALHA"],
@@ -90,7 +139,7 @@ export const CONEXO_THEMES = [
   { theme: "Jogos de Cartas", words: ["POKER", "TRUCO", "UNO", "PACIÊNCIA"] },
   {
     theme: "Possuem Botões",
-    words: ["CONTROLE", "RÁDIO", "CAMISA", "ELEVADOR"],
+    words: ["CONTROLE", "RÁDIO", "TERNO", "ELEVADOR"],
   },
   {
     theme: "Sinais de Pontuação",
@@ -102,13 +151,9 @@ export const CONEXO_THEMES = [
   },
   {
     theme: "Coisas que fazem chorar",
-    words: ["CEBOLA", "BOLETO", "SAUDADE", "TRISTEZA"],
+    words: ["FUMAÇA", "BOLETO", "SAUDADE", "TRISTEZA"],
   },
   { theme: "Tipos de Chá", words: ["CAMOMILA", "HORTELÃ", "MATE", "BOLDO"] },
-  {
-    theme: "Instrumentos de Corda",
-    words: ["VIOLÃO", "GUITARRA", "BAIXO", "VIOLINO"],
-  },
   {
     theme: "Cores do Arco-íris",
     words: ["AZUL", "AMARELO", "VERMELHO", "VIOLETA"],
@@ -121,21 +166,21 @@ export const CONEXO_THEMES = [
   },
   {
     theme: "Países da América do Sul",
-    words: ["BRASIL", "URUGUAI", "ARGENTINA", "CHILE"],
+    words: ["COLÔMBIA", "URUGUAI", "ARGENTINA", "CHILE"],
   },
   {
     theme: "Sentidos Humanos",
     words: ["VISÃO", "AUDIÇÃO", "OLFATO", "PALADAR"],
   },
-  { theme: "Planetas", words: ["TERRA", "MARTE", "JÚPITER", "SATURNO"] },
+  { theme: "Planetas", words: ["VÊNUS", "MARTE", "JÚPITER", "SATURNO"] },
   {
     theme: "Materiais Escolares",
-    words: ["CADERNO", "LÁPIS", "BORRACHA", "CANETA"],
+    words: ["MOCHILA", "TRANSFERIDOR", "BORRACHA", "RÉGUA"],
   },
-  { theme: "Partes da Árvore", words: ["RAÍZ", "CAULE", "FOLHA", "FRUTO"] },
+  { theme: "Partes da Árvore", words: ["RAÍZ", "CAULE", "BROTO", "FRUTO"] },
   {
     theme: "Animais de Estimação",
-    words: ["CACHORRO", "GATO", "PÁSSARO", "PEIXE"],
+    words: ["CACHORRO", "GATO", "HAMSTER", "PEIXE"],
   },
   { theme: "Animais da Fazenda", words: ["VACA", "PORCO", "CAVALO", "OVELHA"] },
   {
@@ -144,7 +189,7 @@ export const CONEXO_THEMES = [
   },
   {
     theme: "Tipos de Bebidas",
-    words: ["ÁGUA", "SUCO", "REFRIGERANTE", "CERVEJA"],
+    words: ["VINHO", "SUCO", "CAIPIRINHA", "CAPPUCCINO"],
   },
   {
     theme: "Profissões de Saúde",
@@ -156,7 +201,7 @@ export const CONEXO_THEMES = [
   },
   {
     theme: "Ferramentas Básicas",
-    words: ["MARTELO", "ALICATE", "CHAVE DE FENDA", "SERROTE"],
+    words: ["MARTELO", "ALICATE", "CHAVE DE FENDA", "PARAFUSADEIRA"],
   },
   {
     theme: "Móveis de Quarto",
@@ -164,22 +209,30 @@ export const CONEXO_THEMES = [
   },
   {
     theme: "Insetos Voadores",
-    words: ["MOSQUITO", "ABELHA", "BORBOLETA", "MOSCA"],
+    words: ["JOANINHA", "ABELHA", "BORBOLETA", "MOSCA"],
+  },
+  {
+    theme: "Coisas que Voam",
+    words: ["DRONE", "FOGUETE", "MORCEGO", "PÁSSARO"],
   },
   {
     theme: "Utensílios de Cozinha",
-    words: ["PANELA", "FRIGIDEIRA", "FACA", "RALADOR"],
+    words: ["PANELA", "FRIGIDEIRA", "CHALEIRA", "RALADOR"],
   },
   { theme: "Roupas de Frio", words: ["CASACO", "BLUSA", "CACHECOL", "GORRO"] },
   {
+  theme: "Acessórios de Roupa",
+  words: ["CINTO", "GRAVATA", "SUSPENSÓRIO", " FIVELA"],
+  },
+  {
     theme: "Animais com Chifres",
-    words: ["BOI", "RINOCERONTE", "CABRA", "ALCE"],
+    words: ["BOI", "NARVAL", "CABRA", "ALCE"],
   },
   {
     theme: "Esportes Radicais",
-    words: ["SURFE", "SKATE", "PARAQUEDISMO", "RAPEL"],
+    words: ["SURFE", "MOTOCROSS", "PARAQUEDISMO", "RAPEL"],
   },
-  { theme: "Partes do Rosto", words: ["OLHO", "NARIZ", "BOCA", "ORELHA"] },
+  { theme: "Partes do Rosto", words: ["TESTA", "NARIZ", "BOCA", "SOBRANCELHA"] },
   {
     theme: "Produtos de Higiene",
     words: ["SABONETE", "SHAMPOO", "DESODORANTE", "COTONETE"],
@@ -198,11 +251,15 @@ export const CONEXO_THEMES = [
     words: ["FIAT", "CHEVROLET", "VOLKSWAGEN", "FORD"],
   },
   {
-    theme: "Dinossauros",
+    theme: "Dinossauros Famosos",
     words: ["TIRANOSSAURO", "TRICERÁTOPS", "VELOCIRAPTOR", "ESTEGOSSAURO"],
   },
   {
-    theme: "Répteis Voadores (Pterossauros)",
+    theme:"Dinossauros Desconhecidos",
+    words: ["DIPLODOCO","ARGENTINOSSAURO","IRRITATOR","IGUANODONTE"],
+  },
+  {
+    theme: "Répteis Voadores Pre-históricos",
     words: ["PTERODÁCTILO", "PTERANODONTE", "QUETZALCOATLUS", "DIMORFODONTE"],
   },
   {
@@ -210,14 +267,18 @@ export const CONEXO_THEMES = [
     words: ["MOSASSAURO", "PLESIOSSAURO", "ICTIOSSAURO", "KRONOSSAURO"],
   },
   {
+  theme: "Troca de Pneu",
+  words: ["MACACO", "ESTEPE", "CALOTA", "CHAVE"],
+  },
+  {
     theme: "Animais Extintos",
     words: ["DODÔ", "MAMUTE", "TIGRE-DENTES-DE-SABRE", "PREGUIÇA-GIGANTE"],
   },
   {
     theme: "Animais Herbívoros",
-    words: ["GIRAFA", "ELEFANTE", "ZEBRA", "COELHO"],
+    words: ["BÚFALO", "BISÃO", "ZEBRA", "COELHO"],
   },
-  { theme: "Animais Carnívoros", words: ["LEÃO", "TIGRE", "LOBO", "ONÇA"] },
+  { theme: "Animais Carnívoros", words: ["LEÃO", "RATO-GAFANHOTO", "LOBO", "ONÇA"] },
   {
     theme: "Animais que mais matam Humanos",
     words: ["MOSQUITO", "COBRA", "CROCODILO", "HIPOPÓTAMO"],
@@ -239,7 +300,7 @@ export const CONEXO_THEMES = [
   },
   {
     theme: "Bebidas Mais Consumidas no Mundo",
-    words: ["ÁGUA", "CHÁ", "CAFÉ", "CERVEJA"],
+    words: ["REFRIGERANTE", "CHÁ", "CAFÉ", "CERVEJA"],
   },
   {
     theme: "Animais Mais Pesados Terrestres",
@@ -259,11 +320,15 @@ export const CONEXO_THEMES = [
   },
   {
     theme: "Símbolos de Sorte",
-    words: ["TREVO", "FERRADURA", "PIMENTA", "COELHO"],
+    words: ["TREVO", "FERRADURA", "PIMENTA", "PÉ DE COELHO"],
   },
   {
     theme: "Invenções Históricas",
     words: ["RODA", "FOGO", "ESCRITA", "INTERNET"],
+  },
+  {
+    theme: "Itens de Escritório",
+    words: ["GRAMPEADOR", "CARIMBO", "AGENDA", "ARQUIVO"],
   },
   {
     theme: "Órgãos mais pesados do Corpo Humano",
@@ -271,7 +336,7 @@ export const CONEXO_THEMES = [
   },
   {
     theme: "Animais Mais Venenosos",
-    words: ["ÁGUA-VIVA", "POLVO", "ARANHA", "COBRA"],
+    words: ["ÁGUA-VIVA", "SAPO", "ARANHA", "BAIACU"],
   },
   {
     theme: "Metais Mais Valiosos",
@@ -306,10 +371,6 @@ export const CONEXO_THEMES = [
     words: ["AURORA", "TORNADO", "ARCO-ÍRIS", "NEVOEIRO"],
   },
   {
-    theme: "Frutas que as pessoas acham que são legumes",
-    words: ["TOMATE", "PEPINO", "PIMENTÃO", "ABOBRINHA"],
-  },
-  {
     theme: "Maiores Satélites do Sistema Solar",
     words: ["GANIMEDES", "TITÃ", "CALISTO", "IO"],
   },
@@ -326,8 +387,8 @@ export const CONEXO_THEMES = [
     words: ["SAARA", "GOBI", "ATACAMA", "KALAHARI"],
   },
   {
-    theme: "Animais que põem ovos (e não são aves)",
-    words: ["ORNITORRINCO", "TARTARUGA", "JACARÉ", "COBRA"],
+    theme: "Animais que põem ovos",
+    words: ["ORNITORRINCO", "ARRAIA", "JACARÉ", "FORMIGA"],
   },
   {
     theme: "Invenções que mudaram o mundo",
@@ -358,6 +419,10 @@ export const CONEXO_THEMES = [
     words: ["MESA", "CADEIRA", "COMPASSO", "CALÇA"],
   },
   {
+  theme: "Possuem Teclas",
+  words: ["PIANO", "INTERFONO", "CALCULADORA", "CAIXA REGISTRADORA"],
+  },
+  {
     theme: "Têm 'folhas', mas não são árvores",
     words: ["LIVRO", "CADERNO", "PORTA", "BARALHO"],
   },
@@ -382,12 +447,8 @@ export const CONEXO_THEMES = [
     words: ["BATERIA", "CAIXA", "PANDERO", "TAMBOR"],
   },
   {
-    theme: "Instrumentos de Teclas",
-    words: ["PIANO", "TECLADO", "ÓRGÃO", "SINTETIZADOR"],
-  },
-  {
     theme: "Tipos de Café",
-    words: ["ESPRESSO", "CAPPUCCINO", "LATTE", "MACCHIATO"],
+    words: ["ESPRESSO", "PINGADO", "LATTE", "MACCHIATO"],
   },
   {
     theme: "Acompanhamentos de Churrasco",
@@ -403,7 +464,7 @@ export const CONEXO_THEMES = [
   },
   {
     theme: "Acompanhamentos de Hambúrguer",
-    words: ["BATATA FRITA", "CEBOLA FRITA", "QUEIJO", "BACON"],
+    words: ["BATATA FRITA", "CEBOLA FRITA", "COCA-COLA", "BACON"],
   },
   {
     theme: "Tipos de Queijo",
@@ -416,7 +477,7 @@ export const CONEXO_THEMES = [
   },
   {
     theme: "Tipos de Salada",
-    words: ["MAIONESE", "ALFACE", "TOMATE", "CEBOLA"],
+    words: ["MAIONESE", "ALFACE", "PEPINO", "ESPINAFRE"],
   },
   {
     theme: "Acompanhamentos de Macarrão",
@@ -424,11 +485,11 @@ export const CONEXO_THEMES = [
   },
   {
     theme: "Tipos de Molho",
-    words: ["MAIONESE", "KETCHUP", "MOSTARDA", "BARBECUE"],
+    words: ["SHOYU", "KETCHUP", "MOSTARDA", "BARBECUE"],
   },
   {
-    theme: "Tipos de Sorvete",
-    words: ["BAUNILHA", "COCO RALADO", "MORANGO", "FLORESTA NEGRA"],
+    theme: "Sabores de Sorvete",
+    words: ["PISTACHE", "MENTA", "MORANGO", "NATA"],
   },
   {
     theme: "Tipos de Cobertura de Bolo",
@@ -436,14 +497,214 @@ export const CONEXO_THEMES = [
   },
   {
     theme: "Tipos de Bolacha",
-    words: ["MAIZENA", "MARIA", "INTEGRAL", "CHOCOLATE"],
+    words: ["MAIZENA", "MARIA", "RECHEADA", "PASSATEMPO"],
   },
   {
     theme: "Tipos de Pipoca",
-    words: ["SALGADA", "DOCE", "CARAMELO", "CHOCOLATE"],
+    words: ["SALGADA", "DOCE", "CARAMELO", "MICRO-ONDAS"],
   },
   {
-    theme: "Tipos de Batata Chips",
-    words: ["SALGADA", "DOCE", "CARAMELO", "CHOCOLATE"],
+    theme: "Peças de Bicicleta",
+    words: ["CÂMARA", "PEDAL", "MANETE", "CÂMBIO"],
   },
+  {
+    theme: "Peças de Carro",
+    words: ["PISTÃO", "ARO", "RADIADOR", "IGNIÇÃO"],
+  },
+  {
+    theme: "Apelidos Comuns",
+    words: ["AMOR", "DOCINHO", "BEBÊ", "QUERIDO"],
+  },
+  {
+    theme: "Manga?",
+    words: ["FRUTA", "CAMISA", "EIXO", "JAPONESA"],
+  },
+  {
+    theme: "Corpos Celestes",
+    words: ["ASTEROIDE", "COMETA", "PLANETA", "SATÉLITE"],
+  },
+  {
+    theme: "Mundo das Celebridades",
+    words: ["ESTRELA", "FAMOSO", "ELENCO", "TAPETE"],
+  },
+  {
+    theme: "Partes de um Alho",
+    words: ["DENTE", "CABEÇA", "CASCAS", "PALHA"],
+  },
+  {
+    theme: "Têm apenas a vogal 'O'",
+    words: ["MORRO", "PORTO", "MOSCO", "SOPRO"]
+  },
+  {
+    theme: "Abrem e Fecham",
+    words: ["OLHO", "ZÍPER", "TORNEIRA", "GUARDA-CHUVA"],
+  },
+  {
+    theme: "Sinônimos de 'Confusão'",
+    words: ["TRETA", "FURDUNÇO", "BARRACO", "ZUEIRA"],
+  },
+  {
+    theme: "Possuem Rodas",
+    words: ["SKATE", "PATINS", "CARRINHO", "TRICICLO"],
+  },
+  {
+    theme: "Objetos de Barbearia",
+    words: ["NAVALHA", "POMADA", "TESOURA", "TOALHA"],
+  },
+  {
+    theme: "Lendas Brasileiras",
+    words: ["CURUPIRA", "SACI", "IARA", "BOITATÁ"],
+  },
+  {
+    theme: "Frutas com casca grossa",
+    words: ["MELÃO", "MELANCIA", "COCO", "JACA"],
+  },
+  {
+    theme: "Ferramentas de Corte",
+    words: ["SERRA", "FACA", "FACÃO", "MACHADO"],
+  },
+  {
+    theme: "Brinquedos Clássicos",
+    words: ["IÔIÔ", "PIÃO", "BOLA", "CORDA"],
+  },
+  {
+    theme: "Lugares para Guardar Dinheiro",
+    words: ["BANCO", "CARTEIRA", "MEIA", "POUPANÇA"],
+  },
+  {
+    theme: "Doenças",
+    words: ["CÂNCER", "GRIPE", "VIROSE", "ANEMIA"]
+  },
+  {
+    theme: "Peças de Academia",
+    words: ["ESTEIRA", "HALTER", "ANILHA", "BICICLETA"]
+  },
+  {
+    theme: "Tipos de Corrente",
+    words: ["ELÉTRICA", "MARINHA", "DENTADA", "TRANSMISSÃO"]
+  },
+  {
+    theme: "Podem ser de Prata",
+    words: ["MOEDA", "ANEL", "TALHER", "BANDEJA"]
+  },
+  {
+    theme: "Sinônimos de 'Enganar'",
+    words: ["LUDIBRIAR", "BURLAR", "DIBLAR", "LOGRAR"]
+  },
+  {
+    theme: "Sabores de Picolé",
+    words: ["DOCE DE LEITE", "LIMÃO", "MILHO", "AMENDOIM"]
+  },
+  {
+    theme: "Raças de Cachorro",
+    words: ["BOXER", "POODLE", "BEAGLE", "PUG"]
+  },
+  {
+    theme: "Raças de Gato",
+    words: ["PERSA", "SIAMÊS", "ANGORÁ", "BENGAL"]
+  },
+  {
+    theme: "Nomes de Pets que são Comida",
+    words: ["PUDIM", "AMORA", "PAÇOCA", "CACAU"]
+  },
+    {
+    theme: "Gatos Selvagens",
+    words: ["LEOPARDO", "TIGRE", "LINCE", "GUEPARDO"]
+  },
+  {
+    theme: "Povos da Antiguidade",
+    words: ["GREGO", "MAIA", "ASTECA", "INCA"]
+  },
+  {
+    theme: "Tipos de Roupa Intima",
+    words: ["SHORTS", "TANGA", "SAMBA-CANÇÃO", "SUNGA"]
+  },
+    {
+    theme: "Cores de Cabelo",
+    words: ["RUIVO", "LOIRO", "CASTANHO", "GRISALHO"]
+  },
+  {
+    theme: "Coisas que Furam",
+    words: ["AGULHA", "ESPETO", "BROCA", "ALFINETE"]
+  },
+  {
+    theme: "Coisas que Saltam/Pulam",
+    words: ["MOLA", "PIPOCA", "CANGURU", "GAFANHOTO"]
+  },
+  {
+    theme: "Coisas que Flutuam",
+    words: ["NUVEM", "BOIA", "ISOPOR", "PENA"]
+  },
+  {
+    theme: "Coisas que Esquentam",
+    words: ["FORNO", "VULCÃO", "FEBRE", "SOL"]
+  },
+  {
+    theme: "Coisas que grudam",
+    words: ["IMÃ", "CHICLETE", "ADESIVO", "MEL"]
+  },
+  {
+    theme: "Coisas que Dobram",
+    words: ["PAPEL", "JOELHO", "COTOVELO", "ESQUINA"]
+  },
+  {
+    theme: "Venenos Famosos",
+    words: ["ARSÊNICO", "CIANETO", "CHUMBO", "MERCÚRIO"]
+  },
+  {
+    theme: "Plantas que Podem ser Tóxicas",
+    words: ["MAMONA", "MANDIOCA", "COMIGO-NINGUÉM-PODE", "AZALEIA"]
+  },
+  {
+    theme: "Fenômenos Naturais Destrutivos",
+    words: ["TSUNAMI", "FURACÃO", "TERREMOTO", "ERUPÇÃO"]
+  },
+  {
+    theme: "Coisas Mais Rápidas que o Som",
+    words: ["CHICOTE", "BALA", "JATO", "TROVÃO"]
+  },
+  {
+    theme: "Existe no Espaço",
+    words: ["VÁCUO", "BURACO-NEGRO", "RADIAÇÃO", "GRAVIDADE"]
+  },
+  {
+    theme: "Grandes Guerras e Conflitos",
+    words: ["VIETNÃ", "CANUDOS", "GOLFO", "REFRIGERAÇÃO"]
+  },
+  {
+    theme: "Revoluções Históricas",
+    words: ["FRANCESA", "INDUSTRIAL", "RUSA", "DIGITAL"]
+  },
+  {
+    theme: "Pestes e Pandemias",
+    words: ["ESPANHOLA", "NEGRA", "VARÍOLA", "CÓLERA"]
+  },
+  {
+    theme: "Quedas Históricas",
+    words: ["MURO DE BERLIM", "BASTILHA", "IMPÉRIO", "BOLSA"]
+  },
+  {
+    theme: "Acontecimentos da Corrida Espacial",
+    words: ["LUA", "SPUTNIK", "APOLLO", "CHALLENGER"]
+  },
+  {
+    theme: "Acordos e Tratados",
+    words: ["TORDESILHAS", "VERSALHES", "MADRI", "PAZ"]
+  },
+  {
+    theme: "Períodos da Idade da Pedra",
+    words: ["PALEOLÍTICO", "MESOLÍTICO", "NEOLÍTICO", "GLACIAÇÃO"]
+  },
+  {
+    theme: "Materiais de Escultura",
+    words: ["ARGILA", "MÁRMORE", "PEDRA", "MARFIM"]
+  },
+  {
+    theme: "O que compõe uma Rocha",
+    words: ["MINERAL", "CRISTAL", "FERRO", "QUARTZO"]
+  },
+  {
+    theme: "Vestígios do Passado",
+    words: ["FÓSSIL", "RUÍNA", "PINTURA", "OSSADA"]
+  }
 ];
