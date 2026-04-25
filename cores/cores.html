@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CORES - Ordenar as Cores</title>
+    <meta name="description" content="Ordene as bolas coloridas nos tubos. Desafie sua lógica e raciocínio com 3 níveis de dificuldade." />
+    <link rel="icon" href="../assets/t.png" type="image/png">
+
+    <link rel="stylesheet" href="../css/base.css" />
+    <link rel="stylesheet" href="../css/grid.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/utils.css" />
+    <link rel="stylesheet" href="cores.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <header>
+        <div class="header-left">
+          <button class="btn-outros-jogos" id="btn-outros-jogos" title="Outros Jogos">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+            Outros Jogos
+          </button>
+        </div>
+        <h1>CORES</h1>
+        <div class="header-actions">
+          <button class="btn-header-new" id="btn-persistent-new-game">Novo Jogo</button>
+          <button class="icon-button" id="btn-help-trigger" title="Como Jogar">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </button>
+          <button class="icon-button" id="btn-stats-trigger" title="Estatísticas">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="cores-main-layout">
+        <!-- Controls Row -->
+        <div class="game-controls-row">
+          <div id="global-difficulty-selector"></div>
+          <section class="timer-section">
+            <div id="game-timer" class="timer-display">03:30</div>
+          </section>
+        </div>
+
+        <!-- Moves counter -->
+        <div class="cores-info-row">
+          <div class="moves-display">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <span>Movimentos: <b id="moves-count">0</b></span>
+          </div>
+          <div class="progress-display">
+            <span id="progress-text">0 / 5 tubos prontos</span>
+          </div>
+        </div>
+
+        <!-- Tubes container -->
+        <div id="tubes-container" class="tubes-container"></div>
+
+        <!-- Action hint -->
+        <div class="cores-hint" id="cores-hint">
+          Selecione um tubo para começar
+        </div>
+      </div>
+
+      <div id="toast" class="toast"></div>
+    </div>
+
+    <!-- Game Result Modal -->
+    <div id="game-modal" class="modal-overlay">
+      <div id="confetti-container" style="position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 10;"></div>
+      <div class="modal" id="modal-content" style="z-index: 20;">
+        <div class="modal-icon" id="modal-icon"></div>
+        <h2 id="modal-title" style="font-size: 2.5rem; margin-bottom: 1rem;"></h2>
+        <p id="modal-text" style="text-align: center; color: var(--text-muted); margin-bottom: 2rem; display: block;"></p>
+        <div class="action-buttons">
+          <button class="btn btn-primary" id="btn-new-game-modal" style="width: 100%; padding: 1rem;">
+            Jogar Novamente
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="help-modal" class="modal-overlay">
+      <div class="modal">
+        <h2>Como Jogar CORES</h2>
+        <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">
+          Organize todas as bolas coloridas para que cada tubo contenha apenas uma cor!
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="help-icon-box" style="background: rgba(99, 102, 241, 0.2); color: var(--primary);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </div>
+            <span style="font-size: 0.85rem;">Clique em um tubo para <b>selecionar</b> a bola do topo e em outro para <b>mover</b>.</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="help-icon-box" style="background: rgba(16, 185, 129, 0.2); color: var(--success);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span style="font-size: 0.85rem;">Você pode mover a bola para um tubo <b>vazio</b> ou para qualquer tubo que <b>ainda tenha espaço livre</b> (não esteja cheio).</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="help-icon-box" style="background: rgba(251, 191, 36, 0.2); color: #fbbf24;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <span style="font-size: 0.85rem;">Fique de olho no <b>cronômetro</b>! Complete antes do tempo acabar.</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="help-icon-box" style="background: rgba(244, 63, 94, 0.2); color: var(--error);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            </div>
+            <span style="font-size: 0.85rem;">Há <b>um tubo vazio</b> extra para facilitar as trocas â€” use-o com sabedoria!</span>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="btn-close-help" style="width: 100%">
+          Entendido!
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats Modal -->
+    <div id="stats-modal" class="modal-overlay">
+      <div class="modal">
+        <button class="modal-close" id="btn-close-stats-x" aria-label="Fechar">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+        <h2>Estatísticas</h2>
+        <div class="stats-container">
+          <div class="stat-item">
+            <span class="stat-value" id="stat-played">0</span>
+            <span class="stat-label">Jogados</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value" id="stat-wins">0%</span>
+            <span class="stat-label">Vitórias</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value" id="stat-streak">0</span>
+            <span class="stat-label">Sequência</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value" id="stat-max-streak">0</span>
+            <span class="stat-label">Melhor</span>
+          </div>
+        </div>
+        <div class="action-buttons">
+          <button class="btn btn-secondary" id="btn-close-stats">Fechar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="global-outros-jogos-modal"></div>
+    <script src="../js/ui-components.js"></script>
+    <script src="cores.js"></script>
+  </body>
+</html>
+
+
+
+
+

@@ -1,6 +1,6 @@
-import { WORDS } from "./palavras.js";
-import { normalizeWord, StatsManager, generateShareText } from "./js/utils.js";
-import { buildMultipleGridsDOM, buildKeyboardDOM } from "./js/components.js";
+import { WORDS } from "../js/palavras.js";
+import { normalizeWord, StatsManager, generateShareText } from "../js/utils.js";
+import { buildMultipleGridsDOM, buildKeyboardDOM } from "../js/components.js";
 
 class TermoGame {
   constructor() {
@@ -384,7 +384,7 @@ class TermoGame {
 
     document.getElementById("btn-close-help").onclick = () => this.closeHelp();
     document.getElementById("btn-help-trigger").onclick = () => this.showHelp();
-    
+
     const startNewGame = () => {
       this.closeStats();
       this.newGame(this.mode);

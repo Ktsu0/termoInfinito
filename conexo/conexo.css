@@ -1,4 +1,4 @@
-/* =============================================
+﻿/* =============================================
    CONEXO - Layout Principal
    ============================================= */
 
@@ -18,7 +18,7 @@
 }
 
 /* Linha de controles: dificuldade + timer, centralizados e na mesma linha */
-.conexo-controls-row {
+.game-controls-row {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -256,7 +256,7 @@
 
 /* ── Celulares muito pequenos: 320px – 374px ── */
 @media (max-width: 374px) {
-  .conexo-controls-row {
+  .game-controls-row {
     gap: 0.5rem;
     flex-direction: column;
   }
@@ -329,7 +329,7 @@
     min-width: 4.5rem;
   }
 
-  .conexo-controls-row {
+  .game-controls-row {
     gap: 0.5rem;
   }
 }
@@ -340,7 +340,7 @@
     max-width: 38rem;
   }
 
-  .conexo-controls-row {
+  .game-controls-row {
     max-width: 38rem;
   }
 
@@ -361,7 +361,7 @@
     max-width: 40rem;
   }
 
-  .conexo-controls-row {
+  .game-controls-row {
     max-width: 40rem;
   }
 
@@ -383,7 +383,7 @@
     max-width: 44rem;
   }
 
-  .conexo-controls-row {
+  .game-controls-row {
     max-width: 44rem;
   }
 
@@ -398,3 +398,4 @@
     gap: 0.5rem;
   }
 }
+

@@ -3,42 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CONEXO - Jogo de Associação de Palavras</title>
-    <link rel="icon" href="/assets/t.png" type="image/png">
+    <title>CONEXO - Jogo de AssociaÃ§Ã£o de Palavras</title>
+    <link rel="icon" href="../assets/t.png" type="image/png">
     
-    <link rel="stylesheet" href="css/base.css" />
-    <link rel="stylesheet" href="css/grid.css" />
-    <link rel="stylesheet" href="css/components.css" />
-    <link rel="stylesheet" href="css/utils.css" />
-    <link rel="stylesheet" href="css/conexo.css" />
+    <link rel="stylesheet" href="../css/base.css" />
+    <link rel="stylesheet" href="../css/grid.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/utils.css" />
+    <link rel="stylesheet" href="conexo.css" />
   </head>
   <body>
     <div class="app-container">
       <header>
+        <div class="header-left">
+          <button class="btn-outros-jogos" id="btn-outros-jogos" title="Outros Jogos">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+            Outros Jogos
+          </button>
+        </div>
         <h1>CONEXO</h1>
         <div class="header-actions">
           <button class="btn-header-new" id="btn-persistent-new-game">
             Novo Jogo
-          </button>
-          <button class="icon-button" onclick="window.location.href='index.html'" title="Jogar Termo">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="3" y1="9" x2="21" y2="9"></line>
-              <line x1="3" y1="15" x2="21" y2="15"></line>
-              <line x1="9" y1="3" x2="9" y2="21"></line>
-              <line x1="15" y1="3" x2="15" y2="21"></line>
-            </svg>
-            <span class="button-text">Jogar TERMO</span>
-          </button>
-          <button class="icon-button" onclick="window.location.href='code.html'" title="Jogar Sequence">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="6" width="20" height="12" rx="2" ry="2"></rect>
-              <path d="M6 12h4"></path>
-              <path d="M8 10v4"></path>
-              <line x1="15" y1="13" x2="15.01" y2="13"></line>
-              <line x1="18" y1="11" x2="18.01" y2="11"></line>
-            </svg>
-            <span class="button-text">Jogar SEQUENCE</span>
           </button>
           <button class="icon-button" id="btn-help-trigger" title="Como Jogar">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -60,12 +48,8 @@
       <div class="conexo-main-layout">
 
         <!-- Linha de controles: dificuldade + timer centralizados -->
-        <div class="conexo-controls-row">
-          <nav class="mode-selector" id="difficulty-selector">
-            <button class="btn btn-secondary active-mode diff-btn" data-level="easy" id="diff-easy">FÁCIL</button>
-            <button class="btn btn-secondary diff-btn" data-level="medium" id="diff-medium">MÉDIO</button>
-            <button class="btn btn-secondary diff-btn" data-level="hard" id="diff-hard">DIFÍCIL</button>
-          </nav>
+        <div class="game-controls-row">
+          <div id="global-difficulty-selector"></div>
 
           <section class="timer-section">
             <div id="game-timer" class="timer-display">03:00</div>
@@ -114,7 +98,7 @@
           </ul>
           <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px;">
               <div style="display: flex; align-items: center; gap: 10px;">
-                  <div class="conexo-tile correct" style="font-size: 0.8rem; cursor: default; padding: 10px;">MAÇÃ</div>
+                  <div class="conexo-tile correct" style="font-size: 0.8rem; cursor: default; padding: 10px;">MAÃ‡Ãƒ</div>
                   <span style="font-size: 0.85rem;">As palavras corretas formam um grupo <b>Verde</b>.</span>
               </div>
           </div>
@@ -154,6 +138,15 @@
       </div>
     </div>
 
-    <script type="module" src="js/conexo-main.js"></script>
+    <!-- Modal Outros Jogos -->
+    <div id="global-outros-jogos-modal"></div>
+
+    <script src="../js/ui-components.js"></script>
+    <script type="module" src="conexo-main.js"></script>
   </body>
 </html>
+
+
+
+
+

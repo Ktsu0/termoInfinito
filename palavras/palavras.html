@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CAÇA PALAVRAS</title>
+    <link rel="icon" href="../assets/t.png" type="image/png">
+    
+    <link rel="stylesheet" href="../css/base.css" />
+    <link rel="stylesheet" href="../css/grid.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/utils.css" />
+    <link rel="stylesheet" href="palavras.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <header>
+        <div class="header-left">
+          <button class="btn-outros-jogos" id="btn-outros-jogos" title="Outros Jogos">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+            Outros Jogos
+          </button>
+        </div>
+        <h1>CAÇA PALAVRAS</h1>
+        <div class="header-actions">
+          <button class="btn-header-new" id="btn-persistent-new-game">
+            Novo Jogo
+          </button>
+          <button class="icon-button" id="btn-help-trigger" title="Como Jogar">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="palavras-main-layout">
+        <div class="game-controls-row">
+          <div id="global-difficulty-selector"></div>
+          <section class="timer-section">
+            <div id="game-timer" class="timer-display">00:00</div>
+          </section>
+        </div>
+
+        <div class="theme-selector-container">
+          <label for="theme-select">Tema:</label>
+          <select id="theme-select" class="theme-select">
+              <option value="random">🎲 Aleatório</option>
+              <option value="pesca">🎣 Pesca</option>
+              <option value="escola">📚 Matérias de Escola</option>
+              <option value="animes">🍥 Animes</option>
+              <option value="filmes">🎬 Filmes</option>
+              <option value="famosos">⭐ Famosos</option>
+              <option value="times">⚽ Times de Futebol</option>
+              <option value="maquiagem">💄 Maquiagem</option>
+              <option value="animais">🐶 Animais</option>
+              <option value="comidas">🍔 Comidas</option>
+              <option value="tecnologia">💻 Tecnologia</option>
+              <option value="ingles">🇺🇸 Inglês</option>
+              <option value="estados">🇧🇷 Estados do Brasil</option>
+          </select>
+        </div>
+
+        <div class="words-list-container" id="words-list">
+           <!-- Words injected by JS -->
+        </div>
+
+        <div class="palavras-board-container" id="board-container">
+            <!-- Grid injected by JS -->
+        </div>
+      </div>
+
+      <div id="toast" class="toast"></div>
+    </div>
+
+    <!-- Modals -->
+    <div id="game-modal" class="modal-overlay">
+      <div id="confetti-container" style="position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 10;"></div>
+      <div class="modal" id="modal-content" style="z-index: 20;">
+        <button class="modal-close" id="btn-close-modal-x" aria-label="Fechar">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+        <div class="modal-icon" id="modal-icon"></div>
+        <h2 id="modal-title" style="font-size: 2.5rem; margin-bottom: 1rem;"></h2>
+        <p id="modal-text" style="text-align: center; color: var(--text-muted); margin-bottom: 2rem; display: block;"></p>
+        <div class="action-buttons">
+          <button class="btn btn-primary" id="btn-new-game-modal" style="width: 100%; padding: 1rem;">
+            Jogar Novamente
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="help-modal" class="modal-overlay">
+      <div class="modal">
+          <h2>Como Jogar CAÇA PALAVRAS</h2>
+          <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">
+              Encontre todas as palavras escondidas no tabuleiro!
+          </p>
+          <ul style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 25px; padding-left: 20px;">
+            <li>As palavras podem estar na horizontal, vertical ou diagonal.</li>
+            <li>Elas podem estar escritas de trás pra frente!</li>
+            <li>Clique na primeira letra e arraste até a última letra da palavra.</li>
+            <li>Selecione um <b>Tema</b> acima do tabuleiro para focar em palavras específicas.</li>
+          </ul>
+          <button class="btn btn-primary" id="btn-close-help" style="width: 100%">
+            Entendido!
+          </button>
+      </div>
+    </div>
+
+    <div id="global-outros-jogos-modal"></div>
+
+    <script src="../js/ui-components.js"></script>
+    <script src="palavras.js"></script>
+  </body>
+</html>
