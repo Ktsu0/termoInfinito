@@ -593,7 +593,7 @@ export const CONEXO_THEMES = [
   },
   {
     theme: "Sabores de Picolé",
-    words: ["DOCE DE LEITE", "LIMÃO", "MILHO", "AMENDOIM"]
+    words: ["CHOCOLATE BRANCO", "MINI SAIA", "MILHO", "AMENDOIM"]
   },
   {
     theme: "Raças de Cachorro",
