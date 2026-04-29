@@ -8,6 +8,7 @@
     
     <link rel="stylesheet" href="../css/base.css" />
     <link rel="stylesheet" href="../css/grid.css" />
+    <link rel="stylesheet" href="../css/keyboard.css" />
     <link rel="stylesheet" href="../css/components.css" />
     <link rel="stylesheet" href="../css/utils.css" />
     <link rel="stylesheet" href="sudoku.css" />
@@ -22,12 +23,14 @@
             </svg>
             Outros Jogos
           </button>
+          <div id="global-difficulty-selector"></div>
         </div>
         <h1>SUDOKU</h1>
         <div class="header-actions">
           <button class="btn-header-new" id="btn-persistent-new-game">
             Novo Jogo
           </button>
+          <div id="game-timer" class="header-timer">00:00</div>
           <button class="icon-button" id="btn-help-trigger" title="Como Jogar">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"></circle>
@@ -46,49 +49,68 @@
       </header>
 
       <div class="sudoku-main-layout">
-        <div class="game-controls-row">
-          <div id="global-difficulty-selector"></div>
-          <section class="timer-section">
-            <div id="game-timer" class="timer-display">00:00</div>
-          </section>
+
+        <!-- Play Area: Centered Grid Wrapper with absolute side elements -->
+        <div class="sudoku-play-area">
+          <div class="sudoku-grid-wrapper">
+            
+            <!-- Keyboard: Absolute positioned to the LEFT of the grid -->
+            <div id="keyboard-wrapper" class="keyboard-wrapper hidden sudoku-keyboard-side">
+              <div class="keyboard-header">
+                <button id="btn-close-keyboard" class="btn-close-keyboard" title="Ocultar Teclado">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+              <div class="sudoku-numpad">
+                <button class="num-btn" data-num="1">1</button>
+                <button class="num-btn" data-num="2">2</button>
+                <button class="num-btn" data-num="3">3</button>
+                <button class="num-btn" data-num="4">4</button>
+                <button class="num-btn" data-num="5">5</button>
+                <button class="num-btn" data-num="6">6</button>
+                <button class="num-btn" data-num="7">7</button>
+                <button class="num-btn" data-num="8">8</button>
+                <button class="num-btn" data-num="9">9</button>
+                <button class="num-btn action-btn" data-action="erase">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
+                    <line x1="18" y1="9" x2="12" y2="15"></line>
+                    <line x1="12" y1="9" x2="18" y2="15"></line>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Sudoku Grid (The Anchor) -->
+            <div id="sudoku-container" class="sudoku-grid-container">
+              <!-- O grid será gerado pelo JS -->
+            </div>
+
+            <!-- Hearts: Absolute positioned to the RIGHT of the grid -->
+            <div id="lives-container" class="lives-container">
+              <img src="../assets/heart.webp" class="heart-icon" alt="Vida">
+              <img src="../assets/heart.webp" class="heart-icon" alt="Vida">
+              <img src="../assets/heart.webp" class="heart-icon" alt="Vida">
+              <img src="../assets/heart.webp" class="heart-icon heart-extra" alt="Vida" style="display:none">
+            </div>
+
+          </div>
         </div>
 
-        <div id="lives-container" class="lives-container">
-          <img src="../assets/heart.webp" class="heart-icon" alt="Vida">
-          <img src="../assets/heart.webp" class="heart-icon" alt="Vida">
-          <img src="../assets/heart.webp" class="heart-icon" alt="Vida">
-        </div>
-
-        <div id="sudoku-container" class="sudoku-grid-container">
-          <!-- O grid serão gerado pelo JS -->
-        </div>
-
-        <div class="sudoku-numpad">
-          <button class="num-btn" data-num="1">1</button>
-          <button class="num-btn" data-num="2">2</button>
-          <button class="num-btn" data-num="3">3</button>
-          <button class="num-btn" data-num="4">4</button>
-          <button class="num-btn" data-num="5">5</button>
-          <button class="num-btn" data-num="6">6</button>
-          <button class="num-btn" data-num="7">7</button>
-          <button class="num-btn" data-num="8">8</button>
-          <button class="num-btn" data-num="9">9</button>
-          <button class="num-btn action-btn" data-action="erase">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
-              <line x1="18" y1="9" x2="12" y2="15"></line>
-              <line x1="12" y1="9" x2="18" y2="15"></line>
-            </svg>
-          </button>
-        </div>
-      </div>
+      <button id="btn-floating-keyboard" class="btn-floating-keyboard" title="Mostrar Teclado">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+      </button>
 
       <div id="toast" class="toast"></div>
     </div>
 
     <!-- Modals -->
     <div id="game-modal" class="modal-overlay">
-      <div id="confetti-container" style="position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 10;"></div>
       <div class="modal" id="modal-content" style="z-index: 20;">
         <button class="modal-close" id="btn-close-modal-x" aria-label="Fechar">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>

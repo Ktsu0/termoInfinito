@@ -10,33 +10,29 @@
   justify-content: flex-start;
   width: 100%;
   gap: clamp(0.5rem, 1.5vh, 1rem);
-  padding: clamp(0.4rem, 1vh, 0.8rem) clamp(0.75rem, 3vw, 1.5rem);
+  padding: 0.5rem clamp(0.75rem, 3vw, 1.5rem);
   flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
+  min-height: 0;
 }
 
-/* Linha de controles: dificuldade + timer, centralizados e na mesma linha */
-.game-controls-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(0.75rem, 2.5vw, 1.5rem);
-  width: 100%;
-  max-width: 42rem;
-  flex-wrap: wrap;
-}
 
 /* Container do grid do Conexo */
 .conexo-container {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.3rem, 1vh, 0.8rem);
   width: 100%;
   max-width: 42rem;
   margin: 0 auto;
   padding: 0;
+  flex: 1;
+  min-height: 0; /* Critical: lets flex child shrink and scroll */
+  overflow-y: auto !important;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.conexo-container::-webkit-scrollbar {
+  display: none;
 }
 
 /* =============================================
@@ -49,6 +45,8 @@
   gap: clamp(0.25rem, 0.7vh, 0.45rem);
   width: 100%;
   margin: 0 auto;
+  margin-top: clamp(1rem, 3vh, 2rem);
+  margin-bottom: clamp(1.5rem, 4vh, 2.5rem);
   padding: clamp(0.4rem, 1vh, 0.8rem);
   background: var(--card-bg);
   border-radius: 1rem;
@@ -148,37 +146,6 @@
    TIMER
    ============================================= */
 
-.timer-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.timer-display {
-  font-size: clamp(1.1rem, 3.5vw, 1.7rem);
-  font-weight: 800;
-  color: var(--text);
-  background: var(--card-bg);
-  padding: 0.5rem 1.2rem;
-  min-width: 5.5rem;
-  text-align: center;
-  border-radius: 0.875rem;
-  border: 1px solid var(--glass-border);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.timer-display.low-time {
-  color: var(--error);
-  border-color: rgba(244, 63, 94, 0.4);
-  box-shadow: 0 0 14px rgba(244, 63, 94, 0.3);
-  animation: pulse 1s infinite;
-}
-
 /* =============================================
    ANIMAÇÕES
    ============================================= */
@@ -256,18 +223,7 @@
 
 /* ── Celulares muito pequenos: 320px – 374px ── */
 @media (max-width: 374px) {
-  .game-controls-row {
-    gap: 0.5rem;
-    flex-direction: column;
-  }
-
-  .timer-display {
-    min-width: auto;
-    padding: 0.35rem 0.9rem;
-    font-size: 1rem;
-  }
-
-  .conexo-word {
+      .conexo-word {
     font-size: clamp(0.5rem, 3.5vw, 0.68rem);
     min-height: clamp(2.8rem, 8.5vh, 4rem);
     padding: 0.35rem 0.1rem;
@@ -285,27 +241,15 @@
     font-size: clamp(0.58rem, 3.2vw, 0.75rem);
     min-height: clamp(3rem, 9vh, 4.5rem);
   }
-
-  .timer-display {
-    font-size: clamp(1rem, 4.5vw, 1.3rem);
-    min-width: 5rem;
-    padding: 0.4rem 1rem;
-  }
 }
-
-/* ── Celulares grandes / landscape: 480px – 767px ── */
+  /* ── Celulares grandes / landscape: 480px – 767px ── */
 @media (min-width: 480px) and (max-width: 767px) {
   .conexo-word {
     font-size: clamp(0.65rem, 2.5vw, 0.82rem);
     min-height: clamp(3.3rem, 9.5vh, 5rem);
   }
-
-  .timer-display {
-    font-size: clamp(1.1rem, 4vw, 1.5rem);
-  }
 }
-
-/* ── Landscape em celulares (altura curta) ── */
+  /* ── Landscape em celulares (altura curta) ── */
 @media (max-height: 500px) and (orientation: landscape) {
   .conexo-main-layout {
     gap: 0.35rem;
@@ -322,72 +266,36 @@
     min-height: clamp(2.2rem, 7vh, 3.5rem);
     padding: 0.25rem 0.5rem;
   }
-
-  .timer-display {
-    padding: 0.3rem 0.8rem;
-    font-size: clamp(0.9rem, 3vw, 1.2rem);
-    min-width: 4.5rem;
-  }
-
-  .game-controls-row {
-    gap: 0.5rem;
-  }
 }
-
-/* ── Tablets retrato: 768px – 1023px ── */
+    /* ── Tablets retrato: 768px – 1023px ── */
 @media (min-width: 768px) and (max-width: 1023px) {
   .conexo-container {
     max-width: 38rem;
   }
 
-  .game-controls-row {
-    max-width: 38rem;
-  }
-
-  .conexo-word {
+    .conexo-word {
     font-size: clamp(0.72rem, 1.8vw, 0.92rem);
     min-height: clamp(3.8rem, 10vh, 5.5rem);
   }
-
-  .timer-display {
-    font-size: clamp(1.2rem, 3vw, 1.6rem);
-    min-width: 5.5rem;
-  }
 }
-
-/* ── Desktop / tablets paisagem: 1024px+ ── */
+  /* ── Desktop / tablets paisagem: 1024px+ ── */
 @media (min-width: 1024px) {
   .conexo-container {
     max-width: 40rem;
   }
 
-  .game-controls-row {
-    max-width: 40rem;
-  }
-
-  .conexo-word {
+    .conexo-word {
     font-size: clamp(0.75rem, 1.4vw, 0.95rem);
     min-height: clamp(4rem, 11vh, 5.8rem);
   }
-
-  .timer-display {
-    font-size: clamp(1.3rem, 2.5vw, 1.8rem);
-    min-width: 6rem;
-    padding: 0.55rem 1.4rem;
-  }
 }
-
-/* ── Telas ultra-wide / 4K: 1440px+ ── */
+  /* ── Telas ultra-wide / 4K: 1440px+ ── */
 @media (min-width: 1440px) {
   .conexo-container {
     max-width: 44rem;
   }
 
-  .game-controls-row {
-    max-width: 44rem;
-  }
-
-  .conexo-word {
+    .conexo-word {
     min-height: clamp(4.5rem, 12vh, 6.5rem);
     font-size: clamp(0.85rem, 1.2vw, 1rem);
     border-radius: 0.75rem;
@@ -398,4 +306,3 @@
     gap: 0.5rem;
   }
 }
-

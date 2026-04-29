@@ -1,10 +1,94 @@
+/* Wrapper and Toggle Styles */
+.keyboard-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(100%, 35rem);
+  background: rgba(3, 7, 18, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 1.5rem 1.5rem 0 0;
+  border: 1px solid var(--glass-border);
+  border-bottom: none;
+  padding-top: 0.5rem;
+  z-index: 1000;
+  transition: transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28), opacity 0.3s ease;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.keyboard-wrapper.hidden {
+  transform: translateX(-50%) translateY(110%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.4s ease-in, opacity 0.3s ease;
+}
+
+.keyboard-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.3rem 0.5rem;
+}
+
+.btn-close-keyboard {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-close-keyboard:hover {
+  background: rgba(239, 68, 64, 0.2);
+  color: #ff6b6b;
+  border-color: rgba(239, 68, 64, 0.4);
+  transform: scale(1.05);
+}
+
+.btn-floating-keyboard {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(99, 102, 241, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  border-bottom: none;
+  color: rgba(165, 168, 255, 0.95);
+  padding: 0.3rem 1.5rem;
+  border-radius: 12px 12px 0 0;
+  cursor: pointer;
+  z-index: 999;
+  transition: transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28), opacity 0.3s ease, background 0.2s;
+  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-floating-keyboard:hover {
+  background: rgba(99, 102, 241, 0.3);
+  color: #fff;
+  transform: translateX(-50%) translateY(-2px);
+}
+
+.btn-floating-keyboard.hidden {
+  transform: translateX(-50%) translateY(110%);
+  opacity: 0;
+  pointer-events: none;
+}
+
 .keyboard {
   display: flex;
   flex-direction: column;
   gap: 0.6vh;
-  width: min(100%, 35rem);
+  width: 100%;
   margin: 0.5vh auto 2vh;
-  padding: 0 5px;
+  padding: 0 0.5rem;
   user-select: none;
   flex-shrink: 0;
 }
@@ -87,4 +171,22 @@
     font-size: 0.75rem;
     flex: 1.5;
   }
+}
+
+/* === When keyboard is CLOSED: no scroll, content centered === */
+.boards-container {
+  justify-content: center;
+}
+
+/* === When keyboard is OPEN: enable scroll + push content up so last rows are reachable === */
+.app-container:has(#keyboard-wrapper:not(.hidden)) .boards-container {
+  overflow-y: auto;
+  justify-content: flex-start;
+  scrollbar-width: none;
+  padding-bottom: clamp(14rem, 32vh, 20rem);
+  padding-top: 1vh;
+}
+
+.app-container:has(#keyboard-wrapper:not(.hidden)) .boards-container::-webkit-scrollbar {
+  display: none;
 }

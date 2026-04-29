@@ -22,12 +22,14 @@
             </svg>
             Outros Jogos
           </button>
+          <div id="global-difficulty-selector"></div>
         </div>
         <h1>CAÇA PALAVRAS</h1>
         <div class="header-actions">
           <button class="btn-header-new" id="btn-persistent-new-game">
             Novo Jogo
           </button>
+          <div id="game-timer" class="header-timer">00:00</div>
           <button class="icon-button" id="btn-help-trigger" title="Como Jogar">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"></circle>
@@ -39,34 +41,30 @@
       </header>
 
       <div class="palavras-main-layout">
-        <div class="game-controls-row">
-          <div id="global-difficulty-selector"></div>
-          <section class="timer-section">
-            <div id="game-timer" class="timer-display">00:00</div>
-          </section>
-        </div>
 
-        <div class="theme-selector-container">
-          <label for="theme-select">Tema:</label>
-          <select id="theme-select" class="theme-select">
-              <option value="random">🎲 Aleatório</option>
-              <option value="pesca">🎣 Pesca</option>
-              <option value="escola">📚 Matérias de Escola</option>
-              <option value="animes">🍥 Animes</option>
-              <option value="filmes">🎬 Filmes</option>
-              <option value="famosos">⭐ Famosos</option>
-              <option value="times">⚽ Times de Futebol</option>
-              <option value="maquiagem">💄 Maquiagem</option>
-              <option value="animais">🐶 Animais</option>
-              <option value="comidas">🍔 Comidas</option>
-              <option value="tecnologia">💻 Tecnologia</option>
-              <option value="ingles">🇺🇸 Inglês</option>
-              <option value="estados">🇧🇷 Estados do Brasil</option>
-          </select>
-        </div>
-
-        <div class="words-list-container" id="words-list">
-           <!-- Words injected by JS -->
+        <div class="palavras-sidebar">
+          <div class="theme-selector-container">
+            <label for="theme-select">Tema:</label>
+            <select id="theme-select" class="theme-select">
+                <option value="random">🎲 Aleatório</option>
+                <option value="pesca">🎣 Pesca</option>
+                <option value="escola">📚 Matérias de Escola</option>
+                <option value="animes">🍥 Animes</option>
+                <option value="filmes">🎬 Filmes</option>
+                <option value="famosos">⭐ Famosos</option>
+                <option value="times">⚽ Times de Futebol</option>
+                <option value="maquiagem">💄 Maquiagem</option>
+                <option value="animais">🐶 Animais</option>
+                <option value="comidas">🍔 Comidas</option>
+                <option value="tecnologia">💻 Tecnologia</option>
+                <option value="ingles">🇺🇸 Inglês</option>
+                <option value="estados">🇧🇷 Estados do Brasil</option>
+            </select>
+          </div>
+  
+          <div class="words-list-container" id="words-list">
+             <!-- Words injected by JS -->
+          </div>
         </div>
 
         <div class="palavras-board-container" id="board-container">
@@ -79,7 +77,6 @@
 
     <!-- Modals -->
     <div id="game-modal" class="modal-overlay">
-      <div id="confetti-container" style="position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 10;"></div>
       <div class="modal" id="modal-content" style="z-index: 20;">
         <button class="modal-close" id="btn-close-modal-x" aria-label="Fechar">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>

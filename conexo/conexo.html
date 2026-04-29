@@ -22,12 +22,14 @@
             </svg>
             Outros Jogos
           </button>
+          <div id="global-difficulty-selector"></div>
         </div>
         <h1>CONEXO</h1>
         <div class="header-actions">
           <button class="btn-header-new" id="btn-persistent-new-game">
             Novo Jogo
           </button>
+          <div id="game-timer" class="header-timer">03:00</div>
           <button class="icon-button" id="btn-help-trigger" title="Como Jogar">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"></circle>
@@ -47,14 +49,6 @@
 
       <div class="conexo-main-layout">
 
-        <!-- Linha de controles: dificuldade + timer centralizados -->
-        <div class="game-controls-row">
-          <div id="global-difficulty-selector"></div>
-
-          <section class="timer-section">
-            <div id="game-timer" class="timer-display">03:00</div>
-          </section>
-        </div>
 
         <!-- Grid principal do jogo -->
         <div id="conexo-container" class="boards-container conexo-container">
@@ -68,7 +62,6 @@
 
     <!-- Modals -->
     <div id="game-modal" class="modal-overlay">
-      <div id="confetti-container" style="position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 10;"></div>
       <div class="modal" id="modal-content" style="z-index: 20;">
         <button class="modal-close" id="btn-close-modal-x" aria-label="Fechar">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>

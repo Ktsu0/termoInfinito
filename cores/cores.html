@@ -23,10 +23,12 @@
             </svg>
             Outros Jogos
           </button>
+          <div id="global-difficulty-selector"></div>
         </div>
         <h1>CORES</h1>
         <div class="header-actions">
           <button class="btn-header-new" id="btn-persistent-new-game">Novo Jogo</button>
+          <div id="game-timer" class="header-timer">03:30</div>
           <button class="icon-button" id="btn-help-trigger" title="Como Jogar">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"></circle>
@@ -45,13 +47,6 @@
       </header>
 
       <div class="cores-main-layout">
-        <!-- Controls Row -->
-        <div class="game-controls-row">
-          <div id="global-difficulty-selector"></div>
-          <section class="timer-section">
-            <div id="game-timer" class="timer-display">03:30</div>
-          </section>
-        </div>
 
         <!-- Moves counter -->
         <div class="cores-info-row">
@@ -78,8 +73,10 @@
 
     <!-- Game Result Modal -->
     <div id="game-modal" class="modal-overlay">
-      <div id="confetti-container" style="position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 10;"></div>
       <div class="modal" id="modal-content" style="z-index: 20;">
+        <button class="modal-close" id="btn-close-modal-x" aria-label="Fechar">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
         <div class="modal-icon" id="modal-icon"></div>
         <h2 id="modal-title" style="font-size: 2.5rem; margin-bottom: 1rem;"></h2>
         <p id="modal-text" style="text-align: center; color: var(--text-muted); margin-bottom: 2rem; display: block;"></p>
@@ -121,7 +118,7 @@
             <div class="help-icon-box" style="background: rgba(244, 63, 94, 0.2); color: var(--error);">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
             </div>
-            <span style="font-size: 0.85rem;">Há <b>um tubo vazio</b> extra para facilitar as trocas â€” use-o com sabedoria!</span>
+            <span style="font-size: 0.85rem;">Há <b>um tubo vazio</b> extra para facilitar as trocas, use-o com sabedoria!</span>
           </div>
         </div>
         <button class="btn btn-primary" id="btn-close-help" style="width: 100%">

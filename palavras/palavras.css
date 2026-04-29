@@ -1,143 +1,260 @@
 /* CAÇA PALAVRAS CSS */
 
 .palavras-main-layout {
+  display: grid;
+  /* Cria 3 colunas: Sidebar, Jogo (Centro), Espaçador (para equilibrar e centralizar o jogo) */
+  grid-template-columns: minmax(14rem, 1fr) auto 1fr;
+  align-items: flex-start;
+  gap: 2rem;
+  width: 100%;
+  max-width: 100vw;
+  margin: 0 auto;
+  padding: clamp(0.5rem, 2vh, 1.5rem);
+  flex: 1;
+  min-height: 0;
+  box-sizing: border-box;
+}
+
+/* Garante que o jogo fique na coluna do meio */
+.palavras-board-container {
+  grid-column: 2;
+}
+
+/* Sidebar na coluna 1 */
+.palavras-sidebar {
+  grid-column: 1;
+  justify-self: start;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
+  gap: 1.5rem;
+  width: clamp(12rem, 18vw, 16rem);
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
 }
 
 .theme-selector-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  padding: 0 1rem;
-}
-
-.theme-selector-container label {
-  font-weight: 600;
-  color: var(--text-color);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: 100%;
 }
 
 .theme-select {
-  padding: 8px 12px;
-  border-radius: 8px;
-  background: var(--surface);
-  color: var(--text-color);
-  border: 1px solid var(--border);
-  font-size: 1rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--glass-border);
+  font-size: 0.9rem;
   font-family: inherit;
   cursor: pointer;
   outline: none;
-  transition: border-color 0.2s;
+  transition: all 0.2s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.5)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+}
+
+.theme-select:hover {
+  border-color: var(--primary);
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .theme-select option {
-  background: #0f172a; /* Garante que o fundo do dropdown seja escuro */
-  color: #f8fafc; /* Garante que o texto do dropdown seja claro */
+  background-color: #1e293b; /* Dark background for options */
+  color: #f8fafc;
+  padding: 10px;
 }
 
-.theme-select:focus {
-  border-color: var(--primary);
+.theme-selector-container label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-left: 0.25rem;
 }
 
 .words-list-container {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  padding: 15px;
-  background: var(--surface);
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  margin: 0 1rem;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: var(--card-bg);
+  border-radius: 1rem;
+  border: 1px solid var(--glass-border);
+  max-height: 60vh;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+}
+
+.words-list-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
 }
 
 .word-item {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  padding: 4px 12px;
-  border-radius: 16px;
-  background: var(--background);
-  color: var(--text-color);
-  border: 1px solid var(--border);
-  transition: all 0.3s ease;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-muted);
+  border: 1px solid var(--glass-border);
+  transition: all 0.2s ease;
   user-select: none;
 }
 
 .word-item.found {
   text-decoration: line-through;
-  opacity: 0.7;
-  background: var(--success);
-  color: white;
-  border-color: var(--success);
-  transform: scale(0.95);
+  opacity: 1;
+  background: var(--card-bg);
+  color: var(--text);
+  border-color: var(--primary);
+  transform: translateX(5px);
 }
 
+/* =============================================
+   TABULEIRO
+   ============================================= */
 .palavras-board-container {
   display: grid;
-  gap: 2px;
-  margin: 0 auto;
-  padding: 10px;
-  background: var(--surface);
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  touch-action: none; /* Prevent scrolling while dragging */
-  user-select: none; /* Prevent text selection */
+  padding: clamp(0.75rem, 3vw, 1.5rem);
+  background: var(--card-bg);
+  border-radius: 1.5rem;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-xl);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  touch-action: none;
+  user-select: none;
   box-sizing: border-box;
-  max-width: 100vw;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  gap: clamp(6px, 1.2vw, 12px); /* Aumentado para melhor legibilidade */
+  position: relative; /* Necessário para os highlights absolutos */
 }
 
 .letter-cell {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: var(--background);
-  color: var(--text-color);
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.03); 
+  color: var(--text);
+  border-radius: 0.5rem; /* Quadrado arredondado */
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: clamp(0.7rem, 2vw, 1.1rem); /* Reduzido levemente para respirar */
   text-transform: uppercase;
   cursor: pointer;
-  transition: background 0.1s, transform 0.1s;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
   box-sizing: border-box;
+  position: relative;
+  z-index: 2; /* Acima dos highlights */
 }
 
-@media (max-width: 600px) {
-  .letter-cell {
-    font-size: 0.9rem;
-  }
+.letter-cell:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: scale(1.05);
 }
 
 .letter-cell.selected {
-  background: var(--primary);
+  background: var(--primary) !important;
   color: white;
+  border-radius: 0.5rem;
   transform: scale(1.1);
-  z-index: 2;
-  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+  z-index: 3;
+  box-shadow: 0 0 15px var(--primary);
 }
 
+/* Letras de palavras já encontradas */
 .letter-cell.found {
-  background: var(--success);
   color: white;
-  opacity: 0.9;
+  opacity: 1;
+  background: transparent !important;
 }
 
-/* If a cell is part of an already found word AND is currently being selected */
-.letter-cell.found.selected {
-  background: var(--primary);
-  opacity: 1;
+/* Camada dedicada para os traços, para não quebrar o CSS Grid */
+.highlights-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
 }
+
+/* ESTILO DO MARCA-TEXTO (Highlighter) */
+.word-highlight {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 100px;
+  opacity: 0.5;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: highlightPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+}
+
+@keyframes highlightPop {
+  0% { opacity: 0; }
+  100% { opacity: 0.5; }
+}
+
+/* 6 Cores Vibrantes para o Marca-texto */
+.word-color-0 { background-color: #ef4444; border-color: #ef4444; } 
+.word-color-1 { background-color: #3b82f6; border-color: #3b82f6; } 
+.word-color-2 { background-color: #10b981; border-color: #10b981; } 
+.word-color-3 { background-color: #f59e0b; border-color: #f59e0b; } 
+.word-color-4 { background-color: #8b5cf6; border-color: #8b5cf6; } 
+.word-color-5 { background-color: #ec4899; border-color: #ec4899; } 
 
 /* Animations */
 @keyframes popIn {
-  0% { transform: scale(0.8); opacity: 0; }
+  0% { transform: scale(0.5); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }
 }
 
 .letter-cell {
-  animation: popIn 0.3s ease-out backwards;
+  animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 60rem) { /* 960px approx */
+  .palavras-main-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  .palavras-sidebar {
+    width: 100%;
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .palavras-board-container {
+    margin: 0 auto;
+  }
+
+  .words-list-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-height: none;
+    width: 100%;
+  }
+
+  .theme-selector-container {
+    width: auto;
+  }
 }

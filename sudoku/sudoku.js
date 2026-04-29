@@ -24,6 +24,26 @@ class SudokuGame {
     }
 
     setupEventListeners() {
+        // Toggle Keyboard Logic
+        const keyboardWrapper = document.getElementById("keyboard-wrapper");
+        const btnFloatingKeyboard = document.getElementById("btn-floating-keyboard");
+        const btnCloseKeyboard = document.getElementById("btn-close-keyboard");
+
+        const toggleKeyboard = () => {
+            if (!keyboardWrapper || !btnFloatingKeyboard) return;
+            const isHidden = keyboardWrapper.classList.contains('hidden');
+            if (isHidden) {
+                keyboardWrapper.classList.remove('hidden');
+                btnFloatingKeyboard.classList.add('hidden');
+            } else {
+                keyboardWrapper.classList.add('hidden');
+                btnFloatingKeyboard.classList.remove('hidden');
+            }
+        };
+
+        if (btnFloatingKeyboard) btnFloatingKeyboard.onclick = toggleKeyboard;
+        if (btnCloseKeyboard) btnCloseKeyboard.onclick = toggleKeyboard;
+
         // Seleção de dificuldade
         document.querySelectorAll('.diff-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -87,23 +107,42 @@ class SudokuGame {
         if (btnCloseStats) btnCloseStats.addEventListener('click', () => statsModal.classList.remove('active'));
         if (btnCloseStatsX) btnCloseStatsX.addEventListener('click', () => statsModal.classList.remove('active'));
 
+        const btnCloseGameX = document.getElementById('btn-close-modal-x');
+        const gameModal = document.getElementById('game-modal');
+        if (btnCloseGameX) btnCloseGameX.addEventListener('click', () => gameModal.classList.remove('active'));
+
         // Clique fora para fechar modais
         window.addEventListener('click', (e) => {
-            if (e.target.classList.contains('modal-overlay')) {
-                e.target.classList.remove('active');
-            }
+            if (e.target === helpModal) helpModal.classList.remove('active');
+            if (e.target === statsModal) statsModal.classList.remove('active');
+            if (e.target === gameModal) gameModal.classList.remove('active');
         });
+
+        // Botão Novo Jogo persistente no header
+        const btnPersistentNew = document.getElementById('btn-persistent-new-game');
+        if (btnPersistentNew) {
+            btnPersistentNew.addEventListener('click', () => {
+                this.startNewGame();
+            });
+        }
     }
 
     startNewGame() {
         this.isGameOver = false;
         this.gameStarted = false;
-        this.lives = 3;
+        // Hide persistent new game button
+        const btnPersistentNew = document.getElementById('btn-persistent-new-game');
+        if (btnPersistentNew) btnPersistentNew.classList.remove('visible');
+
+        // 4 lives on hard, 3 otherwise
+        this.lives = this.difficulty === 'hard' ? 4 : 3;
+        const extraHeart = document.querySelector('.heart-extra');
+        if (extraHeart) extraHeart.style.display = this.difficulty === 'hard' ? '' : 'none';
         this.updateLivesUI();
         this.timer = 0;
         this.updateTimer();
         this.stopTimer();
-        
+
         this.generateBoard();
         this.renderBoard();
         this.updateNumpadStatus();
@@ -325,21 +364,16 @@ class SudokuGame {
             const text = document.getElementById('modal-text');
             const icon = document.getElementById('modal-icon');
             
+            if (icon) icon.innerHTML = ''; // Remove icon
             title.textContent = 'VITÓRIA!';
-            title.className = 'modal-title-win';
+            title.style.color = 'var(--success)';
             text.innerHTML = `Excelente! Você resolveu o Sudoku no modo <b>${this.difficulty.toUpperCase()}</b><br>Tempo final: <b>${this.formatTime(this.timer)}</b>`;
             
-            icon.innerHTML = `
-                <div class="modal-icon" style="background: rgba(16, 185, 129, 0.1); border-color: var(--success);">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                    </svg>
-                </div>
-            `;
-            
             modal.classList.add('active');
-            this.createConfetti();
+
+            // Show persistent new game button in header
+            const btnPersistentNew = document.getElementById('btn-persistent-new-game');
+            if (btnPersistentNew) btnPersistentNew.classList.add('visible');
         }, 500);
     }
 
@@ -354,21 +388,16 @@ class SudokuGame {
             const text = document.getElementById('modal-text');
             const icon = document.getElementById('modal-icon');
             
+            if (icon) icon.innerHTML = ''; // Remove icon
             title.textContent = 'GAME OVER';
-            title.className = 'modal-title-lose';
+            title.style.color = 'var(--error)';
             text.innerHTML = `Você cometeu muitos erros!<br>Nível: <b>${this.difficulty.toUpperCase()}</b>`;
             
-            icon.innerHTML = `
-                <div class="modal-icon" style="background: rgba(244, 63, 94, 0.1); border-color: var(--error);">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="15" y1="9" x2="9" y2="15"></line>
-                        <line x1="9" y1="9" x2="15" y2="15"></line>
-                    </svg>
-                </div>
-            `;
-            
             modal.classList.add('active');
+
+            // Show persistent new game button in header
+            const btnPersistentNew = document.getElementById('btn-persistent-new-game');
+            if (btnPersistentNew) btnPersistentNew.classList.add('visible');
         }, 500);
     }
 
@@ -385,19 +414,7 @@ class SudokuGame {
         });
     }
 
-    createConfetti() {
-        const container = document.getElementById('confetti-container');
-        if (!container) return;
-        container.innerHTML = '';
-        for (let i = 0; i < 50; i++) {
-            const confetti = document.createElement('div');
-            confetti.className = 'confetti';
-            confetti.style.left = Math.random() * 100 + '%';
-            confetti.style.animationDelay = Math.random() * 3 + 's';
-            confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 50%)`;
-            container.appendChild(confetti);
-        }
-    }
+
 
     startTimer() {
         this.stopTimer();

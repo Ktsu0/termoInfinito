@@ -5,12 +5,53 @@ function injectUI() {
     const diffContainer = document.getElementById('global-difficulty-selector');
     if (diffContainer) {
         diffContainer.outerHTML = `
-          <nav class="mode-selector" id="difficulty-selector">
-            <button class="btn btn-secondary active-mode diff-btn" data-level="easy" id="diff-easy">FÁCIL</button>
-            <button class="btn btn-secondary diff-btn" data-level="medium" id="diff-medium">MÉDIO</button>
-            <button class="btn btn-secondary diff-btn" data-level="hard" id="diff-hard">DIFÍCIL</button>
-          </nav>
+          <div class="diff-dropdown-container" id="difficulty-dropdown">
+            <button class="btn-outros-jogos diff-dropdown-trigger" id="diff-dropdown-btn" title="Dificuldade">
+              <span id="diff-current-label">FÁCIL</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="diff-chevron">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="diff-dropdown-menu" id="diff-dropdown-menu">
+              <button class="diff-dropdown-item active-mode diff-btn" data-level="easy" id="diff-easy">FÁCIL</button>
+              <button class="diff-dropdown-item diff-btn" data-level="medium" id="diff-medium">MÉDIO</button>
+              <button class="diff-dropdown-item diff-btn" data-level="hard" id="diff-hard">DIFÍCIL</button>
+            </div>
+          </div>
         `;
+        
+        // Add dropdown toggle logic
+        const diffBtn = document.getElementById('diff-dropdown-btn');
+        const diffMenu = document.getElementById('diff-dropdown-menu');
+        const diffLabel = document.getElementById('diff-current-label');
+
+        if (diffBtn && diffMenu) {
+            diffBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                diffMenu.classList.toggle('show');
+                diffBtn.classList.toggle('open');
+            });
+            
+            // Close when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!diffBtn.contains(e.target) && !diffMenu.contains(e.target)) {
+                    diffMenu.classList.remove('show');
+                    diffBtn.classList.remove('open');
+                }
+            });
+
+            // Update label when a difficulty is clicked
+            const diffBtns = diffMenu.querySelectorAll('.diff-btn');
+            diffBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    diffLabel.textContent = btn.textContent;
+                    diffBtns.forEach(b => b.classList.remove('active-mode'));
+                    btn.classList.add('active-mode');
+                    diffMenu.classList.remove('show');
+                    diffBtn.classList.remove('open');
+                });
+            });
+        }
     }
 
     const jogosContainer = document.getElementById('global-outros-jogos-modal');

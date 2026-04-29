@@ -399,7 +399,27 @@ class CrackTheCode {
   }
 
   setupEventListeners() {
-    // Difficulty buttons
+    // Keyboard Toggle
+    const keyboardWrapper = document.getElementById("keyboard-wrapper");
+    const btnFloatingKeyboard = document.getElementById("btn-floating-keyboard");
+    const btnCloseKeyboard = document.getElementById("btn-close-keyboard");
+
+    const toggleKeyboard = () => {
+      if (!keyboardWrapper || !btnFloatingKeyboard) return;
+      const isHidden = keyboardWrapper.classList.contains("hidden");
+      if (isHidden) {
+        keyboardWrapper.classList.remove("hidden");
+        btnFloatingKeyboard.classList.add("hidden");
+      } else {
+        keyboardWrapper.classList.add("hidden");
+        btnFloatingKeyboard.classList.remove("hidden");
+      }
+    };
+
+    if (btnFloatingKeyboard) btnFloatingKeyboard.onclick = toggleKeyboard;
+    if (btnCloseKeyboard) btnCloseKeyboard.onclick = toggleKeyboard;
+
+    // Difficulty buttons (uses dropdown from header)
     document.querySelectorAll(".diff-btn").forEach((btn) => {
       btn.onclick = () => {
         if (this.currentRow > 0 && !this.gameOver) {

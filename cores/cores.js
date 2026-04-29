@@ -14,9 +14,9 @@ class CoresGame {
 
     // Config per difficulty
     this.config = {
-      easy: { colors: 5, ballsPerTube: 4, time: 180 }, // 3:00
-      medium: { colors: 7, ballsPerTube: 4, time: 210 }, // 3:30
-      hard: { colors: 9, ballsPerTube: 4, time: 240 }, // 4:00
+      easy: { colors: 5, ballsPerTube: 4, time: 60 }, // 1:00
+      medium: { colors: 7, ballsPerTube: 4, time: 120 }, // 2:00
+      hard: { colors: 9, ballsPerTube: 4, time: 180 }, // 3:00
     };
 
     this.colorNames = [
@@ -117,10 +117,15 @@ class CoresGame {
       });
 
     // Close game modal X (if exists)
+    const gameModal = document.getElementById("game-modal");
     const btnCloseModalX = document.getElementById("btn-close-modal-x");
     if (btnCloseModalX)
       btnCloseModalX.addEventListener("click", () => {
-        document.getElementById("game-modal").classList.remove("active");
+        gameModal.classList.remove("active");
+      });
+    if (gameModal)
+      gameModal.addEventListener("click", (e) => {
+        if (e.target === gameModal) gameModal.classList.remove("active");
       });
   }
 
@@ -141,10 +146,15 @@ class CoresGame {
     // Generate tubes
     this.generateTubes(cfg.colors, cfg.ballsPerTube);
     this.render();
+    // Re-render after first paint so container has real clientHeight
+    requestAnimationFrame(() => this.render());
     this.updateInfoRow();
     this.setHint("Selecione um tubo para começar");
 
     document.getElementById("game-modal").classList.remove("active");
+
+    const btnHeaderNew = document.getElementById("btn-persistent-new-game");
+    if (btnHeaderNew) btnHeaderNew.classList.remove("visible");
   }
 
   generateTubes(numColors, ballsPerTube) {
@@ -191,29 +201,51 @@ class CoresGame {
     const cfg = this.config[this.difficulty];
     const ballsPerTube = cfg.ballsPerTube;
     const numTubes = this.tubes.length;
-    const isSmall = window.innerWidth < 480;
 
-    // Configurando tamanho das bolas e tubos (com limites máximos para não ficarem gigantes)
-    let ballSize;
+    // Columns used per difficulty
+    let colsUsed;
     if (this.difficulty === "easy") {
-      // 6 tubos na mesma linha
-      ballSize = isSmall
-        ? Math.min(34, Math.floor((window.innerWidth - 60) / numTubes - 8))
-        : 46;
+      colsUsed = numTubes; // all in 1 row
     } else if (this.difficulty === "medium") {
-      // 4 tubos por linha
-      ballSize = isSmall
-        ? Math.min(36, Math.floor((window.innerWidth - 60) / 4 - 10))
-        : 46;
+      colsUsed = 4; // 4-col grid → 2 rows
     } else {
-      // 5 tubos por linha
-      ballSize = isSmall
-        ? Math.min(32, Math.floor((window.innerWidth - 60) / 5 - 10))
-        : 42;
+      colsUsed = 5; // 5-col grid → 2 rows
     }
+    const numRows = Math.ceil(numTubes / colsUsed);
+
+    // --- Ball size from available WIDTH ---
+    const isMobile = window.innerWidth < 480;
+    const containerPx = Math.min(window.innerWidth * 0.95, 672);
+    const gapH = (colsUsed - 1) * (isMobile ? 8 : 16);
+    const padH = isMobile ? 16 : 32;
+    const maxSizeFromWidth = Math.floor((containerPx - gapH - padH) / colsUsed);
+
+    // --- Ball size from available HEIGHT ---
+    // Budget = container height divided equally among numRows, minus inter-row gap
+    const containerEl = document.getElementById("tubes-container");
+    const containerH = containerEl
+      ? containerEl.clientHeight || window.innerHeight * 0.6
+      : window.innerHeight * 0.6;
+    const rowGap = isMobile ? 8 : 16;          // px gap between rows
+    const padV = isMobile ? 16 : 32;           // container vertical padding (increased for safety)
+    const tubeOverhead = 16;                    // Cap (8px) + shell padding/border (~8px)
+    const ballGapV = 3;                         // Gap between balls (must match tubeHeight calc)
+    
+    // Height available per single row of tubes, minus safety margin
+    const rowH = (containerH - padV - (numRows - 1) * rowGap) / numRows;
+    const safetyMargin = 6; 
+    
+    // Each tube = ballsPerTube balls + gaps + overhead
+    const maxSizeFromHeight = Math.floor(
+      (rowH - safetyMargin - tubeOverhead - (ballsPerTube - 1) * ballGapV) / ballsPerTube
+    );
+
+    // Pick smaller of width/height constraints, cap at 56px, floor at 28px
+    let ballSize = Math.min(maxSizeFromWidth, maxSizeFromHeight, 56);
+    ballSize = Math.max(ballSize, isMobile ? 24 : 28); // Lowered floor slightly to prioritize fit
 
     const tubeWidth = ballSize + 8;
-    const tubeHeight = ballsPerTube * (ballSize + 3) + 12;
+    const tubeHeight = ballsPerTube * (ballSize + ballGapV) + 12; // 12px for cap/base buffer
 
     this.tubes.forEach((tube, index) => {
       const el = this.createTubeElement(
@@ -268,14 +300,6 @@ class CoresGame {
     shell.appendChild(ballsEl);
     wrapper.appendChild(cap);
     wrapper.appendChild(shell);
-
-    // Empty label
-    if (tube.length === 0) {
-      const lbl = document.createElement("div");
-      lbl.className = "tube-label";
-      lbl.textContent = "VAZIO";
-      wrapper.insertBefore(lbl, cap);
-    }
 
     // Check if tube is complete
     if (this.isTubeComplete(tube, ballsPerTube)) {
@@ -343,7 +367,7 @@ class CoresGame {
       if (this.canMove(this.selectedTube, index, ballsPerTube)) {
         this.moveBall(this.selectedTube, index, ballsPerTube);
       } else {
-        // Se não puder mover (ex: o tubo destino está cheio), em vez de dar erro, 
+        // Se não puder mover (ex: o tubo destino está cheio), em vez de dar erro,
         // nós trocamos a seleção para o novo tubo (se ele tiver bolas).
         if (this.tubes[index].length > 0) {
           this.selectedTube = index;
@@ -512,22 +536,18 @@ class CoresGame {
       const icon = document.getElementById("modal-icon");
 
       title.textContent = "VITÓRIA! 🎨";
-      title.className = "modal-title-win";
+      title.style.color = "var(--success)";
       text.innerHTML = `Incrível! Você organizou todas as cores!<br>
                 Nível: <b>${this.difficulty.toUpperCase()}</b> &nbsp;|&nbsp;
                 Movimentos: <b>${this.moves}</b> &nbsp;|&nbsp;
                 Tempo: <b>${this.formatTime(this.timeUsed())}</b>`;
 
-      icon.innerHTML = `
-                <div class="modal-icon" style="background: rgba(16, 185, 129, 0.1); border-color: var(--success);">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                    </svg>
-                </div>`;
+      if (icon) icon.innerHTML = "";
 
       modal.classList.add("active");
-      this.createConfetti();
+
+      const btnHeaderNew = document.getElementById("btn-persistent-new-game");
+      if (btnHeaderNew) btnHeaderNew.classList.add("visible");
     }, 600);
   }
 
@@ -543,51 +563,21 @@ class CoresGame {
       const icon = document.getElementById("modal-icon");
 
       title.textContent = "TEMPO ESGOTADO!";
-      title.className = "modal-title-lose";
+      title.style.color = "var(--error)";
       text.innerHTML = `O tempo acabou antes de organizar todas as cores.<br>
                 Nível: <b>${this.difficulty.toUpperCase()}</b> &nbsp;|&nbsp;
                 Tubos prontos: <b>${this.completedTubes} / ${this.config[this.difficulty].colors}</b>`;
 
-      icon.innerHTML = `
-                <div class="modal-icon" style="background: rgba(244, 63, 94, 0.1); border-color: var(--error);">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polyline points="12 6 12 12 16 14"></polyline>
-                    </svg>
-                </div>`;
+      if (icon) icon.innerHTML = "";
 
       modal.classList.add("active");
+
+      const btnHeaderNew = document.getElementById("btn-persistent-new-game");
+      if (btnHeaderNew) btnHeaderNew.classList.add("visible");
     }, 500);
   }
 
-  createConfetti() {
-    const container = document.getElementById("confetti-container");
-    if (!container) return;
-    container.innerHTML = "";
-    const colors = [
-      "#ff6b6b",
-      "#74b9ff",
-      "#55efc4",
-      "#ffeaa7",
-      "#a29bfe",
-      "#fdcb6e",
-      "#81ecec",
-      "#fd79a8",
-      "#b8e994",
-    ];
-    for (let i = 0; i < 60; i++) {
-      const c = document.createElement("div");
-      c.className = "confetti";
-      c.style.left = Math.random() * 100 + "%";
-      c.style.animationDelay = Math.random() * 3 + "s";
-      c.style.backgroundColor =
-        colors[Math.floor(Math.random() * colors.length)];
-      c.style.width = Math.random() * 8 + 5 + "px";
-      c.style.height = c.style.width;
-      c.style.borderRadius = Math.random() > 0.5 ? "50%" : "2px";
-      container.appendChild(c);
-    }
-  }
+
 
   // ─── STATS ────────────────────────────────────────────────────────────────
 

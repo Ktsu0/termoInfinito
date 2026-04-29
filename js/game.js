@@ -41,6 +41,7 @@ class TermoGame {
   }
 
   newGame(mode) {
+    this.gameId = Date.now();
     this.mode = parseInt(mode);
     localStorage.setItem("termo_mode", this.mode); // Salva a preferência
     this.rows = this.mode === 1 ? 6 : this.mode === 2 ? 7 : 9;
@@ -102,7 +103,12 @@ class TermoGame {
   }
 
   updateModeButtons() {
-    document.querySelectorAll(".mode-selector button").forEach((btn) => {
+    const modeLabel = document.getElementById("mode-current-label");
+    if (modeLabel) {
+      modeLabel.textContent = this.mode === 1 ? "SOLO" : this.mode === 2 ? "DUETO" : "QUARTETO";
+    }
+
+    document.querySelectorAll(".diff-dropdown-item").forEach((btn) => {
       btn.classList.toggle(
         "active-mode",
         parseInt(btn.dataset.mode) === this.mode,
@@ -202,6 +208,7 @@ class TermoGame {
 
   revealRows(guess, normalizedGuess) {
     const row = this.currentRow;
+    const currentGameId = this.gameId;
 
     for (let b = 0; b < this.mode; b++) {
       if (this.solvedBoards[b]) continue;
@@ -214,8 +221,10 @@ class TermoGame {
       for (let i = 0; i < this.cols; i++) {
         const tile = document.getElementById(`tile-${b}-${row}-${i}`);
         setTimeout(() => {
+          if (this.gameId !== currentGameId) return;
           tile.classList.add("flip");
           setTimeout(() => {
+            if (this.gameId !== currentGameId) return;
             tile.classList.add(result[i]);
             this.updateKey(guess[i], result[i]);
           }, 300);
@@ -225,8 +234,10 @@ class TermoGame {
       if (normalizedGuess === this.normalizedTargets[b]) {
         setTimeout(
           () => {
+            if (this.gameId !== currentGameId) return;
             this.solvedBoards[b] = true;
-            document.getElementById(`grid-${b}`).classList.add("solved");
+            const gridEl = document.getElementById(`grid-${b}`);
+            if (gridEl) gridEl.classList.add("solved");
           },
           this.cols * 150 + 400,
         );
@@ -239,6 +250,7 @@ class TermoGame {
 
     setTimeout(
       () => {
+        if (this.gameId !== currentGameId) return;
         const allSolved = this.solvedBoards.every((s) => s);
         if (allSolved) this.endGame(true);
         else if (this.currentRow === this.rows) this.endGame(false);
@@ -396,9 +408,50 @@ class TermoGame {
     document.getElementById("btn-stats-trigger").onclick = () =>
       this.showStats();
 
-    document.querySelectorAll(".mode-selector button").forEach((btn) => {
-      btn.onclick = () => this.newGame(btn.dataset.mode);
+    // Mode Dropdown Toggle Logic
+    const modeBtn = document.getElementById("mode-dropdown-btn");
+    const modeMenu = document.getElementById("mode-dropdown-menu");
+    if (modeBtn && modeMenu) {
+      modeBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        modeMenu.classList.toggle("show");
+        modeBtn.classList.toggle("open");
+      });
+      document.addEventListener("click", (e) => {
+        if (!modeBtn.contains(e.target) && !modeMenu.contains(e.target)) {
+          modeMenu.classList.remove("show");
+          modeBtn.classList.remove("open");
+        }
+      });
+    }
+
+    document.querySelectorAll(".diff-dropdown-item").forEach((btn) => {
+      btn.onclick = () => {
+        if (modeMenu) modeMenu.classList.remove("show");
+        if (modeBtn) modeBtn.classList.remove("open");
+        if (btn.dataset.mode) this.newGame(btn.dataset.mode);
+      };
     });
+
+    // Toggle Keyboard Logic
+    const keyboardWrapper = document.getElementById("keyboard-wrapper");
+    const btnFloatingKeyboard = document.getElementById("btn-floating-keyboard");
+    const btnCloseKeyboard = document.getElementById("btn-close-keyboard");
+
+    const toggleKeyboard = () => {
+      if (!keyboardWrapper || !btnFloatingKeyboard) return;
+      const isHidden = keyboardWrapper.classList.contains("hidden");
+      if (isHidden) {
+        keyboardWrapper.classList.remove("hidden");
+        btnFloatingKeyboard.classList.add("hidden");
+      } else {
+        keyboardWrapper.classList.add("hidden");
+        btnFloatingKeyboard.classList.remove("hidden");
+      }
+    };
+
+    if (btnFloatingKeyboard) btnFloatingKeyboard.onclick = toggleKeyboard;
+    if (btnCloseKeyboard) btnCloseKeyboard.onclick = toggleKeyboard;
 
     document.getElementById("btn-share").onclick = () => {
       const text = generateShareText(

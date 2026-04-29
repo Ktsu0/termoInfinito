@@ -1,14 +1,32 @@
+/* =============================================
+   SUDOKU – Layout principal
+   ============================================= */
 .sudoku-main-layout {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 0.75rem;
   width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 1rem;
+  flex: 1;
+  min-height: 0;
 }
 
+.sudoku-play-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.sudoku-grid-wrapper {
+  position: relative;
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Linha de controles (dificuldade + timer) */
 .conexo-controls-row {
   display: flex;
   align-items: center;
@@ -16,19 +34,23 @@
   gap: clamp(0.75rem, 2.5vw, 1.5rem);
   width: 100%;
   flex-wrap: wrap;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.5vh;
 }
 
+/* =============================================
+   GRID 9×9
+   ============================================= */
 .sudoku-grid-container {
   display: grid;
   grid-template-columns: repeat(9, 1fr);
-  width: 100%;
+  width: min(85vw, 70vh, 36rem);
   aspect-ratio: 1 / 1;
   background: var(--border);
-  border: 2px solid var(--primary);
-  border-radius: 0.5rem;
+  border: 0.2vmin solid var(--primary);
+  border-radius: 0.8rem;
   overflow: hidden;
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4), 0 0 30px rgba(99, 102, 241, 0.15);
+  flex-shrink: 0;
 }
 
 .sudoku-cell {
@@ -37,7 +59,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: clamp(0.75rem, 3.5vw, 1.4rem);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -45,16 +67,16 @@
   position: relative;
 }
 
-/* Bordas mais grossas para os blocos 3x3 */
+/* Bordas mais grossas para os blocos 3×3 */
 .sudoku-cell:nth-child(3n) {
-  border-right: 2px solid var(--primary);
+  border-right: 0.2vmin solid var(--primary);
 }
 .sudoku-cell:nth-child(9n) {
   border-right: none;
 }
 .sudoku-cell:nth-child(n+19):nth-child(-n+27),
 .sudoku-cell:nth-child(n+46):nth-child(-n+54) {
-  border-bottom: 2px solid var(--primary);
+  border-bottom: 0.2vmin solid var(--primary);
 }
 
 .sudoku-cell.fixed {
@@ -65,7 +87,7 @@
 
 .sudoku-cell.selected {
   background: rgba(99, 102, 241, 0.3);
-  box-shadow: inset 0 0 0 2px var(--primary);
+  box-shadow: inset 0 0 0 0.2vmin var(--primary);
   z-index: 2;
 }
 
@@ -79,20 +101,24 @@
 }
 
 .sudoku-cell.error {
-  color: var(--error);
-  background: rgba(244, 63, 94, 0.1);
+  color: #ff2d55;
+  background: rgba(255, 45, 85, 0.18);
+  text-shadow: 0 0 8px rgba(255, 45, 85, 0.6);
 }
 
 .sudoku-cell.user-value {
   color: var(--primary);
 }
 
-/* Teclado numérico */
+/* =============================================
+   TECLADO NUMÉRICO
+   ============================================= */
 .sudoku-numpad {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 0.5rem;
+  gap: clamp(0.25rem, 1vw, 0.5rem);
   width: 100%;
+  padding: 0 0.5rem 0.5rem;
 }
 
 .num-btn {
@@ -100,20 +126,21 @@
   border: 1px solid var(--border);
   color: var(--text);
   border-radius: 0.5rem;
-  padding: 1rem;
-  font-size: 1.2rem;
+  padding: clamp(0.5rem, 2vh, 1rem) 0;
+  font-size: clamp(0.9rem, 3vw, 1.2rem);
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  touch-action: manipulation;
 }
 
 .num-btn:hover {
   background: rgba(99, 102, 241, 0.2);
   border-color: var(--primary);
-  transform: translateY(-2px);
+  transform: translateY(-0.2vh);
 }
 
 .num-btn:active {
@@ -139,7 +166,9 @@
   box-shadow: none !important;
 }
 
-/* Cronômetro estilo Conexo */
+/* =============================================
+   TIMER (estilo Conexo)
+   ============================================= */
 .timer-section {
   display: flex;
   justify-content: center;
@@ -164,21 +193,13 @@
   white-space: nowrap;
 }
 
-@media (max-width: 480px) {
-  .sudoku-cell {
-    font-size: 1.2rem;
-  }
-  .num-btn {
-    padding: 0.75rem;
-    font-size: 1rem;
-  }
-}
-
-/* Sudoku Help Icons */
+/* =============================================
+   AJUDA – ícones
+   ============================================= */
 .sudoku-help-icon {
-  width: 2.5rem;
-  height: 2.5rem;
-  min-width: 2.5rem;
+  width: clamp(2rem, 6vw, 2.5rem);
+  height: clamp(2rem, 6vw, 2.5rem);
+  min-width: clamp(2rem, 6vw, 2.5rem);
   border-radius: 0.75rem;
   display: flex;
   align-items: center;
@@ -186,20 +207,27 @@
   flex-shrink: 0;
 }
 
-/* Vidas / Corações */
+/* =============================================
+   VIDAS / CORAÇÕES
+   ============================================= */
 .lives-container {
+  position: absolute;
+  left: calc(100% + clamp(1rem, 3vw, 2.5rem)); /* Offset to the right of the grid */
+  top: 0;
   display: flex;
-  justify-content: center;
-  gap: 1.2rem;
-  margin: 0.15rem 0 0.5rem;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: clamp(0.6rem, 2vh, 1.2rem);
+  padding-top: 0.5rem;
 }
 
 .heart-icon {
-  width: 2.8rem;
-  height: 2.8rem;
+  width: clamp(1.6rem, 4vw, 2.2rem);
+  height: clamp(1.6rem, 4vw, 2.2rem);
   object-fit: contain;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  filter: drop-shadow(0 0 8px rgba(244, 63, 94, 0.4));
+  filter: drop-shadow(0 0 0.5rem rgba(244, 63, 94, 0.4));
 }
 
 .heart-icon.dead {
@@ -207,15 +235,68 @@
   transform: scale(0.85);
 }
 
-/* Títulos dos Modais */
-.modal-title-win {
-  color: var(--success);
-  text-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
-  font-weight: 800;
+/* Result screen styles removed - using global component styles */
+
+/* =============================================
+   BREAKPOINTS RESPONSIVOS
+   ============================================= */
+
+/* ── Portrait compacto (< 430px de largura) ── */
+@media (max-width: 26.9rem) and (orientation: portrait) {
+  .sudoku-main-layout {
+    gap: 0.4vh;
+    padding: 0.3rem 1.5vw;
+  }
+
+  .num-btn {
+    padding: clamp(0.4rem, 1.5vh, 0.7rem) 0;
+  }
 }
 
-.modal-title-lose {
-  color: var(--error);
-  text-shadow: 0 0 15px rgba(244, 63, 94, 0.5);
-  font-weight: 800;
+/* ── Landscape: layout 2 colunas ─────────────
+   Esquerda: difficulty + timer + lives + numpad
+   Direita:  grid 9×9 (ocupa toda a altura)
+   ─────────────────────────────────────────── */
+/* Media queries removed to maintain absolute centering architecture across all screens */
+
+/* =============================================
+   TECLADO LATERAL (Sudoku - abre à esquerda)
+   ============================================= */
+.sudoku-keyboard-side {
+  position: absolute !important;
+  right: calc(100% + clamp(1.5rem, 4vw, 3.5rem)); /* Guaranteed gap to the left */
+  top: 0 !important;
+  left: auto !important; /* Reset global keyboard.css */
+  bottom: auto !important; /* Reset global keyboard.css */
+  transform: none !important; /* Reset global keyboard.css */
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  border-radius: 1.2rem !important;
+  border: 1px solid var(--glass-border) !important;
+  width: clamp(12rem, 22vw, 15rem) !important;
+  flex-shrink: 0;
+  background: var(--card-bg) !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important;
+  transition: opacity 0.3s ease !important;
+  z-index: 10;
+}
+
+.sudoku-keyboard-side.hidden {
+  display: none !important;
+}
+
+.sudoku-keyboard-side .sudoku-numpad {
+  grid-template-columns: repeat(2, 1fr);
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+
+.sudoku-keyboard-side .num-btn {
+  padding: 0.8rem 0;
+  font-size: 1.25rem;
+}
+
+.sudoku-keyboard-side .keyboard-header {
+  padding: 0.25rem 0.4rem;
 }

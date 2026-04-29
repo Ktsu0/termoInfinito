@@ -59,6 +59,7 @@ let timerInterval = null;
 let timeRemaining = 0;
 let isGameOver = false;
 let isTimerStarted = false;
+let currentGameId = 0;
 
 /**
  * Embaralha um array usando o algoritmo Fisher-Yates
@@ -135,8 +136,15 @@ function setupEventListeners() {
     statsModal.classList.remove("active");
   });
 
-  const closeGameX = document.getElementById("btn-close-modal-x");
-  if (closeGameX) closeGameX.onclick = () => gameModal.classList.remove("active");
+  const btnCloseModalX = document.getElementById("btn-close-modal-x");
+  if (btnCloseModalX)
+    btnCloseModalX.addEventListener("click", () => {
+      gameModal.classList.remove("active");
+    });
+  if (gameModal)
+    gameModal.addEventListener("click", (e) => {
+      if (e.target === gameModal) gameModal.classList.remove("active");
+    });
 
   const closeStatsX = document.getElementById("btn-close-stats-x");
   if (closeStatsX) closeStatsX.onclick = () => statsModal.classList.remove("active");
@@ -159,6 +167,7 @@ function setupEventListeners() {
 }
 
 function initGame(levelKey) {
+  currentGameId = Date.now();
   isGameOver = false;
   isTimerStarted = false;
   clearInterval(timerInterval);
@@ -311,7 +320,9 @@ function checkSelection() {
     selectedWords = [];
     showToast("TEMA ENCONTRADO!");
 
+    const checkId = currentGameId;
     setTimeout(() => {
+      if (checkId !== currentGameId) return;
       renderGrid();
 
       // Check win condition
@@ -354,21 +365,18 @@ function endGame(isWin) {
     );
 
     modalTitle.textContent = "VOCÊ VENCEU!";
-    modalTitle.className = "modal-title-win";
     modalTitle.style.color = "var(--success)";
     modalText.innerHTML = `Parabéns! Você encontrou todos os temas com <b>${updateTimerDisplayToString()}</b> restantes no nível ${getLevelName(currentLevel)}.`;
-    icon.innerHTML =
-      '<svg style="width: 3rem; height: 3rem; color: var(--success);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path></svg>';
-    createConfetti();
+    if (icon) icon.innerHTML = "";
+    // Removed confetti
+    // createConfetti();
   } else {
     diffStats.currentStreak = 0;
 
     modalTitle.textContent = "TEMPO ESGOTADO";
-    modalTitle.className = "modal-title-lose";
     modalTitle.style.color = "var(--error)";
     modalText.innerHTML = `As categorias que faltavam eram exibidas agora. Tente novamente no nível ${getLevelName(currentLevel)}!`;
-    icon.innerHTML =
-      '<svg style="width: 3rem; height: 3rem; color: var(--error);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path></svg>';
+    if (icon) icon.innerHTML = "";
     solveRemaining();
   }
 
@@ -381,23 +389,7 @@ function endGame(isWin) {
   }, 1000);
 }
 
-function createConfetti() {
-  const container = document.getElementById("confetti-container");
-  if (!container) return;
-  container.innerHTML = "";
-  const colors = ["#10b981", "#3b82f6", "#f59e0b", "#f43f5e", "#6366f1"];
-  for (let i = 0; i < 50; i++) {
-    const div = document.createElement("div");
-    div.className = "confetti";
-    div.style.left = Math.random() * 100 + "vw";
-    div.style.backgroundColor =
-      colors[Math.floor(Math.random() * colors.length)];
-    div.style.animationDelay = Math.random() * 4 + "s";
-    div.style.width = Math.random() * 1 + 0.5 + "vw";
-    div.style.height = div.style.width;
-    container.appendChild(div);
-  }
-}
+
 
 function updateTimerDisplayToString() {
   const m = Math.floor(timeRemaining / 60);

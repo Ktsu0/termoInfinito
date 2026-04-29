@@ -13,10 +13,10 @@
   z-index: 2000;
 }
 
-/* Fix grid spacing to avoid overlap with header when many rows exist */
+/* Sequence: let keyboard.css handle scroll/overflow logic */
 .boards-container {
-  padding-top: clamp(1.5rem, 5vh, 4rem) !important;
-  padding-bottom: clamp(1.5rem, 5vh, 3rem) !important;
+  padding-top: clamp(0.5rem, 2vh, 1.5rem);
+  padding-bottom: clamp(0.5rem, 2vh, 1.5rem);
 }
 
 /* Ensure controls don't overlap on mobile */
