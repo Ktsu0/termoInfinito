@@ -1,0 +1,297 @@
+/* CRUZADINHA CSS */
+
+.cruzadinha-main-layout {
+  display: grid;
+  grid-template-columns: clamp(15rem, 25vw, 22rem) 1fr;
+  align-items: flex-start;
+  gap: 2.5rem;
+  width: 100%;
+  max-width: min(98vw, 85rem);
+  margin: 0 auto;
+  padding: clamp(1rem, 3vh, 2rem);
+  flex: 1;
+  min-height: 0;
+  box-sizing: border-box;
+}
+
+/* BOTÃO NOVO JOGO NO HEADER - Escondido por padrão */
+.btn-header-new {
+  display: none;
+}
+
+.btn-header-new.visible {
+  display: flex !important;
+}
+
+/* SIDEBAR */
+.cruzadinha-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  position: sticky;
+  top: 0;
+}
+
+.theme-selector-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.theme-selector-container label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.theme-select {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border-radius: 1rem;
+  background: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--glass-border);
+  font-size: 0.95rem;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.5)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.25rem center;
+}
+
+/* Estilização para as opções do select */
+.theme-select option {
+  background-color: #1a1a2e; /* Cor sólida para não ficar branco feio */
+  color: white;
+  padding: 10px;
+}
+
+.theme-select:hover {
+  border-color: var(--primary);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.clues-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  background: var(--card-bg);
+  border-radius: 1.5rem;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-lg);
+  max-height: 60vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--glass-border) transparent;
+}
+
+.clues-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.clues-container::-webkit-scrollbar-thumb {
+  background: var(--glass-border);
+  border-radius: 10px;
+}
+
+.clues-container h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--primary);
+  text-align: center;
+}
+
+.clue-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem; /* Maior espaço entre Horizontal e Vertical */
+}
+
+.clue-section h4 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 1.25rem;
+  border-bottom: 2px solid rgba(var(--primary-rgb), 0.2);
+  padding-bottom: 0.5rem;
+  letter-spacing: 0.1em;
+  text-align: center; /* Centralizado como pedido */
+}
+
+.clue-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* PREMIUM HELP MODAL */
+.help-modal-premium {
+  max-width: 32rem !important;
+  text-align: left !important;
+}
+
+.help-modal-premium h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.help-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 1rem;
+  border: 1px solid var(--glass-border);
+}
+
+.step-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  background: var(--primary);
+  color: white;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 1.1rem;
+  box-shadow: 0 0 15px var(--primary-glow);
+}
+
+.help-step p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.clue-item {
+  font-size: 0.85rem;
+  line-height: 1.3;
+  color: var(--text);
+  padding: 0.65rem 0.85rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.clue-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.clue-item.active {
+  background: rgba(var(--primary-rgb), 0.15);
+  border-color: var(--primary);
+  color: white;
+}
+
+.clue-item.completed {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+/* BOARD */
+.cruzadinha-board-container {
+  display: grid;
+  margin: 0 auto;
+  padding: clamp(0.5rem, 2vw, 1.5rem);
+  background: var(--card-bg);
+  border-radius: 1.5rem;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-xl);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  width: fit-content;
+  max-width: 100%;
+  max-height: 85vh; /* Garante que não ultrapasse a tela */
+  overflow: auto; /* Habilita o scroll */
+  gap: 2px;
+  align-self: center;
+  scrollbar-width: none; /* Esconde scrollbar no Firefox */
+  -ms-overflow-style: none; /* Esconde scrollbar no IE/Edge */
+}
+
+.cruzadinha-board-container::-webkit-scrollbar {
+  display: none; /* Esconde scrollbar no Chrome/Safari */
+}
+
+.crossword-cell {
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text);
+  cursor: text;
+  transition: all 0.15s ease;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-sizing: border-box;
+}
+
+.crossword-cell.empty {
+  background: transparent;
+  border-color: transparent !important;
+  cursor: default;
+}
+
+.crossword-cell.active {
+  background: rgba(var(--primary-rgb), 0.2) !important;
+  border-color: var(--primary);
+  box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.3);
+}
+
+.crossword-cell.focused {
+  background: var(--primary) !important;
+  color: white;
+  transform: scale(1.05);
+  z-index: 2;
+  box-shadow: 0 0 15px var(--primary);
+}
+
+.crossword-cell.error {
+  color: #ef4444;
+}
+
+.cell-number {
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 65rem) {
+  .cruzadinha-main-layout {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+  
+  .cruzadinha-sidebar {
+    position: static;
+    max-width: 40rem;
+  }
+
+  .clues-container {
+    max-height: 40vh;
+  }
+}

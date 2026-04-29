@@ -479,8 +479,9 @@ class PalavrasGame {
     highlight.className = `word-highlight word-color-${colorIndex}`;
     
     // Tamanho do marcador baseado no tamanho real da célula
+    // Usamos um multiplicador maior (1.15) para garantir que cubra a letra totalmente, como um marca-texto
     const cellSize = startRect.width;
-    const pillHeight = cellSize * 0.9; // Um pouco menor que a célula para ficar dentro
+    const pillHeight = cellSize * 1.15; 
     
     // A largura total é a distância entre os centros + o diâmetro da pílula (para as pontas)
     highlight.style.width = `${dist + pillHeight}px`;

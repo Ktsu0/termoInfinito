@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cruzadinha - Antigravity Games</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/utils.css">
+    <link rel="stylesheet" href="../css/grid.css">
+    <link rel="stylesheet" href="cruzadinha.css">
+    <link rel="icon" href="../assets/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+  <body>
+    <div class="app-container">
+      <header>
+        <div class="header-left">
+          <button class="btn-outros-jogos" id="btn-outros-jogos" title="Outros Jogos">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+            Outros Jogos
+          </button>
+          <div id="global-difficulty-selector"></div>
+        </div>
+        <h1>CRUZADINHA</h1>
+        <div class="header-actions">
+          <button class="btn-header-new visible" id="btn-persistent-new-game">
+            Novo Jogo
+          </button>
+          <div id="game-timer" class="header-timer">00:00</div>
+          <button class="icon-button" id="btn-help-trigger" title="Como Jogar">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </button>
+          <button class="icon-button" id="btn-stats-trigger" title="Estatísticas">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="cruzadinha-main-layout">
+        
+        <aside class="cruzadinha-sidebar">
+          <div class="theme-selector-container">
+            <label for="theme-select">TEMA</label>
+            <select id="theme-select" class="theme-select">
+                <option value="random">🎲 Aleatório</option>
+                <option value="all">🔥 Tudo Misturado</option>
+                <option value="animais">🐶 Animais</option>
+                <option value="comidas">🍔 Comidas</option>
+                <option value="tecnologia">💻 Tecnologia</option>
+                <option value="escola">📚 Escola</option>
+                <option value="objetos">🪑 Objetos</option>
+                <option value="cinema">🎬 Cinema</option>
+                <option value="geografia">🌍 Geografia</option>
+                <option value="jogos">🎮 Jogos</option>
+                <option value="musica">🎵 Música</option>
+                <option value="esportes">⚽ Esportes</option>
+                <option value="viagem">✈️ Viagem</option>
+            </select>
+          </div>
+
+          <div class="clues-container">
+            <h3>DICAS</h3>
+            <div class="clue-sections">
+                <div class="clue-section">
+                    <h4>HORIZONTAIS</h4>
+                    <ul id="clues-horizontal" class="clue-list"></ul>
+                </div>
+                <div class="clue-section">
+                    <h4>VERTICAIS</h4>
+                    <ul id="clues-vertical" class="clue-list"></ul>
+                </div>
+            </div>
+          </div>
+        </aside>
+
+        <main class="cruzadinha-board-container" id="board-container">
+            <!-- Grid injected by JS -->
+        </main>
+
+      </div>
+
+      <div id="global-outros-jogos-modal"></div>
+      <div id="toast" class="toast"></div>
+    </div>
+
+    <!-- Modals -->
+    <div id="game-modal" class="modal-overlay">
+      <div class="modal" id="modal-content">
+        <button class="modal-close" id="btn-close-modal-x" aria-label="Fechar">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+        <h2 id="modal-title">VITÓRIA!</h2>
+        <div id="modal-icon"></div>
+        <p id="modal-text"></p>
+        <div class="modal-buttons">
+          <button id="btn-new-game-modal" class="modal-btn primary">Novo Jogo</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="help-modal" class="modal-overlay">
+        <div class="modal">
+            <h2>Como Jogar</h2>
+            <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">
+                Descubra as palavras ocultas no tabuleiro utilizando as dicas laterais. Preencha todos os campos e use sua lógica para encontrar possíveis erros.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="crossword-cell" style="width: 40px; height: 40px; font-size: 1.2rem; cursor: default; border: 1px solid rgba(255,255,255,0.2);">A</div>
+                    <span style="font-size: 0.85rem;">Preencha as células com as letras corretas.</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="crossword-cell active" style="width: 40px; height: 40px; font-size: 1.2rem; cursor: default; background: rgba(var(--primary-rgb), 0.2); border-color: var(--primary);">B</div>
+                    <span style="font-size: 0.85rem;">A palavra <b>selecionada</b> fica destacada em azul.</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="crossword-cell" style="width: 40px; height: 40px; font-size: 1.2rem; cursor: default; border: 1px solid rgba(255,255,255,0.2);">C</div>
+                    <span style="font-size: 0.85rem;">O jogo <b>não</b> avisa se a letra está errada!</span>
+                </div>
+            </div>
+            <button class="btn btn-primary" id="btn-close-help" style="width: 100%">
+              Entendido!
+            </button>
+        </div>
+    </div>
+
+    <div id="stats-modal" class="modal-overlay">
+        <div class="modal">
+            <h2>Estatísticas</h2>
+            <div class="stats-container">
+                <p style="text-align: center; color: var(--text-muted);">Estatísticas em breve!</p>
+            </div>
+            <button class="modal-btn primary" onclick="this.closest('.modal-overlay').classList.remove('active')">Fechar</button>
+        </div>
+    </div>
+
+    <script src="../js/ui-components.js"></script>
+    <script src="cruzadinha-data.js"></script>
+    <script src="cruzadinha.js"></script>
+</body>
+</html>
