@@ -430,11 +430,11 @@ class PalavrasGame {
       }
     }
 
-    // Cria ou limpa o container de highlights para não bugar o grid
+    // Cria ou limpa o container de highlights em SVG para os traços perfeitos
     let highlightsOverlay = this.boardContainer.querySelector('.highlights-overlay');
     if (!highlightsOverlay) {
-        highlightsOverlay = document.createElement('div');
-        highlightsOverlay.className = 'highlights-overlay';
+        highlightsOverlay = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        highlightsOverlay.setAttribute('class', 'highlights-overlay');
         this.boardContainer.appendChild(highlightsOverlay);
     }
     highlightsOverlay.innerHTML = '';
@@ -458,7 +458,7 @@ class PalavrasGame {
     
     if (!startEl || !endEl) return;
 
-    // Posições ultra-precisas usando BoundingClientRect
+    // Posições relativas ao container usando BoundingClientRect
     const containerRect = this.boardContainer.getBoundingClientRect();
     const startRect = startEl.getBoundingClientRect();
     const endRect = endEl.getBoundingClientRect();
@@ -468,33 +468,27 @@ class PalavrasGame {
     const endX = (endRect.left - containerRect.left) + endRect.width / 2;
     const endY = (endRect.top - containerRect.top) + endRect.height / 2;
 
-    // Centro exato entre as duas letras
-    const midX = (startX + endX) / 2;
-    const midY = (startY + endY) / 2;
-
-    const dist = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
-    const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
-
-    const highlight = document.createElement('div');
-    highlight.className = `word-highlight word-color-${colorIndex}`;
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', startX);
+    line.setAttribute('y1', startY);
+    line.setAttribute('x2', endX);
+    line.setAttribute('y2', endY);
     
+    // Cores correspondentes às suas classes antigas
+    const colors = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
+    const color = colors[colorIndex % colors.length];
+
     // Tamanho do marcador baseado no tamanho real da célula
-    // Usamos um multiplicador maior (1.15) para garantir que cubra a letra totalmente, como um marca-texto
-    const cellSize = startRect.width;
-    const pillHeight = cellSize * 1.15; 
+    const strokeWidth = startRect.width * 0.9; 
     
-    // A largura total é a distância entre os centros + o diâmetro da pílula (para as pontas)
-    highlight.style.width = `${dist + pillHeight}px`;
-    highlight.style.height = `${pillHeight}px`;
+    line.setAttribute('stroke', color);
+    line.setAttribute('stroke-width', strokeWidth);
+    line.setAttribute('stroke-linecap', 'round');
     
-    // Posiciona o CENTRO do marcador no CENTRO do caminho
-    highlight.style.left = `${midX}px`;
-    highlight.style.top = `${midY}px`;
+    // Reaproveita a classe CSS original para a animação fade-in
+    line.setAttribute('class', 'word-highlight');
     
-    // Centraliza e rotaciona
-    highlight.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
-    
-    highlightsOverlay.appendChild(highlight);
+    highlightsOverlay.appendChild(line);
   }
 
   renderWordsList() {
@@ -614,6 +608,49 @@ class PalavrasGame {
         allCells[index].classList.add("selected");
       }
     });
+
+    // Atualiza a linha de drag (marca-texto provisório enquanto arrasta)
+    const highlightsOverlay = this.boardContainer.querySelector('.highlights-overlay');
+    if (highlightsOverlay) {
+        const oldDragLine = highlightsOverlay.querySelector('.drag-line');
+        if (oldDragLine) oldDragLine.remove();
+
+        if (this.currentSelection.length >= 2) {
+            const start = this.currentSelection[0];
+            const end = this.currentSelection[this.currentSelection.length - 1];
+            
+            const startIdx = start.r * this.gridSize + start.c;
+            const endIdx = end.r * this.gridSize + end.c;
+            const startEl = allCells[startIdx];
+            const endEl = allCells[endIdx];
+
+            if (startEl && endEl) {
+                const containerRect = this.boardContainer.getBoundingClientRect();
+                const startRect = startEl.getBoundingClientRect();
+                const endRect = endEl.getBoundingClientRect();
+
+                const startX = (startRect.left - containerRect.left) + startRect.width / 2;
+                const startY = (startRect.top - containerRect.top) + startRect.height / 2;
+                const endX = (endRect.left - containerRect.left) + endRect.width / 2;
+                const endY = (endRect.top - containerRect.top) + endRect.height / 2;
+
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', startX);
+                line.setAttribute('y1', startY);
+                line.setAttribute('x2', endX);
+                line.setAttribute('y2', endY);
+                
+                // Usa a cor primária (roxo/azul) para a seleção com transparência
+                line.setAttribute('stroke', 'var(--primary)');
+                line.setAttribute('stroke-width', startRect.width * 0.9);
+                line.setAttribute('stroke-linecap', 'round');
+                line.setAttribute('opacity', '0.4');
+                line.setAttribute('class', 'drag-line');
+                
+                highlightsOverlay.appendChild(line);
+            }
+        }
+    }
   }
 
   checkSelection() {

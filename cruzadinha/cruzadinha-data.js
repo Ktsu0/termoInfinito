@@ -65,6 +65,86 @@ const CROSSWORD_THEMES = {
       word: "GOLFINHO",
       clue: "Mamífero marinho extremamente inteligente e sociável.",
     },
+    {
+      word: "CAPIVARA",
+      clue: "O maior roedor do mundo, símbolo de carisma e tranquilidade.",
+    },
+    {
+      word: "PANDA",
+      clue: "Urso chinês que se alimenta quase exclusivamente de bambu.",
+    },
+    {
+      word: "RINOCERONTE",
+      clue: "Grande mamífero herbívoro com um ou dois chifres no nariz.",
+    },
+    {
+      word: "TARTARUGA",
+      clue: "Réptil com carapaça conhecido pela longevidade e lentidão.",
+    },
+    {
+      word: "CANGURU",
+      clue: "Marsupial australiano famoso por seus saltos poderosos.",
+    },
+    {
+      word: "BALEIA",
+      clue: "O maior animal que já existiu no planeta.",
+    },
+    {
+      word: "ESQUILO",
+      clue: "Pequeno roedor que enterra sementes e tem cauda peluda.",
+    },
+    {
+      word: "CORUJA",
+      clue: "Ave de rapina noturna símbolo da sabedoria.",
+    },
+    {
+      word: "CROCODILO",
+      clue: "Grande réptil semiaquático com a mordida mais forte da natureza.",
+    },
+    {
+      word: "FLAMINGO",
+      clue: "Ave pernalta de cor rosa devido à sua alimentação.",
+    },
+    {
+      word: "ARARA",
+      clue: "Ave colorida da floresta tropical com bico forte para quebrar nozes.",
+    },
+    {
+      word: "MICO",
+      clue: "Pequeno primata brasileiro muito comum em matas urbanas.",
+    },
+    {
+      word: "JACARE",
+      clue: "Réptil comum no Pantanal brasileiro, parente do crocodilo.",
+    },
+    {
+      word: "TAMANDUA",
+      clue: "Animal que usa sua língua longa para comer formigas e cupins.",
+    },
+    {
+      word: "TATU",
+      clue: "Mamífero com armadura que se enrola para se proteger.",
+    },
+    {
+      word: "BORBOLETA",
+      clue: "Inseto que passa por uma metamorfose completa a partir de uma lagarta.",
+    },
+    {
+      word: "MORSA",
+      clue: "Grande mamífero marinho do Ártico com presas longas de marfim.",
+    },
+    {
+      word: "CISNE",
+      clue: "Ave aquática elegante famosa por sua fidelidade e beleza.",
+    },
+    {
+      word: "LOBO",
+      clue: "Canídeo selvagem que vive e caça em alcateias hierarquizadas.",
+    },
+    {
+      word: "RAPOSA",
+      clue: "Animal astuto da família dos cães, com cauda fofa e orelhas pontudas.",
+    },
   ],
   comidas: [
     { word: "GUACAMOLE", clue: "Iguaria mexicana feita à base de abacate." },
@@ -131,6 +211,102 @@ const CROSSWORD_THEMES = {
     {
       word: "PUDIM",
       clue: "Sobremesa de leite condensado com calda de caramelo.",
+    },
+    {
+      word: "COXINHA",
+      clue: "Salgado brasileiro frito recheado com frango desfiado.",
+    },
+    {
+      word: "FEIJOADA",
+      clue: "Prato brasileiro completo com feijão preto e carnes de porco.",
+    },
+    {
+      word: "TAPIOCA",
+      clue: "Iguaria de goma de mandioca, popular no café da manhã brasileiro.",
+    },
+    {
+      word: "LASANHA",
+      clue: "Massa italiana em camadas com queijo, presunto e molho.",
+    },
+    {
+      word: "PIZZA",
+      clue: "Disco de massa coberto com molho de tomate e queijo.",
+    },
+    {
+      word: "HAMBURGUER",
+      clue: "Sanduíche circular com carne grelhada e diversos acompanhamentos.",
+    },
+    {
+      word: "OMELETE",
+      clue: "Prato feito com ovos batidos e fritos na frigideira.",
+    },
+    {
+      word: "MOQUECA",
+      clue: "Cozido de peixe brasileiro feito em panela de barro.",
+    },
+    {
+      word: "BRIGADEIRO",
+      clue: "O doce de chocolate mais famoso das festas brasileiras.",
+    },
+    {
+      word: "SORVETE",
+      clue: "Sobremesa gelada e cremosa disponível em diversos sabores.",
+    },
+    {
+      word: "CANELONE",
+      clue: "Massa cilíndrica recheada e coberta com molho e queijo.",
+    },
+    {
+      word: "PAMONHA",
+      clue: "Pequeno pacote de massa de milho verde cozido.",
+    },
+    {
+      word: "PASTEL",
+      clue: "Massa frita crocante com recheios variados, clássico de feira.",
+    },
+    {
+      word: "CHURROS",
+      clue: "Massa frita alongada recheada com doce de leite.",
+    },
+    {
+      word: "ACARAGE",
+      clue: "Bolinho de feijão fradinho frito no dendê, típico da Bahia.",
+    },
+    {
+      word: "EMPADA",
+      clue: "Pequena torta de massa podre recheada com palmito ou frango.",
+    },
+    {
+      word: "GNOCCHI",
+      clue: "Pequenas bolinhas de massa de batata cozidas, servidas com molho.",
+    },
+    {
+      word: "CANJICA",
+      clue: "Doce de milho branco cozido com leite e canela.",
+    },
+    {
+      word: "MANDIOCA",
+      clue: "Raiz comestível muito versátil na culinária brasileira.",
+    },
+    {
+      word: "FAROFA",
+      clue: "Acompanhamento brasileiro de farinha de mandioca ou milho temperada.",
+    },
+    {
+      word: "WAFFLE",
+      clue: "Massa prensada entre duas placas quentes com relevo quadriculado.",
+    },
+    {
+      word: "CUPCAKE",
+      clue: "Pequeno bolo individual decorado e recheado.",
+    },
+    {
+      word: "YAKISOBA",
+      clue: "Macarrão frito japonês com legumes e carne ao molho shoyu.",
+    },
+    {
+      word: "TACO",
+      clue: "Tortilha de milho mexicana recheada com carne e temperos.",
     },
   ],
   tecnologia: [
@@ -266,6 +442,26 @@ const CROSSWORD_THEMES = {
     },
     { word: "RETORICA", clue: "A arte do convencimento através da fala." },
     { word: "PEDAGOGIA", clue: "Ciência que estuda os métodos de ensino." },
+    { word: "CADERNO", clue: "Objeto usado para fazer anotações nas aulas." },
+    { word: "LAPIS", clue: "Instrumento básico de escrita feito de grafite e madeira." },
+    { word: "BORRACHA", clue: "Usada para apagar erros cometidos com o lápis." },
+    { word: "MOCHILA", clue: "Bolsa usada para carregar livros e materiais escolares." },
+    { word: "RECREIO", clue: "Intervalo entre as aulas para descanso e lanche." },
+    { word: "PROFESSOR", clue: "Aquele que transmite conhecimento aos alunos." },
+    { word: "BIBLIOTECA", clue: "Local da escola onde ficam guardados os livros." },
+    { word: "CANETA", clue: "Instrumento de escrita que utiliza tinta." },
+    { word: "REGUA", clue: "Objeto usado para medir e traçar linhas retas." },
+    { word: "ESTOJO", clue: "Pequena bolsa para guardar lápis, canetas e borracha." },
+    { word: "APONTADOR", clue: "Usado para fazer a ponta do lápis." },
+    { word: "MERENDA", clue: "Refeição servida aos alunos durante o intervalo." },
+    { word: "QUADRO", clue: "Superfície onde o professor escreve a matéria." },
+    { word: "GIZ", clue: "Bastão de calcário usado para escrever no quadro negro." },
+    { word: "UNIFORME", clue: "Roupa padrão usada pelos estudantes da escola." },
+    { word: "EXAME", clue: "Avaliação formal do conhecimento do aluno." },
+    { word: "HISTORIA", clue: "Matéria que estuda os acontecimentos do passado." },
+    { word: "MATEMATICA", clue: "Matéria que estuda os números e cálculos." },
+    { word: "GEOGRAFIA", clue: "Matéria que estuda a Terra e suas características." },
+    { word: "ALUNO", clue: "Aquele que frequenta a escola para aprender." },
   ],
   objetos: [
     {

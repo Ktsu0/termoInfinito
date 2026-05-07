@@ -121,6 +121,14 @@ function injectUI() {
                 </div>
                 <span class="jogo-card-nome">CRUZADINHA</span>
               </div>
+              <div class="jogo-card" onclick="window.location.href='${prefix}secreta/secreta.html'" title="Jogar Palavra Secreta">
+                <div class="jogo-card-img jogo-card-secreta">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><path d="M11 8v2"></path><path d="M11 14h.01"></path>
+                  </svg>
+                </div>
+                <span class="jogo-card-nome">SECRETA</span>
+              </div>
             </div>
           </div>
         </div>
