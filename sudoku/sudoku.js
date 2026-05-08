@@ -379,7 +379,6 @@ class SudokuGame {
         const { r, c } = this.selectedCell;
         
         if (this.initialBoard[r][c] !== 0) return;
-        if (this.board[r][c] !== 0 && !this.draftMode && num !== 0) return; // cell already has definitive value
 
         if (!this.gameStarted) {
             this.gameStarted = true;

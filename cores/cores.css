@@ -95,8 +95,8 @@
 }
 
 .tubes-container.tubes-medium {
-  display: grid;
-  grid-template-columns: repeat(4, auto);
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-content: center;
   row-gap: clamp(0.5rem, 1.5vh, 1rem);
@@ -104,8 +104,8 @@
 }
 
 .tubes-container.tubes-hard {
-  display: grid;
-  grid-template-columns: repeat(5, auto);
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-content: center;
   row-gap: clamp(0.5rem, 1.5vh, 1rem);
@@ -386,9 +386,10 @@
   }
 
   .cores-info-row {
-    flex-direction: column;
+    flex-direction: row;
     gap: 0.4rem;
-    align-items: stretch;
+    align-items: center;
+    justify-content: center;
   }
 }
 

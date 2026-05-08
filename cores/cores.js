@@ -203,13 +203,14 @@ class CoresGame {
     const numTubes = this.tubes.length;
 
     // Columns used per difficulty
+    const isMobile = window.innerWidth < 480;
     let colsUsed;
     if (this.difficulty === "easy") {
-      colsUsed = numTubes; // all in 1 row
+      colsUsed = isMobile ? 3 : numTubes;
     } else if (this.difficulty === "medium") {
-      colsUsed = 4; // 4-col grid → 2 rows
+      colsUsed = isMobile ? 4 : 4; 
     } else {
-      colsUsed = 5; // 5-col grid → 2 rows
+      colsUsed = isMobile ? 4 : 5; 
     }
     const numRows = Math.ceil(numTubes / colsUsed);
 

@@ -397,6 +397,11 @@ class CruzadinhaGame {
 
         this.focusedCell = { r, c };
         this.updateSelectionVisuals();
+
+        // Foca o input invisível no mobile para abrir o teclado virtual
+        if (this.hiddenInput) {
+            this.hiddenInput.focus();
+        }
     }
 
     updateSelectionVisuals() {
@@ -561,6 +566,38 @@ class CruzadinhaGame {
 
         window.addEventListener('keydown', (e) => this.handleKeyDown(e));
         
+        // --- Virtual Keyboard Support for Mobile ---
+        this.hiddenInput = document.createElement('input');
+        this.hiddenInput.type = 'text';
+        this.hiddenInput.style.position = 'absolute';
+        this.hiddenInput.style.opacity = '0';
+        this.hiddenInput.style.pointerEvents = 'none';
+        this.hiddenInput.style.zIndex = '-1';
+        this.hiddenInput.setAttribute('autocapitalize', 'characters');
+        this.hiddenInput.setAttribute('autocomplete', 'off');
+        this.hiddenInput.setAttribute('autocorrect', 'off');
+        document.body.appendChild(this.hiddenInput);
+        
+        this.hiddenInput.addEventListener('input', (e) => {
+            if (this.isGameOver || !this.focusedCell) return;
+            const char = this.hiddenInput.value.slice(-1);
+            if (char && /[a-zA-ZáàâãéèêíïóôõöúçÑñ]/.test(char)) {
+                this.fillCell(char.toUpperCase());
+                this.moveFocus(1);
+            }
+            this.hiddenInput.value = ''; // reseta
+        });
+
+        // Captura o backspace nativo do mobile no input
+        this.hiddenInput.addEventListener('keydown', (e) => {
+            if (this.isGameOver || !this.focusedCell) return;
+            if (e.key === "Backspace") {
+                this.fillCell('');
+                this.moveFocus(-1);
+            }
+        });
+        // ------------------------------------------
+
         document.getElementById("btn-persistent-new-game").onclick = () => this.newGame();
         document.getElementById("btn-new-game-modal").onclick = () => {
             this.modal.classList.remove("active");
