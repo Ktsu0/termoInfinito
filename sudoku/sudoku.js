@@ -7,6 +7,7 @@ class SudokuGame {
         this.board = Array(9).fill().map(() => Array(9).fill(0));
         this.solution = Array(9).fill().map(() => Array(9).fill(0));
         this.initialBoard = Array(9).fill().map(() => Array(9).fill(0));
+        this.notes = Array(9).fill().map(() => Array(9).fill().map(() => new Set()));
         this.selectedCell = null;
         this.difficulty = 'easy';
         this.timer = 0;
@@ -14,6 +15,7 @@ class SudokuGame {
         this.gameStarted = false;
         this.lives = 3;
         this.isGameOver = false;
+        this.draftMode = false;
 
         this.init();
     }
@@ -35,9 +37,15 @@ class SudokuGame {
             if (isHidden) {
                 keyboardWrapper.classList.remove('hidden');
                 btnFloatingKeyboard.classList.add('hidden');
+                // Keyboard shown → hide floating draft btn
+                const fb = document.getElementById('btn-draft-mode-floating');
+                if (fb) fb.classList.add('draft-btn-hidden');
             } else {
                 keyboardWrapper.classList.add('hidden');
                 btnFloatingKeyboard.classList.remove('hidden');
+                // Keyboard hidden → show floating draft btn
+                const fb = document.getElementById('btn-draft-mode-floating');
+                if (fb) fb.classList.remove('draft-btn-hidden');
             }
         };
 
@@ -64,6 +72,16 @@ class SudokuGame {
             this.startNewGame();
         });
 
+        // Botões rascunho (no teclado e flutuante nas vidas)
+        const btnDraft = document.getElementById('btn-draft-mode');
+        if (btnDraft) {
+            btnDraft.addEventListener('click', () => this.toggleDraftMode());
+        }
+        const btnDraftFloating = document.getElementById('btn-draft-mode-floating');
+        if (btnDraftFloating) {
+            btnDraftFloating.addEventListener('click', () => this.toggleDraftMode());
+        }
+
         // Teclado numérico
         document.querySelectorAll('.num-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -84,6 +102,8 @@ class SudokuGame {
                 this.setCellValue(0);
             } else if (e.key.startsWith('Arrow')) {
                 this.moveSelection(e.key);
+            } else if (e.key.toLowerCase() === 'n') {
+                this.toggleDraftMode();
             }
         });
 
@@ -94,6 +114,8 @@ class SudokuGame {
 
         if (btnHelp) btnHelp.addEventListener('click', () => helpModal.classList.add('active'));
         if (btnCloseHelp) btnCloseHelp.addEventListener('click', () => helpModal.classList.remove('active'));
+        const btnCloseHelpX = document.getElementById('btn-close-help-x');
+        if (btnCloseHelpX) btnCloseHelpX.addEventListener('click', () => helpModal.classList.remove('active'));
 
         const btnStats = document.getElementById('btn-stats-trigger');
         const statsModal = document.getElementById('stats-modal');
@@ -130,6 +152,10 @@ class SudokuGame {
     startNewGame() {
         this.isGameOver = false;
         this.gameStarted = false;
+        this.draftMode = false;
+        this.notes = Array(9).fill().map(() => Array(9).fill().map(() => new Set()));
+        this.updateDraftUI();
+
         // Hide persistent new game button
         const btnPersistentNew = document.getElementById('btn-persistent-new-game');
         if (btnPersistentNew) btnPersistentNew.classList.remove('visible');
@@ -147,6 +173,17 @@ class SudokuGame {
         this.renderBoard();
         this.updateNumpadStatus();
         this.selectedCell = null;
+
+        // Sync floating draft button visibility with keyboard state
+        const kw = document.getElementById('keyboard-wrapper');
+        const fb = document.getElementById('btn-draft-mode-floating');
+        if (fb && kw) {
+            if (kw.classList.contains('hidden')) {
+                fb.classList.remove('draft-btn-hidden');
+            } else {
+                fb.classList.add('draft-btn-hidden');
+            }
+        }
     }
 
     generateBoard() {
@@ -222,6 +259,9 @@ class SudokuGame {
             for (let c = 0; c < 9; c++) {
                 const cell = document.createElement('div');
                 cell.className = 'sudoku-cell';
+                cell.dataset.row = r;
+                cell.dataset.col = c;
+
                 if (this.initialBoard[r][c] !== 0) {
                     cell.classList.add('fixed');
                     cell.textContent = this.initialBoard[r][c];
@@ -231,14 +271,51 @@ class SudokuGame {
                     if (this.board[r][c] !== this.solution[r][c]) {
                         cell.classList.add('error');
                     }
+                } else {
+                    this._renderNotesInCell(cell, r, c);
                 }
-                
-                cell.dataset.row = r;
-                cell.dataset.col = c;
                 
                 cell.addEventListener('click', () => this.selectCell(r, c));
                 container.appendChild(cell);
             }
+        }
+    }
+
+    _renderNotesInCell(cell, r, c) {
+        // Clear old notes
+        const existing = cell.querySelector('.notes-grid');
+        if (existing) existing.remove();
+
+        const noteSet = this.notes[r][c];
+        if (noteSet.size === 0) return;
+
+        const grid = document.createElement('div');
+        grid.className = 'notes-grid';
+        for (let n = 1; n <= 9; n++) {
+            const span = document.createElement('span');
+            span.className = 'note-num';
+            span.textContent = noteSet.has(n) ? n : '';
+            grid.appendChild(span);
+        }
+        cell.appendChild(grid);
+    }
+
+    _updateCellDOM(r, c) {
+        const cell = document.querySelector(`.sudoku-cell[data-row="${r}"][data-col="${c}"]`);
+        if (!cell) return;
+        // Clear content but keep classes
+        cell.textContent = '';
+        cell.innerHTML = '';
+        cell.classList.remove('user-value', 'error');
+
+        if (this.board[r][c] !== 0) {
+            cell.textContent = this.board[r][c];
+            cell.classList.add('user-value');
+            if (this.board[r][c] !== this.solution[r][c]) {
+                cell.classList.add('error');
+            }
+        } else {
+            this._renderNotesInCell(cell, r, c);
         }
     }
 
@@ -277,36 +354,110 @@ class SudokuGame {
         });
     }
 
+    toggleDraftMode() {
+        this.draftMode = !this.draftMode;
+        this.updateDraftUI();
+    }
+
+    updateDraftUI() {
+        const btn = document.getElementById('btn-draft-mode');
+        const btnF = document.getElementById('btn-draft-mode-floating');
+        const container = document.getElementById('sudoku-container');
+        if (this.draftMode) {
+            if (btn)  { btn.classList.add('draft-active');  btn.title  = 'Rascunho ATIVADO (N)'; }
+            if (btnF) { btnF.classList.add('draft-active'); btnF.title = 'Rascunho ATIVADO (N)'; }
+            if (container) container.classList.add('draft-mode-active');
+        } else {
+            if (btn)  { btn.classList.remove('draft-active');  btn.title  = 'Rascunho (N)'; }
+            if (btnF) { btnF.classList.remove('draft-active'); btnF.title = 'Rascunho (N)'; }
+            if (container) container.classList.remove('draft-mode-active');
+        }
+    }
+
     setCellValue(num) {
         if (!this.selectedCell || this.isGameOver) return;
         const { r, c } = this.selectedCell;
         
         if (this.initialBoard[r][c] !== 0) return;
+        if (this.board[r][c] !== 0 && !this.draftMode && num !== 0) return; // cell already has definitive value
 
         if (!this.gameStarted) {
             this.gameStarted = true;
             this.startTimer();
         }
-        
+
+        // --- DRAFT MODE ---
+        if (this.draftMode && num !== 0) {
+            // Only allow notes on empty cells
+            if (this.board[r][c] !== 0) return;
+            const noteSet = this.notes[r][c];
+            if (noteSet.has(num)) {
+                noteSet.delete(num);
+            } else {
+                noteSet.add(num);
+            }
+            this._updateCellDOM(r, c);
+            this.updateHighlights();
+            return;
+        }
+
+        // --- DEFINITIVE MODE ---
+        // Erase
+        if (num === 0) {
+            this.board[r][c] = 0;
+            this.notes[r][c].clear();
+            this._updateCellDOM(r, c);
+            this.updateHighlights();
+            this.updateNumpadStatus();
+            return;
+        }
+
         this.board[r][c] = num;
-        const cell = document.querySelector(`.sudoku-cell[data-row="${r}"][data-col="${c}"]`);
-        cell.textContent = num === 0 ? '' : num;
-        cell.classList.toggle('user-value', num !== 0);
+        // Remove this number from notes in same row, col, box
+        this._clearNoteFromPeers(r, c, num);
+        // Also clear this cell's own notes
+        this.notes[r][c].clear();
+        
+        this._updateCellDOM(r, c);
         
         if (num !== 0 && num !== this.solution[r][c]) {
-            cell.classList.add('error');
             this.lives--;
             this.updateLivesUI();
             if (this.lives <= 0) {
                 this.onLose();
             }
-        } else {
-            cell.classList.remove('error');
         }
         
         this.updateHighlights();
         this.updateNumpadStatus();
         this.checkWin();
+    }
+
+    _clearNoteFromPeers(r, c, num) {
+        const boxR = Math.floor(r / 3) * 3;
+        const boxC = Math.floor(c / 3) * 3;
+        for (let i = 0; i < 9; i++) {
+            // Row
+            if (this.notes[r][i].has(num)) {
+                this.notes[r][i].delete(num);
+                if (this.board[r][i] === 0) this._updateCellDOM(r, i);
+            }
+            // Col
+            if (this.notes[i][c].has(num)) {
+                this.notes[i][c].delete(num);
+                if (this.board[i][c] === 0) this._updateCellDOM(i, c);
+            }
+        }
+        // Box
+        for (let dr = 0; dr < 3; dr++) {
+            for (let dc = 0; dc < 3; dc++) {
+                const nr = boxR + dr, nc = boxC + dc;
+                if (this.notes[nr][nc].has(num)) {
+                    this.notes[nr][nc].delete(num);
+                    if (this.board[nr][nc] === 0) this._updateCellDOM(nr, nc);
+                }
+            }
+        }
     }
 
     updateNumpadStatus() {

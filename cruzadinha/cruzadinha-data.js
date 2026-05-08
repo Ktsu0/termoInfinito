@@ -523,6 +523,40 @@ const CROSSWORD_THEMES = {
     },
     { word: "GUARDACHUVA", clue: "Objeto usado para se proteger da chuva." },
     { word: "FONE", clue: "Aparelho usado nos ouvidos para escutar música." },
+    {
+      word: "MARTELO",
+      clue: "Ferramenta usada para pregar pregos ou quebrar objetos.",
+    },
+    {
+      word: "ALICATE",
+      clue: "Ferramenta usada para segurar, apertar ou cortar fios.",
+    },
+    {
+      word: "PARAFUSADEIRA",
+      clue: "Máquina elétrica usada para apertar ou soltar parafusos.",
+    },
+    { word: "SERROTE", clue: "Ferramenta de corte com dentes para madeira." },
+    { word: "TRENA", clue: "Fita métrica flexível usada para medições." },
+    {
+      word: "NIVEL",
+      clue: "Instrumento para verificar se uma superfície está plana.",
+    },
+    {
+      word: "FURADEIRA",
+      clue: "Máquina usada para fazer furos em diversas superfícies.",
+    },
+    {
+      word: "LIXADEIRA",
+      clue: "Máquina usada para dar acabamento liso em superfícies.",
+    },
+    {
+      word: "CHAVE",
+      clue: "Objeto usado para abrir fechaduras ou apertar porcas.",
+    },
+    {
+      word: "BATERIA",
+      clue: "Dispositivo que armazena energia para aparelhos eletrônicos.",
+    },
   ],
   cinema: [
     {
@@ -563,6 +597,28 @@ const CROSSWORD_THEMES = {
     { word: "CINEMA", clue: "Local onde filmes são exibidos." },
     { word: "TELA", clue: "Superfície onde o filme é projetado." },
     { word: "CLAQUETE", clue: "Objeto usado para marcar início das cenas." },
+    { word: "OSCAR", clue: "O prêmio mais famoso da indústria do cinema." },
+    {
+      word: "PREMIACAO",
+      clue: "Evento onde atores e filmes recebem troféus.",
+    },
+    { word: "ESTRELA", clue: "Ator ou atriz de grande fama e sucesso." },
+    {
+      word: "PRODUCAO",
+      clue: "Conjunto de processos e recursos para criar um filme.",
+    },
+    { word: "CRITICA", clue: "Análise detalhada sobre a qualidade de um filme." },
+    { word: "ESTUDIO", clue: "Local preparado onde os filmes são gravados." },
+    {
+      word: "DUBLADOR",
+      clue: "Pessoa que faz a voz de personagens em outro idioma.",
+    },
+    { word: "FIGURINO", clue: "Conjunto de roupas e acessórios usados pelos atores." },
+    {
+      word: "MAQUIAGEM",
+      clue: "Arte de transformar o rosto e corpo dos atores para o papel.",
+    },
+    { word: "PIPOCA", clue: "Lanche clássico consumido durante as sessões de filme." },
   ],
   geografia: [
     {
@@ -591,6 +647,25 @@ const CROSSWORD_THEMES = {
     { word: "URBANO", clue: "Relativo à cidade." },
     { word: "RURAL", clue: "Relativo ao campo." },
     { word: "CAPITAL", clue: "Cidade principal de um país ou estado." },
+    { word: "VULCAO", clue: "Abertura na terra que expele lava, gases e cinzas." },
+    { word: "TERREMOTO", clue: "Tremor repentino e intenso da superfície da terra." },
+    { word: "FURACAO", clue: "Ciclone tropical com ventos circulares muito fortes." },
+    { word: "MEANDRO", clue: "Curva acentuada feita por um rio em terreno plano." },
+    { word: "ESTUARIO", clue: "Local largo onde o rio se encontra com o mar." },
+    { word: "DELTA", clue: "Foz de um rio dividida em vários canais em leque." },
+    {
+      word: "PENINSULA",
+      clue: "Extensão de terra cercada por água quase por todos os lados.",
+    },
+    {
+      word: "ARQUIPELAGO",
+      clue: "Conjunto de ilhas localizadas próximas umas das outras.",
+    },
+    {
+      word: "CORDILHEIRA",
+      clue: "Grande cadeia de montanhas ligadas entre si.",
+    },
+    { word: "ABISMO", clue: "Fenda muito profunda na terra ou no fundo do oceano." },
   ],
   jogos: [
     { word: "CONTROLE", clue: "Dispositivo usado para jogar videogame." },
@@ -613,6 +688,31 @@ const CROSSWORD_THEMES = {
     { word: "LOOT", clue: "Itens obtidos durante o jogo." },
     { word: "ARENA", clue: "Local de combate entre jogadores." },
     { word: "RESPAWN", clue: "Retorno ao jogo após ser derrotado." },
+    { word: "CONSOLE", clue: "Aparelho dedicado a rodar jogos eletrônicos." },
+    { word: "JOYSTICK", clue: "Alavanca ou controle usado para comandar jogos." },
+    {
+      word: "GAMEPLAY",
+      clue: "Experiência de jogo e as mecânicas de interação envolvidas.",
+    },
+    {
+      word: "SPEEDRUN",
+      clue: "Ato de tentar terminar um jogo o mais rápido possível.",
+    },
+    { word: "GLITCH", clue: "Falha técnica ou erro visual temporário em um jogo." },
+    {
+      word: "EASTEREGG",
+      clue: "Segredo ou referência escondida pelos desenvolvedores.",
+    },
+    { word: "HARDWARE", clue: "Parte física dos computadores ou consoles de jogos." },
+    { word: "SOFTWARE", clue: "Os programas e jogos que rodam no hardware." },
+    {
+      word: "STREAMER",
+      clue: "Pessoa que transmite suas partidas ao vivo na internet.",
+    },
+    {
+      word: "ESPORTS",
+      clue: "Competições profissionais organizadas de jogos eletrônicos.",
+    },
   ],
   musica: [
     { word: "MELODIA", clue: "Sequência de notas musicais agradáveis." },
@@ -635,6 +735,28 @@ const CROSSWORD_THEMES = {
     { word: "MICROFONE", clue: "Equipamento que capta som." },
     { word: "PLAYLIST", clue: "Lista de músicas." },
     { word: "DJ", clue: "Profissional que mistura músicas." },
+    {
+      word: "COMPOSITOR",
+      clue: "Pessoa que escreve e cria a música original.",
+    },
+    { word: "MAESTRO", clue: "Regente que comanda uma orquestra ou coro." },
+    {
+      word: "ORQUESTRA",
+      clue: "Grande conjunto de músicos que tocam diversos instrumentos.",
+    },
+    { word: "PARTITURA", clue: "Registro escrito de uma composição musical." },
+    { word: "SINFONIA", clue: "Composição musical longa e complexa para orquestra." },
+    { word: "OPERA", clue: "Gênero artístico que combina música, canto e teatro." },
+    {
+      word: "FESTIVAL",
+      clue: "Evento com várias apresentações musicais em sequência.",
+    },
+    {
+      word: "AMPLIFICADOR",
+      clue: "Equipamento que aumenta a intensidade do som eletrônico.",
+    },
+    { word: "GUITARRA", clue: "Instrumento de cordas elétrico muito usado no rock." },
+    { word: "FLAUTA", clue: "Instrumento de sopro que produz som doce e agudo." },
   ],
   esportes: [
     { word: "FUTEBOL", clue: "Esporte jogado com os pes usando uma bola." },
@@ -657,6 +779,34 @@ const CROSSWORD_THEMES = {
     { word: "PENALTI", clue: "Cobranca direta ao gol no futebol." },
     { word: "CARTAO", clue: "Advertencia no futebol." },
     { word: "JOGADOR", clue: "Participante de uma partida." },
+    {
+      word: "GINASTICA",
+      clue: "Esporte que envolve exercícios de força e flexibilidade.",
+    },
+    {
+      word: "ATLETISMO",
+      clue: "Conjunto de esportes como corrida, saltos e arremessos.",
+    },
+    { word: "CICLISMO", clue: "Esporte praticado com o uso de bicicletas." },
+    {
+      word: "SURFE",
+      clue: "Esporte de deslizar nas ondas do mar com uma prancha.",
+    },
+    {
+      word: "JUDO",
+      clue: "Arte marcial japonesa focada em usar a força do oponente.",
+    },
+    { word: "KARATE", clue: "Arte marcial que utiliza golpes de mãos e pés." },
+    { word: "BOXE", clue: "Esporte de combate onde se usa apenas os punhos." },
+    { word: "ESGRIMA", clue: "Esporte de combate com espadas, floretes ou sabres." },
+    {
+      word: "CANOAGEM",
+      clue: "Esporte praticado em barcos pequenos usando remos.",
+    },
+    {
+      word: "GOLFE",
+      clue: "Esporte de precisão onde se tenta acertar a bola em buracos.",
+    },
   ],
   viagem: [
     { word: "PASSAGEM", clue: "Bilhete para viajar." },
@@ -679,5 +829,33 @@ const CROSSWORD_THEMES = {
     { word: "CAMBIO", clue: "Troca de moeda." },
     { word: "GUIATURISTICO", clue: "Material com informacoes de viagem." },
     { word: "PASSEIO", clue: "Atividade de lazer durante a viagem." },
+    { word: "CRUZEIRO", clue: "Viagem de lazer e férias feita em um grande navio." },
+    {
+      word: "POUSADA",
+      clue: "Estabelecimento de hospedagem mais simples e aconchegante.",
+    },
+    {
+      word: "HOSTEL",
+      clue: "Alojamento econômico com quartos e áreas compartilhadas.",
+    },
+    { word: "MOEDA", clue: "Tipo de dinheiro usado em um país ou região específica." },
+    { word: "SOUVENIR", clue: "Pequena lembrança comprada durante uma viagem." },
+    {
+      word: "CONEXAO",
+      clue: "Parada entre dois voos para troca de avião rumo ao destino.",
+    },
+    {
+      word: "ESCALA",
+      clue: "Parada técnica de um avião sem que o passageiro troque de aeronave.",
+    },
+    { word: "TURISTA", clue: "Pessoa que viaja para lugares diferentes por lazer." },
+    {
+      word: "PASSAPORTE",
+      clue: "Documento oficial necessário para viagens internacionais.",
+    },
+    {
+      word: "INTERCAMBIO",
+      clue: "Viagem com o objetivo de estudar e aprender uma nova cultura.",
+    },
   ],
 };

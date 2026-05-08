@@ -81,6 +81,12 @@
                     <line x1="12" y1="9" x2="18" y2="15"></line>
                   </svg>
                 </button>
+                <button class="num-btn draft-btn" id="btn-draft-mode" title="Rascunho (N)">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9"/>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                  </svg>
+                </button>
               </div>
             </div>
 
@@ -95,6 +101,13 @@
               <img src="../assets/heart.webp" class="heart-icon" alt="Vida">
               <img src="../assets/heart.webp" class="heart-icon" alt="Vida">
               <img src="../assets/heart.webp" class="heart-icon heart-extra" alt="Vida" style="display:none">
+              <!-- Botão de rascunho flutuante: visivel quando o teclado virtual está oculto -->
+              <button class="num-btn draft-btn draft-btn-floating" id="btn-draft-mode-floating" title="Rascunho (N)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 20h9"/>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                </svg>
+              </button>
             </div>
 
           </div>
@@ -127,34 +140,84 @@
     </div>
 
     <div id="help-modal" class="modal-overlay">
-      <div class="modal">
-          <h2>Como Jogar SUDOKU</h2>
-          <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">
-              Preencha o grid 9x9 com números de 1 a 9 seguindo as regras bÃ¡sicas:
-          </p>
-          <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px;">
-              <div style="display: flex; align-items: center; gap: 12px;">
-                  <div class="sudoku-help-icon" style="background: rgba(99, 102, 241, 0.2); color: var(--primary);">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12h18M12 3v18"/></svg>
-                  </div>
-                  <span style="font-size: 0.85rem;">Cada <b>linha</b> e <b>coluna</b> deve ter todos os números de 1 a 9.</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 12px;">
-                  <div class="sudoku-help-icon" style="background: rgba(16, 185, 129, 0.2); color: var(--success);">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>
-                  </div>
-                  <span style="font-size: 0.85rem;">Cada <b>bloco 3x3</b> (contornado em azul) também deve ter de 1 a 9.</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 12px;">
-                  <div class="sudoku-help-icon" style="background: rgba(244, 63, 94, 0.2); color: var(--error);">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                  </div>
-                  <span style="font-size: 0.85rem;">Se o número ficar <b>vermelho</b>, ele está na posição errada!</span>
-              </div>
+      <div class="modal modal-help-sudoku">
+        <button class="modal-close" id="btn-close-help-x" aria-label="Fechar">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+
+        <!-- Cabeçalho -->
+        <div class="help-header">
+          <div class="help-header-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
           </div>
-          <button class="btn btn-primary" id="btn-close-help" style="width: 100%">
-            Entendido!
-          </button>
+          <div>
+            <h2 class="help-title">Como Jogar Sudoku</h2>
+            <p class="help-subtitle">Preencha o grid 9×9 com números de 1 a 9</p>
+          </div>
+        </div>
+
+        <!-- Seção: Regras -->
+        <div class="help-section-label">📋 Regras</div>
+        <div class="help-cards">
+          <div class="help-card help-card--purple">
+            <div class="help-card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12h18M12 3v18"/></svg>
+            </div>
+            <div class="help-card-body">
+              <strong>Linhas e Colunas</strong>
+              <span>Cada linha e coluna deve conter <em>todos</em> os números de 1 a 9, sem repetição.</span>
+            </div>
+          </div>
+
+          <div class="help-card help-card--green">
+            <div class="help-card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>
+            </div>
+            <div class="help-card-body">
+              <strong>Blocos 3×3</strong>
+              <span>Cada um dos 9 blocos 3×3 (destacados em azul) também deve ter todos os números de 1 a 9.</span>
+            </div>
+          </div>
+
+          <div class="help-card help-card--red">
+            <div class="help-card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div class="help-card-body">
+              <strong>Erros custam vidas ❤️</strong>
+              <span>Se um número ficar <span style="color:#ff2d55;font-weight:700;">vermelho</span>, está errado. Você perde uma vida a cada erro.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seção: Rascunho -->
+        <div class="help-section-label">✏️ Modo Rascunho</div>
+        <div class="help-card help-card--yellow help-card--wide">
+          <div class="help-card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+          <div class="help-card-body">
+            <strong>Anote candidatos</strong>
+            <span>Ative o rascunho para anotar números possíveis em uma célula <em>sem confirmar</em>. Essencial no modo difícil!</span>
+            <div class="help-shortcuts">
+              <span class="help-shortcut-pill">Botão ✏️ no teclado</span>
+              <span class="help-shortcut-pill"><kbd>N</kbd> &nbsp;toggle rápido</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seção: Atalhos -->
+        <div class="help-section-label">⌨️ Atalhos de Teclado</div>
+        <div class="help-keys-grid">
+          <div class="help-key-item"><kbd>1</kbd> – <kbd>9</kbd><span>Inserir número</span></div>
+          <div class="help-key-item"><kbd>Del</kbd><span>Apagar célula</span></div>
+          <div class="help-key-item"><kbd>N</kbd><span>Rascunho</span></div>
+          <div class="help-key-item"><kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd><span>Navegar</span></div>
+        </div>
+
+        <button class="btn btn-primary" id="btn-close-help" style="width:100%; margin-top:0.5rem;">
+          Entendido!
+        </button>
       </div>
     </div>
 
