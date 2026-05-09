@@ -38,12 +38,16 @@ export function resetKeyboardDOM(container) {
     btn.classList.remove("correct", "present", "absent");
   });
 }
-export function buildKeyboardDOM(container, handleInputCallback) {
+export function buildKeyboardDOM(container, handleInputCallback, includeNumbers = false) {
   const layout = [
     ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
     ["A", "S", "D", "F", "G", "H", "J", "K", "L", "Ç"],
     ["ENTER", "Z", "X", "C", "V", "B", "N", "M", "BKSP"],
   ];
+
+  if (includeNumbers) {
+    layout.unshift(["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]);
+  }
 
   container.innerHTML = "";
   layout.forEach((rowArr) => {

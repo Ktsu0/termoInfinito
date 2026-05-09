@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/utils.css">
     <link rel="stylesheet" href="../css/grid.css">
+    <link rel="stylesheet" href="../css/keyboard.css">
     <link rel="stylesheet" href="cruzadinha.css">
     <link rel="icon" href="../assets/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -94,6 +95,25 @@
 
       <div id="global-outros-jogos-modal"></div>
       <div id="toast" class="toast"></div>
+
+      <!-- Teclado Virtual -->
+      <div id="keyboard-wrapper" class="keyboard-wrapper hidden">
+        <div class="keyboard-header">
+          <button id="btn-close-keyboard" class="btn-close-keyboard" title="Ocultar Teclado">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <section id="keyboard" class="keyboard"></section>
+      </div>
+
+      <button id="btn-floating-keyboard" class="btn-floating-keyboard" title="Mostrar Teclado">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+      </button>
     </div>
 
     <!-- Modals -->
@@ -148,7 +168,6 @@
     </div>
 
     <script src="../js/ui-components.js"></script>
-    <script src="cruzadinha-data.js"></script>
-    <script src="cruzadinha.js"></script>
+    <script type="module" src="cruzadinha.js"></script>
 </body>
 </html>

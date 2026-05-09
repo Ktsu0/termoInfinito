@@ -1,10 +1,10 @@
 function injectUI() {
-    const isRoot = document.body.dataset.root === "true";
-    const prefix = isRoot ? '' : '../';
+  const isRoot = document.body.dataset.root === "true";
+  const prefix = isRoot ? "" : "../";
 
-    const diffContainer = document.getElementById('global-difficulty-selector');
-    if (diffContainer) {
-        diffContainer.outerHTML = `
+  const diffContainer = document.getElementById("global-difficulty-selector");
+  if (diffContainer) {
+    diffContainer.outerHTML = `
           <div class="diff-dropdown-container" id="difficulty-dropdown">
             <button class="btn-outros-jogos diff-dropdown-trigger" id="diff-dropdown-btn" title="Dificuldade">
               <span id="diff-current-label">FÁCIL</span>
@@ -19,44 +19,44 @@ function injectUI() {
             </div>
           </div>
         `;
-        
-        // Add dropdown toggle logic
-        const diffBtn = document.getElementById('diff-dropdown-btn');
-        const diffMenu = document.getElementById('diff-dropdown-menu');
-        const diffLabel = document.getElementById('diff-current-label');
 
-        if (diffBtn && diffMenu) {
-            diffBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                diffMenu.classList.toggle('show');
-                diffBtn.classList.toggle('open');
-            });
-            
-            // Close when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!diffBtn.contains(e.target) && !diffMenu.contains(e.target)) {
-                    diffMenu.classList.remove('show');
-                    diffBtn.classList.remove('open');
-                }
-            });
+    // Add dropdown toggle logic
+    const diffBtn = document.getElementById("diff-dropdown-btn");
+    const diffMenu = document.getElementById("diff-dropdown-menu");
+    const diffLabel = document.getElementById("diff-current-label");
 
-            // Update label when a difficulty is clicked
-            const diffBtns = diffMenu.querySelectorAll('.diff-btn');
-            diffBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    diffLabel.textContent = btn.textContent;
-                    diffBtns.forEach(b => b.classList.remove('active-mode'));
-                    btn.classList.add('active-mode');
-                    diffMenu.classList.remove('show');
-                    diffBtn.classList.remove('open');
-                });
-            });
+    if (diffBtn && diffMenu) {
+      diffBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        diffMenu.classList.toggle("show");
+        diffBtn.classList.toggle("open");
+      });
+
+      // Close when clicking outside
+      document.addEventListener("click", (e) => {
+        if (!diffBtn.contains(e.target) && !diffMenu.contains(e.target)) {
+          diffMenu.classList.remove("show");
+          diffBtn.classList.remove("open");
         }
-    }
+      });
 
-    const jogosContainer = document.getElementById('global-outros-jogos-modal');
-    if (jogosContainer) {
-        jogosContainer.outerHTML = `
+      // Update label when a difficulty is clicked
+      const diffBtns = diffMenu.querySelectorAll(".diff-btn");
+      diffBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          diffLabel.textContent = btn.textContent;
+          diffBtns.forEach((b) => b.classList.remove("active-mode"));
+          btn.classList.add("active-mode");
+          diffMenu.classList.remove("show");
+          diffBtn.classList.remove("open");
+        });
+      });
+    }
+  }
+
+  const jogosContainer = document.getElementById("global-outros-jogos-modal");
+  if (jogosContainer) {
+    jogosContainer.outerHTML = `
         <div class="modal-overlay" id="outros-jogos-modal">
           <div class="modal">
             <button class="modal-close" id="btn-close-outros-jogos" aria-label="Fechar">
@@ -129,29 +129,43 @@ function injectUI() {
                 </div>
                 <span class="jogo-card-nome">SECRETA</span>
               </div>
+              <div class="jogo-card" onclick="window.location.href='${prefix}labirinto/labirinto.html'" title="Jogar Labirinto">
+                <div class="jogo-card-img jogo-card-labirinto">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><path d="M3 9h18"></path><path d="M9 21V9"></path>
+                  </svg>
+                </div>
+                <span class="jogo-card-nome">LABIRINTO</span>
+              </div>
             </div>
           </div>
         </div>
         `;
-        
-        // Atachar evento de fechar
-        document.getElementById('btn-close-outros-jogos').addEventListener('click', () => {
-            document.getElementById('outros-jogos-modal').classList.remove('active');
-        });
-        document.getElementById('outros-jogos-modal').addEventListener('click', (e) => {
-            if (e.target.id === 'outros-jogos-modal') {
-                e.target.classList.remove('active');
-            }
-        });
 
-        // Atachar evento de abrir
-        const btnOpen = document.getElementById('btn-outros-jogos');
-        if (btnOpen) {
-            btnOpen.addEventListener('click', () => {
-                document.getElementById('outros-jogos-modal').classList.add('active');
-            });
+    // Atachar evento de fechar
+    document
+      .getElementById("btn-close-outros-jogos")
+      .addEventListener("click", () => {
+        document
+          .getElementById("outros-jogos-modal")
+          .classList.remove("active");
+      });
+    document
+      .getElementById("outros-jogos-modal")
+      .addEventListener("click", (e) => {
+        if (e.target.id === "outros-jogos-modal") {
+          e.target.classList.remove("active");
         }
+      });
+
+    // Atachar evento de abrir
+    const btnOpen = document.getElementById("btn-outros-jogos");
+    if (btnOpen) {
+      btnOpen.addEventListener("click", () => {
+        document.getElementById("outros-jogos-modal").classList.add("active");
+      });
     }
+  }
 }
 
 injectUI();

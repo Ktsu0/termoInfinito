@@ -11,17 +11,15 @@
   margin: 0 auto;
   padding: 1vh 2vw;
   flex: 1;
-  overflow-y: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   min-height: 0;
 }
 
 .boards-container::-webkit-scrollbar {
-  width: 0.25rem;
-}
-
-.boards-container::-webkit-scrollbar-thumb {
-  background: var(--primary);
-  border-radius: 0.625rem;
+  display: none;
 }
 
 /* ============================================================
@@ -162,16 +160,17 @@
 /* --- Quartet DESKTOP: 4 in a row ----------------------------- */
 .boards-container.mode-quartet {
   flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap; /* Allow wrapping if really narrow, but try to fit */
   align-items: center;
   justify-content: center;
-  gap: clamp(0.4rem, 1vw, 1rem);
-  padding: 0.5rem;
+  gap: clamp(0.2rem, 0.8vw, 0.75rem);
+  padding: 2vh 0.5rem 0.5rem; /* Added 2vh top padding */
+  overflow-x: hidden;
 }
 
 .boards-container.mode-quartet .tile {
-  /* Increased size for Quartet as requested */
-  --tile-size: clamp(2.2rem, 5vh, 3.6rem);
+  /* Size must adapt to both width and height to avoid overflow */
+  --tile-size: clamp(1.2rem, min(5vh, 4vw), 3.2rem);
   border-radius: 0.4rem;
   border-width: 0.05rem;
 }
@@ -180,6 +179,8 @@
   padding: clamp(0.3rem, 0.6vh, 0.7rem);
   gap: clamp(2px, 0.3vh, 4px);
   border-radius: 1rem;
+  flex-shrink: 1; /* Allow shrinking */
+  min-width: 0;   /* Allow shrinking */
 }
 
 /* ============================================================

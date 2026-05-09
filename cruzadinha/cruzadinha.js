@@ -1,6 +1,5 @@
-/**
- * CRUZADINHA - Lógica Principal
- */
+import { buildKeyboardDOM } from "../js/components.js";
+import { CROSSWORD_THEMES } from "./cruzadinha-data.js";
 
 class CruzadinhaGame {
     constructor() {
@@ -39,6 +38,11 @@ class CruzadinhaGame {
         if (!localStorage.getItem("cruzadinha_visited")) {
             document.getElementById("help-modal").classList.add("active");
             localStorage.setItem("cruzadinha_visited", "true");
+        }
+
+        const keyboardEl = document.getElementById("keyboard");
+        if (keyboardEl) {
+            buildKeyboardDOM(keyboardEl, (key) => this.handleVirtualKeyboard(key));
         }
     }
 
@@ -292,7 +296,6 @@ class CruzadinhaGame {
     renderBoard() {
         if (!this.boardContainer) return;
         this.boardContainer.innerHTML = '';
-        this.boardContainer.style.gridTemplateColumns = `repeat(${this.gridSize}, 1fr)`;
         
         // --- Cálculo de Escalonamento Dinâmico Robusto ---
         const headerHeight = 120; 
@@ -312,8 +315,12 @@ class CruzadinhaGame {
         let cellSize = Math.min(sizeW, sizeH);
         
         // Limites para manter a beleza e usabilidade
-        // Aumentamos o mínimo para 32px para não ficar "ridículo" de pequeno
-        cellSize = Math.max(32, Math.min(48, cellSize));
+        // No mobile, permitimos que as células sejam um pouco menores para caber mais
+        const isMobile = window.innerWidth <= 768;
+        cellSize = Math.max(isMobile ? 28 : 32, Math.min(48, cellSize));
+
+        this.boardContainer.style.gridTemplateColumns = `repeat(${this.gridSize}, ${cellSize}px)`;
+        this.boardContainer.style.gridTemplateRows = `repeat(${this.gridSize}, ${cellSize}px)`;
 
         for (let r = 0; r < this.gridSize; r++) {
             for (let c = 0; c < this.gridSize; c++) {
@@ -617,9 +624,43 @@ class CruzadinhaGame {
         [this.modal, document.getElementById("help-modal")].forEach(m => {
             m.onclick = (e) => { if (e.target === m) m.classList.remove("active"); };
         });
+
+        // --- Toggle Teclado Virtual ---
+        const keyboardWrapper = document.getElementById("keyboard-wrapper");
+        const btnFloatingKeyboard = document.getElementById("btn-floating-keyboard");
+        const btnCloseKeyboard = document.getElementById("btn-close-keyboard");
+
+        const toggleKeyboard = () => {
+            if (!keyboardWrapper || !btnFloatingKeyboard) return;
+            const isHidden = keyboardWrapper.classList.contains("hidden");
+            if (isHidden) {
+                keyboardWrapper.classList.remove("hidden");
+                btnFloatingKeyboard.classList.add("hidden");
+            } else {
+                keyboardWrapper.classList.add("hidden");
+                btnFloatingKeyboard.classList.remove("hidden");
+            }
+        };
+
+        if (btnFloatingKeyboard) btnFloatingKeyboard.onclick = toggleKeyboard;
+        if (btnCloseKeyboard) btnCloseKeyboard.onclick = toggleKeyboard;
+    }
+
+    handleVirtualKeyboard(key) {
+        if (this.isGameOver || !this.focusedCell) return;
+
+        if (key === "BKSP") {
+            this.fillCell('');
+            this.moveFocus(-1);
+        } else if (key === "ENTER") {
+            // Pode opcionalmente pular para a próxima palavra
+            this.moveFocus(1);
+        } else if (key.length === 1 && /[A-ZÇ]/.test(key)) {
+            this.fillCell(key);
+            this.moveFocus(1);
+        }
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    window.game = new CruzadinhaGame();
-});
+// Inicialização imediata (módulos rodam após o parse do HTML)
+window.game = new CruzadinhaGame();

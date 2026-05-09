@@ -1,4 +1,4 @@
-const CROSSWORD_THEMES = {
+export const CROSSWORD_THEMES = {
   animais: [
     {
       word: "ORNITORRINCO",

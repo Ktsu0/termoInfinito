@@ -123,10 +123,18 @@ class CoresGame {
       btnCloseModalX.addEventListener("click", () => {
         gameModal.classList.remove("active");
       });
-    if (gameModal)
-      gameModal.addEventListener("click", (e) => {
-        if (e.target === gameModal) gameModal.classList.remove("active");
-      });
+      if (gameModal) {
+        gameModal.addEventListener("click", (e) => {
+          if (e.target === gameModal) gameModal.classList.remove("active");
+        });
+      }
+
+    // Resize listener for orientation/window size changes
+    window.addEventListener("resize", () => {
+      if (this.gameStarted || !this.isGameOver) {
+        this.render();
+      }
+    });
   }
 
   // ─── GAME GENERATION ──────────────────────────────────────────────────────
@@ -151,7 +159,8 @@ class CoresGame {
     this.updateInfoRow();
     this.setHint("Selecione um tubo para começar");
 
-    document.getElementById("game-modal").classList.remove("active");
+    const modal = document.getElementById("game-modal");
+    if (modal) modal.classList.remove("active");
 
     const btnHeaderNew = document.getElementById("btn-persistent-new-game");
     if (btnHeaderNew) btnHeaderNew.classList.remove("visible");
@@ -203,7 +212,7 @@ class CoresGame {
     const numTubes = this.tubes.length;
 
     // Columns used per difficulty
-    const isMobile = window.innerWidth < 480;
+    const isMobile = window.innerWidth <= 768; // Sincronizado com CSS (48rem)
     let colsUsed;
     if (this.difficulty === "easy") {
       colsUsed = isMobile ? 3 : numTubes;
@@ -215,15 +224,14 @@ class CoresGame {
     const numRows = Math.ceil(numTubes / colsUsed);
 
     // --- Ball size from available WIDTH ---
-    const isMobile = window.innerWidth < 480;
-    const containerPx = Math.min(window.innerWidth * 0.95, 672);
+    const containerEl = document.getElementById("tubes-container");
+    const containerPx = containerEl ? containerEl.clientWidth || window.innerWidth * 0.95 : window.innerWidth * 0.95;
     const gapH = (colsUsed - 1) * (isMobile ? 8 : 16);
     const padH = isMobile ? 16 : 32;
     const maxSizeFromWidth = Math.floor((containerPx - gapH - padH) / colsUsed);
 
     // --- Ball size from available HEIGHT ---
     // Budget = container height divided equally among numRows, minus inter-row gap
-    const containerEl = document.getElementById("tubes-container");
     const containerH = containerEl
       ? containerEl.clientHeight || window.innerHeight * 0.6
       : window.innerHeight * 0.6;
@@ -241,9 +249,9 @@ class CoresGame {
       (rowH - safetyMargin - tubeOverhead - (ballsPerTube - 1) * ballGapV) / ballsPerTube
     );
 
-    // Pick smaller of width/height constraints, cap at 56px, floor at 28px
+    // Pick smaller of width/height constraints, cap at 56px, floor at 24px
     let ballSize = Math.min(maxSizeFromWidth, maxSizeFromHeight, 56);
-    ballSize = Math.max(ballSize, isMobile ? 24 : 28); // Lowered floor slightly to prioritize fit
+    ballSize = Math.max(ballSize, 22); // Baixado o piso para garantir que caiba em qualquer tela minúscula
 
     const tubeWidth = ballSize + 8;
     const tubeHeight = ballsPerTube * (ballSize + ballGapV) + 12; // 12px for cap/base buffer

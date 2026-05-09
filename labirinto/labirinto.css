@@ -1,0 +1,227 @@
+/* =============================================
+   LABIRINTO CSS
+   ============================================= */
+
+.labirinto-main-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(1rem, 3vh, 2rem);
+    width: 100%;
+    max-width: 45rem;
+    margin: 0 auto;
+    padding: clamp(1rem, 3vh, 2rem) 1rem;
+    flex: 1;
+}
+
+.game-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+.info-badge {
+    background: var(--card-bg);
+    padding: 0.5rem 1.25rem;
+    border-radius: 2rem;
+    border: 1px solid var(--glass-border);
+    font-size: clamp(0.85rem, 2.5vw, 1rem);
+    font-weight: 600;
+    color: var(--text);
+    box-shadow: var(--shadow-md);
+    text-align: center;
+}
+
+.info-badge span {
+    color: var(--primary);
+    font-weight: 800;
+}
+
+#hint-text {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 400;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+/* BOARD CONTAINER */
+.board-container {
+    display: grid;
+    gap: 4px;
+    background: var(--card-bg);
+    width: fit-content;
+    margin: 0 auto;
+    padding: 8px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-xl);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    position: relative;
+    touch-action: none; /* Prevents scrolling when dragging tiles */
+}
+
+/* TILES */
+.tile {
+    width: clamp(35px, 12vw, 75px);
+    height: clamp(35px, 12vw, 75px);
+    border-radius: 8px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s ease-out, filter 0.2s;
+    user-select: none;
+    overflow: hidden;
+}
+
+/* TILE TYPES */
+.tile.wood {
+    background: linear-gradient(135deg, #d4a373 0%, #bc8a5f 100%);
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1), 0 2px 5px rgba(0,0,0,0.3);
+    border: 1px solid #a67c52;
+    cursor: pointer;
+}
+
+.tile.wood:active, .tile.blank:active {
+    filter: brightness(0.9);
+    transform: scale(0.95);
+}
+
+.tile.blank {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    cursor: pointer;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+}
+
+.tile.metal {
+    background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.2), 0 2px 5px rgba(0,0,0,0.3);
+    border: 1px solid #4b5563;
+    cursor: default;
+}
+
+.tile.start {
+    background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%);
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.2), 0 2px 5px rgba(0,0,0,0.3);
+    border: 1px solid #9f1239;
+    cursor: default;
+}
+
+.tile.end {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.2), 0 2px 5px rgba(0,0,0,0.3);
+    border: 1px solid #1e3a8a;
+    cursor: default;
+}
+
+.tile.empty {
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow: inset 0 8px 15px rgba(0,0,0,0.6);
+    border: 1px dashed rgba(255,255,255,0.05);
+    cursor: default;
+}
+
+/* PIPES (SVG injected by JS) */
+.pipe-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.pipe-path {
+    fill: none;
+    stroke: #4a3018; /* Dark brown for path inside wood */
+    stroke-width: 35;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.start .pipe-path, .end .pipe-path {
+    stroke: #ffffff; /* White path for start/end */
+    opacity: 0.9;
+}
+
+.metal .pipe-path {
+    stroke: #374151; /* Dark grey for metal */
+}
+
+/* SCREWS FOR METAL */
+.screw {
+    position: absolute;
+    width: 15%;
+    height: 15%;
+    background: radial-gradient(circle, #d1d5db, #9ca3af);
+    border-radius: 50%;
+    box-shadow: inset 0 -1px 2px rgba(0,0,0,0.5), 0 1px 1px rgba(255,255,255,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.screw::after {
+    content: '';
+    position: absolute;
+    width: 60%;
+    height: 2px;
+    background: rgba(0,0,0,0.4);
+    transform: rotate(45deg);
+}
+
+.screw.tl { top: 8%; left: 8%; }
+.screw.tr { top: 8%; right: 8%; }
+.screw.bl { bottom: 8%; left: 8%; }
+.screw.br { bottom: 8%; right: 8%; }
+
+/* BALL (Animated) */
+.ball {
+    position: absolute;
+    width: 30%;
+    height: 30%;
+    background: radial-gradient(circle at 35% 35%, #ffffff, #9ca3af);
+    border-radius: 50%;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.5), inset -2px -2px 4px rgba(0,0,0,0.3);
+    z-index: 10;
+    pointer-events: none;
+    transition: top 0.2s linear, left 0.2s linear;
+}
+
+/* HIGHLIGHT ON WIN */
+.tile.connected .pipe-path {
+    stroke: #10b981; /* Green glow for connected path on win */
+    transition: stroke 0.5s ease;
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+    .labirinto-main-layout {
+        padding: 1rem 0.5rem;
+    }
+
+    .tile {
+        width: clamp(30px, 11vw, 60px);
+        height: clamp(30px, 11vw, 60px);
+        border-radius: 6px;
+    }
+    
+    .board-container {
+        gap: 3px;
+        padding: 6px;
+    }
+}
+
+@media (max-width: 360px) {
+    .tile {
+        width: clamp(28px, 10vw, 50px);
+        height: clamp(28px, 10vw, 50px);
+    }
+}

@@ -94,7 +94,7 @@ header {
   align-items: center;
   justify-content: flex-start;
   flex: 1;
-  z-index: 1;
+  z-index: 50;
 }
 
 .header-actions {

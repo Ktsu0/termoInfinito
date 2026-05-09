@@ -38,7 +38,7 @@ class SecretaGame {
         this.newGame();
         
         if (this.keyboardEl) {
-            buildKeyboardDOM(this.keyboardEl, (key) => this.handleVirtualKeyboard(key));
+            buildKeyboardDOM(this.keyboardEl, (key) => this.handleVirtualKeyboard(key), true);
         }
         
         if (!localStorage.getItem("secreta_visited")) {

@@ -467,3 +467,27 @@
   background: rgba(0, 0, 0, 0.1);
   border-radius: 0.625rem;
 }
+
+/* Secreta - Slate/White */
+.jogo-card-secreta {
+  background: linear-gradient(135deg, rgba(203, 213, 225, 0.25) 0%, rgba(148, 163, 184, 0.15) 100%);
+  border: 1px solid rgba(203, 213, 225, 0.25);
+  box-shadow: 0 4px 16px rgba(203, 213, 225, 0.1);
+  color: #f1f5f9;
+}
+
+.jogo-card:hover .jogo-card-secreta {
+  box-shadow: 0 6px 20px rgba(203, 213, 225, 0.2);
+}
+
+/* Labirinto - Teal */
+.jogo-card-labirinto {
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.3) 0%, rgba(13, 148, 136, 0.2) 100%);
+  border: 1px solid rgba(20, 184, 166, 0.3);
+  box-shadow: 0 4px 16px rgba(20, 184, 166, 0.12);
+  color: #5eead4;
+}
+
+.jogo-card:hover .jogo-card-labirinto {
+  box-shadow: 0 6px 20px rgba(20, 184, 166, 0.28);
+}
