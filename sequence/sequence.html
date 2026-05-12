@@ -105,28 +105,38 @@
     </div>
 
     <!-- Modals -->
+    <!-- Modal de Resultado (Vitória/Derrota) -->
     <div id="game-modal" class="modal-overlay">
-      <div id="confetti-container" style="position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 10;"></div>
-      <div class="modal" id="modal-content" style="z-index: 20;">
-        <button class="modal-close" id="btn-close-modal-x" aria-label="Fechar">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-        </button>
-        <div class="modal-icon" id="modal-icon"></div>
-        <h2 id="modal-title"></h2>
-        
-        <p id="modal-text"></p>
-        
-        <div id="secret-reveal" style="display: none; margin-bottom: 2rem; text-align: center;">
-          <p class="stat-label" style="margin-bottom: 0.5rem;">O Segredo Era</p>
-          <div id="reveal-digits" style="display: flex; gap: 0.5rem; justify-content: center;"></div>
+        <div id="confetti-container" style="position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 10;"></div>
+        <div class="modal result-modal">
+            <button class="modal-close" id="btn-close-modal-x" aria-label="Fechar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <div class="result-header">
+                <div class="result-icon-container">
+                    <div id="result-icon" class="result-icon"></div>
+                </div>
+                <h2 id="modal-title" class="result-title">VITÓRIA!</h2>
+                <p id="modal-text" class="result-subtitle"></p>
+            </div>
+            <div id="result-details" class="result-details" style="display:none;"></div>
+            <div class="result-stats-grid">
+                <div class="res-stat-item">
+                    <span class="res-stat-value" id="res-stat-tries">0</span>
+                    <span class="res-stat-label">Tentativas</span>
+                </div>
+                <div class="res-stat-item">
+                    <span class="res-stat-value" id="res-stat-streak">0</span>
+                    <span class="res-stat-label">Sequência</span>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="btn-new-game-modal">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                    Jogar Novamente
+                </button>
+            </div>
         </div>
-
-        <div class="action-buttons">
-          <button class="btn btn-primary" id="btn-new-mission" style="width: 100%; padding: 1rem;">
-            Nova Missão
-          </button>
-        </div>
-      </div>
     </div>
 
     <div id="help-modal" class="modal-overlay">

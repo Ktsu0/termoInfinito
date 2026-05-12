@@ -8,15 +8,16 @@ class LabirintoGame {
         this.endPos = { r: 0, c: 0 };
         this.moves = 0;
         this.isGameOver = false;
+        this.selectedTile = null; // {r, c}
         
         this.timer = null;
         this.timeElapsed = 0;
         this.timerStarted = false;
 
         this.config = {
-            easy: { size: 5, walls: 1, decoys: 3 },
-            medium: { size: 6, walls: 3, decoys: 6 },
-            hard: { size: 7, walls: 5, decoys: 10 }
+            easy: { size: 5, walls: 1, decoys: 2, empty: 3 },
+            medium: { size: 6, walls: 2, decoys: 4, empty: 4 },
+            hard: { size: 7, walls: 3, decoys: 6, empty: 5 }
         };
 
         this.pipeDefs = {
@@ -53,6 +54,7 @@ class LabirintoGame {
     startNewGame() {
         this.isGameOver = false;
         this.moves = 0;
+        this.selectedTile = null;
         this.timerStarted = false;
         this.timeElapsed = 0;
         clearInterval(this.timer);
@@ -60,7 +62,7 @@ class LabirintoGame {
         document.getElementById('moves-count').textContent = '0';
         
         const btnHeaderNew = document.getElementById("btn-persistent-new-game");
-        if (btnHeaderNew) btnHeaderNew.style.display = 'none';
+        if (btnHeaderNew) btnHeaderNew.classList.remove("visible");
 
         this.generateLevel();
         this.renderBoard();
@@ -129,11 +131,14 @@ class LabirintoGame {
         // Shuffle empty spaces to place walls and empty block
         emptySpaces.sort(() => Math.random() - 0.5);
 
-        // Place empty block (1)
-        const emptyCell = emptySpaces.pop();
-        this.grid[emptyCell.r][emptyCell.c] = { type: 'empty' };
-        this.emptyPos = { r: emptyCell.r, c: emptyCell.c };
-
+        // Place empty blocks
+        let emptyToPlace = this.config[this.difficulty].empty || 1;
+        while (emptyToPlace > 0 && emptySpaces.length > 0) {
+            const emptyCell = emptySpaces.pop();
+            this.grid[emptyCell.r][emptyCell.c] = { type: 'empty' };
+            emptyToPlace--;
+        }
+        
         // Place walls
         let wallsToPlace = this.config[this.difficulty].walls;
         while (wallsToPlace > 0 && emptySpaces.length > 0) {
@@ -226,21 +231,29 @@ class LabirintoGame {
     }
 
     shuffleBoard() {
-        let { r, c } = this.emptyPos;
         let moves = 0;
-        let lastR = -1, lastC = -1;
+        const totalMoves = 300;
 
-        // Perform 500 random valid moves backwards from solved state
-        while (moves < 500) {
+        while (moves < totalMoves) {
+            // Find all empty positions
+            let empties = [];
+            for (let r = 0; r < this.size; r++) {
+                for (let c = 0; c < this.size; c++) {
+                    if (this.grid[r][c].type === 'empty') empties.push({r, c});
+                }
+            }
+
+            // Pick a random empty space
+            const empty = empties[Math.floor(Math.random() * empties.length)];
+            
+            // Find valid neighbors to swap with
             let dirs = [[0,1], [1,0], [0,-1], [-1,0]];
             let validMoves = [];
             for (let [dr, dc] of dirs) {
-                let nr = r + dr, nc = c + dc;
+                let nr = empty.r + dr, nc = empty.c + dc;
                 if (nr >= 0 && nr < this.size && nc >= 0 && nc < this.size) {
-                    // Cannot move start, end, or metal
                     let tile = this.grid[nr][nc];
-                    // Prevent immediate back-and-forth
-                    if ((tile.type === 'wood' || tile.type === 'blank') && !(nr === lastR && nc === lastC)) {
+                    if (tile.type === 'wood' || tile.type === 'blank') {
                         validMoves.push({nr, nc});
                     }
                 }
@@ -249,19 +262,12 @@ class LabirintoGame {
             if (validMoves.length > 0) {
                 let move = validMoves[Math.floor(Math.random() * validMoves.length)];
                 // Swap
-                let temp = this.grid[move.nr][move.nc];
-                this.grid[move.nr][move.nc] = this.grid[r][c];
-                this.grid[r][c] = temp;
-                
-                lastR = r; lastC = c;
-                r = move.nr; c = move.nc;
+                let temp = this.grid[move.nr][move.cn || move.nc]; // Fix nc
+                this.grid[move.nr][move.nc] = this.grid[empty.r][empty.c];
+                this.grid[empty.r][empty.c] = temp;
                 moves++;
-            } else {
-                // If stuck, reset lastR/lastC to allow backtracking
-                lastR = -1; lastC = -1;
             }
         }
-        this.emptyPos = { r, c };
     }
 
     renderBoard() {
@@ -293,6 +299,10 @@ class LabirintoGame {
                     tileEl.innerHTML += `<div class="ball" id="the-ball" style="top: 35%; left: 35%;"></div>`;
                 }
 
+                if (this.selectedTile && this.selectedTile.r === r && this.selectedTile.c === c) {
+                    tileEl.classList.add('selected');
+                }
+
                 tileEl.addEventListener('click', () => this.handleTileClick(r, c));
                 container.appendChild(tileEl);
             }
@@ -302,31 +312,84 @@ class LabirintoGame {
     handleTileClick(r, c) {
         if (this.isGameOver) return;
         
-        const tile = this.grid[r][c];
-        if (tile.type !== 'wood' && tile.type !== 'blank') return;
+        const clickedTile = this.grid[r][c];
+        const dirs = [[0,1], [1,0], [0,-1], [-1,0]];
 
-        // Check if adjacent to empty
-        const dr = Math.abs(r - this.emptyPos.r);
-        const dc = Math.abs(c - this.emptyPos.c);
-        
-        if ((dr === 1 && dc === 0) || (dr === 0 && dc === 1)) {
-            // Start timer on first move
-            if (!this.timerStarted) {
-                this.timerStarted = true;
-                this.startTimer();
+        // Case 1: Clicking an EMPTY space
+        if (clickedTile.type === 'empty') {
+            // Check if a piece is selected and adjacent
+            if (this.selectedTile) {
+                const isAdjacent = Math.abs(this.selectedTile.r - r) + Math.abs(this.selectedTile.c - c) === 1;
+                if (isAdjacent) {
+                    this.movePiece(this.selectedTile.r, this.selectedTile.c, r, c);
+                    return;
+                }
+            }
+            
+            // If no selected piece or not adjacent, check if there's only ONE movable adjacent piece
+            let movableNeighbors = [];
+            for (let [dr, dc] of dirs) {
+                const nr = r + dr, nc = c + dc;
+                if (nr >= 0 && nr < this.size && nc >= 0 && nc < this.size) {
+                    const neighbor = this.grid[nr][nc];
+                    if (neighbor.type === 'wood' || neighbor.type === 'blank') {
+                        movableNeighbors.push({r: nr, c: nc});
+                    }
+                }
             }
 
-            // Swap in logic
-            this.grid[this.emptyPos.r][this.emptyPos.c] = tile;
-            this.grid[r][c] = { type: 'empty' };
-            this.emptyPos = { r, c };
-            
-            this.moves++;
-            document.getElementById('moves-count').textContent = this.moves;
-            
-            this.renderBoard();
-            this.checkSolution();
+            if (movableNeighbors.length === 1) {
+                this.movePiece(movableNeighbors[0].r, movableNeighbors[0].c, r, c);
+            }
+            return;
         }
+
+        // Case 2: Clicking a PIECE (wood or blank)
+        if (clickedTile.type === 'wood' || clickedTile.type === 'blank') {
+            // Find empty neighbors
+            let emptyNeighbors = [];
+            for (let [dr, dc] of dirs) {
+                const nr = r + dr, nc = c + dc;
+                if (nr >= 0 && nr < this.size && nc >= 0 && nc < this.size) {
+                    if (this.grid[nr][nc].type === 'empty') {
+                        emptyNeighbors.push({r: nr, c: nc});
+                    }
+                }
+            }
+
+            if (emptyNeighbors.length === 0) return;
+
+            if (emptyNeighbors.length === 1) {
+                // Only one way to go, move immediately
+                this.movePiece(r, c, emptyNeighbors[0].r, emptyNeighbors[0].c);
+            } else {
+                // Multiple ways to go, toggle selection
+                if (this.selectedTile && this.selectedTile.r === r && this.selectedTile.c === c) {
+                    this.selectedTile = null;
+                } else {
+                    this.selectedTile = {r, c};
+                }
+                this.renderBoard();
+            }
+        }
+    }
+
+    movePiece(fromR, fromC, toR, toC) {
+        if (!this.timerStarted) {
+            this.timerStarted = true;
+            this.startTimer();
+        }
+
+        const piece = this.grid[fromR][fromC];
+        this.grid[toR][toC] = piece;
+        this.grid[fromR][fromC] = { type: 'empty' };
+        
+        this.moves++;
+        document.getElementById('moves-count').textContent = this.moves;
+        this.selectedTile = null;
+        
+        this.renderBoard();
+        this.checkSolution();
     }
 
     checkSolution() {
@@ -381,19 +444,27 @@ class LabirintoGame {
             if (el) el.classList.add('connected');
         });
 
-        // Ball Animation (optional visual enhancement, just show modal for now)
         setTimeout(() => {
             const modal = document.getElementById('game-modal');
-            document.getElementById('modal-text').innerHTML = `
-                Incrível! Você resolveu o labirinto!<br>
-                Nível: <b>${this.difficulty.toUpperCase()}</b><br>
-                Movimentos: <b>${this.moves}</b><br>
-                Tempo: <b>${this.formatTime(this.timeElapsed)}</b>
-            `;
+            const modalContent = modal.querySelector(".modal");
+            const title = document.getElementById("modal-title");
+            const text = document.getElementById("modal-text");
+            const icon = document.getElementById("result-icon");
+
+            modalContent.classList.remove("win", "lose");
+            modalContent.classList.add("win");
+
+            title.textContent = "VITÓRIA!";
+            icon.textContent = "🏆";
+            text.textContent = "Incrível! Você resolveu o labirinto e conectou os fluxos!";
+
+            document.getElementById("res-stat-moves").textContent = this.moves;
+            document.getElementById("res-stat-time").textContent = this.formatTime(this.timeElapsed);
+
             modal.classList.add('active');
 
             const btnHeaderNew = document.getElementById("btn-persistent-new-game");
-            if (btnHeaderNew) btnHeaderNew.style.display = 'flex';
+            if (btnHeaderNew) btnHeaderNew.classList.add('visible');
         }, 800);
     }
 
@@ -471,6 +542,65 @@ class LabirintoGame {
                 if (e.target === m) m.classList.remove('active');
             });
         });
+
+        // Drag/Swipe Support
+        this.dragStart = null;
+        const container = document.getElementById('board-container');
+
+        container.addEventListener('mousedown', (e) => this.handleDragStart(e));
+        container.addEventListener('touchstart', (e) => this.handleDragStart(e), { passive: false });
+
+        window.addEventListener('mouseup', (e) => this.handleDragEnd(e));
+        window.addEventListener('touchend', (e) => this.handleDragEnd(e));
+    }
+
+    handleDragStart(e) {
+        if (this.isGameOver) return;
+        const tileEl = e.target.closest('.tile');
+        if (!tileEl) return;
+
+        const r = parseInt(tileEl.dataset.r);
+        const c = parseInt(tileEl.dataset.c);
+        const tile = this.grid[r][c];
+
+        if (tile.type !== 'wood' && tile.type !== 'blank') return;
+
+        const point = e.touches ? e.touches[0] : e;
+        this.dragStart = {
+            x: point.clientX,
+            y: point.clientY,
+            r: r,
+            c: c
+        };
+    }
+
+    handleDragEnd(e) {
+        if (!this.dragStart) return;
+
+        const point = e.changedTouches ? e.changedTouches[0] : e;
+        const dx = point.clientX - this.dragStart.x;
+        const dy = point.clientY - this.dragStart.y;
+        const threshold = 30;
+
+        if (Math.abs(dx) > threshold || Math.abs(dy) > threshold) {
+            let dr = 0, dc = 0;
+            if (Math.abs(dx) > Math.abs(dy)) {
+                dc = dx > 0 ? 1 : -1;
+            } else {
+                dr = dy > 0 ? 1 : -1;
+            }
+
+            const targetR = this.dragStart.r + dr;
+            const targetC = this.dragStart.c + dc;
+
+            if (targetR >= 0 && targetR < this.size && targetC >= 0 && targetC < this.size) {
+                if (this.grid[targetR][targetC].type === 'empty') {
+                    this.movePiece(this.dragStart.r, this.dragStart.c, targetR, targetC);
+                }
+            }
+        }
+
+        this.dragStart = null;
     }
 }
 

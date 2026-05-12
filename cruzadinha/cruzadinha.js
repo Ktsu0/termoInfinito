@@ -460,6 +460,7 @@ class CruzadinhaGame {
         if (!this.focusedCell || this.isGameOver) return;
 
         if (e.key.length === 1 && /[a-zA-ZáàâãéèêíïóôõöúçÑñ]/.test(e.key)) {
+            e.preventDefault();
             this.fillCell(e.key.toUpperCase());
             this.moveFocus(1);
         } else if (e.key === "Backspace") {
@@ -548,12 +549,27 @@ class CruzadinhaGame {
         this.isGameOver = true;
         clearInterval(this.timer);
         
+        const modal = this.modal;
+        const modalContent = modal.querySelector(".modal");
         const title = document.getElementById("modal-title");
         const text = document.getElementById("modal-text");
-        
-        this.modal.classList.add("active");
-        title.textContent = "VITÓRIA!";
-        text.textContent = `Você completou a cruzadinha em ${Math.floor(this.timeElapsed / 60)}m ${this.timeElapsed % 60}s!`;
+        const icon = document.getElementById("result-icon");
+
+        modalContent.classList.remove("win", "lose");
+        modalContent.classList.add(win ? "win" : "lose");
+
+        if (win) {
+            title.textContent = "VITÓRIA!";
+            icon.textContent = "🏆";
+            text.textContent = "Parabéns! Você desvendou todas as pistas!";
+        }
+
+        const m = Math.floor(this.timeElapsed / 60).toString().padStart(2, '0');
+        const s = (this.timeElapsed % 60).toString().padStart(2, '0');
+        document.getElementById("res-stat-time").textContent = `${m}:${s}`;
+        document.getElementById("res-stat-words").textContent = this.placedWords.length;
+
+        modal.classList.add("active");
     }
 
     setupEventListeners() {

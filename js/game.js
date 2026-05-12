@@ -29,6 +29,7 @@ class TermoGame {
     this.keyboardEl = document.getElementById("keyboard");
     this.toastEl = document.getElementById("toast");
     this.statsModal = document.getElementById("stats-modal");
+    this.gameModal = document.getElementById("game-modal");
     this.helpModal = document.getElementById("help-modal");
     this.btnHeaderNew = document.getElementById("btn-persistent-new-game");
 
@@ -87,6 +88,9 @@ class TermoGame {
     if (!this.keyboardEl) return;
     this.keyboardEl.querySelectorAll(".key").forEach((key) => {
       key.classList.remove("correct", "present", "absent");
+      key.querySelectorAll(".indicator").forEach((ind) => {
+        ind.className = "indicator";
+      });
     });
   }
 
@@ -106,6 +110,11 @@ class TermoGame {
     const modeLabel = document.getElementById("mode-current-label");
     if (modeLabel) {
       modeLabel.textContent = this.mode === 1 ? "SOLO" : this.mode === 2 ? "DUETO" : "QUARTETO";
+    }
+
+    if (this.keyboardEl) {
+      this.keyboardEl.classList.remove("mode-1", "mode-2", "mode-4");
+      this.keyboardEl.classList.add(`mode-${this.mode}`);
     }
 
     document.querySelectorAll(".diff-dropdown-item").forEach((btn) => {
@@ -226,7 +235,7 @@ class TermoGame {
           setTimeout(() => {
             if (this.gameId !== currentGameId) return;
             tile.classList.add(result[i]);
-            this.updateKey(guess[i], result[i]);
+            this.updateKey(guess[i], result[i], b);
           }, 300);
         }, i * 150);
       }
@@ -289,24 +298,56 @@ class TermoGame {
     return result;
   }
 
-  updateKey(letter, state) {
+  updateKey(letter, state, boardIndex = 0) {
     const key = document.querySelector(
       `.key[data-key="${letter.toUpperCase()}"]`,
     );
     if (!key) return;
 
-    if (state === "correct") {
-      key.classList.remove("present", "absent");
-      key.classList.add("correct");
-    } else if (state === "present" && !key.classList.contains("correct")) {
-      key.classList.remove("absent");
-      key.classList.add("present");
-    } else if (
-      state === "absent" &&
-      !key.classList.contains("correct") &&
-      !key.classList.contains("present")
-    ) {
-      key.classList.add("absent");
+    // Solo mode: use direct key background
+    if (this.mode === 1) {
+      if (state === "correct") {
+        key.classList.remove("present", "absent");
+        key.classList.add("correct");
+      } else if (state === "present" && !key.classList.contains("correct")) {
+        key.classList.remove("absent");
+        key.classList.add("present");
+      } else if (
+        state === "absent" &&
+        !key.classList.contains("correct") &&
+        !key.classList.contains("present")
+      ) {
+        key.classList.add("absent");
+      }
+      return;
+    }
+
+    // Duo/Quartet mode: use indicators
+    const indicators = key.querySelectorAll(".indicator");
+    if (indicators && indicators.length > 0) {
+      if (indicators[boardIndex]) {
+        const ind = indicators[boardIndex];
+        
+        // Upgrade logic for the specific quadrant
+        if (state === "correct") {
+          ind.className = "indicator active correct";
+        } else if (state === "present" && !ind.classList.contains("correct")) {
+          ind.className = "indicator active present";
+        } else if (state === "absent" && !ind.classList.contains("correct") && !ind.classList.contains("present")) {
+          ind.className = "indicator active absent";
+        }
+      }
+
+      // Check if letter is absent in ALL active boards to dim the entire key
+      const activeIndicators = Array.from(indicators).slice(0, this.mode);
+      const isGloballyAbsent = activeIndicators.every(i => i.classList.contains('absent'));
+      const hasAnyPositive = activeIndicators.some(i => i.classList.contains('correct') || i.classList.contains('present'));
+
+      if (isGloballyAbsent && !hasAnyPositive) {
+        key.classList.add("absent");
+      } else {
+        key.classList.remove("absent");
+      }
     }
   }
 
@@ -354,7 +395,42 @@ class TermoGame {
     }
     StatsManager.save(this.stats);
     if (this.btnHeaderNew) this.btnHeaderNew.classList.add("visible");
-    setTimeout(() => this.showStats(), 1500);
+    setTimeout(() => this.showResult(win), 1500);
+  }
+
+  showResult(win) {
+    const modeStats = this.stats[this.mode];
+    const modal = this.gameModal;
+    const modalContent = modal.querySelector(".modal");
+    const title = document.getElementById("modal-title");
+    const text = document.getElementById("modal-text");
+    const details = document.getElementById("result-details");
+    const icon = document.getElementById("result-icon");
+
+    modalContent.classList.remove("win", "lose");
+    modalContent.classList.add(win ? "win" : "lose");
+
+    if (win) {
+      title.textContent = "VITÓRIA!";
+      icon.textContent = "🏆";
+      text.textContent = `Você descobriu a palavra em ${this.currentRow} ${this.currentRow === 1 ? "tentativa" : "tentativas"}!`;
+      details.style.display = "none";
+    } else {
+      title.textContent = "DERROTA";
+      icon.textContent = "😔";
+      text.textContent = "Não foi dessa vez. Continue praticando!";
+      const reveal = this.targets
+        .filter((t, i) => !this.solvedBoards[i])
+        .join(", ");
+      details.innerHTML = `As palavras eram: <span style="color: var(--primary)">${reveal}</span>`;
+      details.style.display = "block";
+    }
+
+    document.getElementById("res-stat-played").textContent = modeStats.played;
+    document.getElementById("res-stat-wins").textContent =
+      Math.round((modeStats.wins / modeStats.played || 0) * 100) + "%";
+
+    modal.classList.add("active");
   }
 
   showStats() {
@@ -386,9 +462,13 @@ class TermoGame {
   }
 
   setupEventListeners() {
-    window.addEventListener("keydown", (e) =>
-      this.handleInput(e.key.toUpperCase()),
-    );
+    window.addEventListener("keydown", (e) => {
+      const key = e.key.toUpperCase();
+      if (key === "ENTER" || key === "BACKSPACE" || /^[A-ZÇ]$/u.test(key)) {
+        e.preventDefault();
+        this.handleInput(key);
+      }
+    });
     document.getElementById("btn-close-stats").onclick = () =>
       this.closeStats();
     const closeX = document.getElementById("btn-close-stats-x");
@@ -399,7 +479,28 @@ class TermoGame {
 
     const startNewGame = () => {
       this.closeStats();
+      if (this.gameModal) this.gameModal.classList.remove("active");
       this.newGame(this.mode);
+    };
+
+    const closeModal = () => {
+      if (this.gameModal) this.gameModal.classList.remove("active");
+    };
+
+    document.getElementById("btn-close-modal-x").onclick = closeModal;
+    document.getElementById("btn-new-game-modal").onclick = startNewGame;
+    document.getElementById("btn-share-modal").onclick = () => {
+      const text = generateShareText(
+        this.status,
+        this.currentRow,
+        this.cols,
+        this.mode,
+      );
+      if (navigator.share) navigator.share({ text });
+      else
+        navigator.clipboard
+          .writeText(text)
+          .then(() => this.showToast("Copiado!"));
     };
 
     document.getElementById("btn-new-game").onclick = startNewGame;
@@ -438,7 +539,8 @@ class TermoGame {
     const btnFloatingKeyboard = document.getElementById("btn-floating-keyboard");
     const btnCloseKeyboard = document.getElementById("btn-close-keyboard");
 
-    const toggleKeyboard = () => {
+    const toggleKeyboard = (e) => {
+      if (e) e.target.blur();
       if (!keyboardWrapper || !btnFloatingKeyboard) return;
       const isHidden = keyboardWrapper.classList.contains("hidden");
       if (isHidden) {

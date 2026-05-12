@@ -96,8 +96,9 @@
 }
 
 .sudoku-cell.same-value {
-  background: rgba(99, 102, 241, 0.2);
-  color: var(--primary);
+  background: rgba(101, 99, 241, 0.2);
+  color: #00ff9d; /* Neon green */
+  text-shadow: 0 0 8px rgba(0, 255, 157, 0.5);
 }
 
 .sudoku-cell.error {
@@ -510,7 +511,7 @@
   inset: 0;
   padding: 4%;
   box-sizing: border-box;
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .note-num {

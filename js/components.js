@@ -56,9 +56,24 @@ export function buildKeyboardDOM(container, handleInputCallback, includeNumbers 
     rowArr.forEach((key) => {
       const btn = document.createElement("button");
       btn.className = "key";
-      btn.textContent = key === "BKSP" ? "⌫" : key;
+      
+      const textSpan = document.createElement("span");
+      textSpan.textContent = key === "BKSP" ? "⌫" : key;
+      btn.appendChild(textSpan);
+
+      // Multi-board indicators (4 quadrants)
+      const indicators = document.createElement("div");
+      indicators.className = "key-indicators";
+      for (let i = 0; i < 4; i++) {
+        const ind = document.createElement("div");
+        ind.className = "indicator";
+        indicators.appendChild(ind);
+      }
+      btn.appendChild(indicators);
+
       if (key === "ENTER" || key === "BKSP") btn.classList.add("large");
       btn.setAttribute("data-key", key);
+      btn.onfocus = (e) => e.target.blur(); // Prevent physical Enter from clicking focused virtual key
       btn.onclick = () => handleInputCallback(key);
       row.appendChild(btn);
     });

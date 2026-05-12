@@ -336,37 +336,33 @@ class CrackTheCode {
   }
 
   showGameResultModal(win) {
+    const modal = this.modal;
+    const modalContent = modal.querySelector(".modal");
     const title = document.getElementById("modal-title");
     const text = document.getElementById("modal-text");
-    const icon = document.getElementById("modal-icon");
-    const reveal = document.getElementById("secret-reveal");
-    const revealDigits = document.getElementById("reveal-digits");
+    const icon = document.getElementById("result-icon");
+    const details = document.getElementById("result-details");
 
-    this.modal.classList.add("active");
+    modalContent.classList.remove("win", "lose");
+    modalContent.classList.add(win ? "win" : "lose");
 
     if (win) {
-      title.textContent = "VITÓRIA";
-      title.className = "modal-title-win";
-      text.textContent =
-        "A quebra de segurança foi um sucesso. O código principal foi decifrado.";
-      icon.innerHTML =
-        '<svg style="width: 3rem; height: 3rem; color: var(--success);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path></svg>';
-      reveal.style.display = "none";
+      title.textContent = "VITÓRIA!";
+      icon.textContent = "🏆";
+      text.textContent = "Excelente! Você decifrou a sequência secreta!";
+      details.style.display = "none";
     } else {
-      title.textContent = "BLOQUEADO";
-      title.className = "modal-title-lose";
-      text.textContent =
-        "Tentativas esgotadas. Mais sorte na próxima vez, agente.";
-      icon.innerHTML =
-        '<svg style="width: 3rem; height: 3rem; color: var(--error);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path></svg>';
-      reveal.style.display = "block";
-      revealDigits.innerHTML = this.secretCode
-        .map(
-          (d) =>
-            `<div class="tile correct reveal-tile">${d}</div>`,
-        )
-        .join("");
+      title.textContent = "DERROTA";
+      icon.textContent = "😔";
+      text.textContent = "A sequência foi bloqueada. Mais sorte na próxima vez.";
+      details.style.display = "block";
+      details.innerHTML = `O segredo era: <span style="letter-spacing: 0.5rem; font-weight: bold; color: var(--error);">${this.secretCode.join("")}</span>`;
     }
+
+    document.getElementById("res-stat-tries").textContent = win ? this.currentRow + 1 : this.maxAttempts;
+    document.getElementById("res-stat-streak").textContent = this.stats[this.difficulty].currentStreak;
+
+    modal.classList.add("active");
   }
 
   showStats() {

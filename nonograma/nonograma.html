@@ -1,19 +1,32 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Labirinto - Antigravity Games</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NONOGRAMA - Termo Infinito</title>
+    
+    <!-- CSS Global -->
     <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/grid.css">
+    <link rel="stylesheet" href="../css/keyboard.css">
     <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/utils.css">
-    <link rel="stylesheet" href="labirinto.css">
-    <link rel="icon" href="../assets/favicon.ico">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS Específico -->
+    <link rel="stylesheet" href="nonograma.css">
+    
+    <style>
+        /* Ajuste de emergência para garantir visibilidade */
+        body {
+            background-color: #030712 !important;
+            color: #f9fafb !important;
+        }
+        .app-container {
+            overflow: hidden !important;
+        }
+    </style>
 </head>
-<body>
+<body data-root="false">
     <div class="app-container">
         <header>
             <div class="header-left">
@@ -25,12 +38,15 @@
                 </button>
                 <div id="global-difficulty-selector"></div>
             </div>
-            <h1>LABIRINTO</h1>
+
+            <h1>NONOGRAMA</h1>
+
             <div class="header-actions">
-                <button class="btn-header-new" id="btn-persistent-new-game" style="display:none;">
+                <button class="btn-header-new" id="btn-persistent-new-game">
                     Novo Jogo
                 </button>
                 <div id="game-timer" class="header-timer">00:00</div>
+                
                 <button class="icon-button" id="btn-help-trigger" title="Como Jogar">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10"></circle>
@@ -38,6 +54,7 @@
                         <line x1="12" y1="17" x2="12.01" y2="17"></line>
                     </svg>
                 </button>
+                
                 <button class="icon-button" id="btn-stats-trigger" title="Estatísticas">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="20" x2="18" y2="10"></line>
@@ -48,25 +65,43 @@
             </div>
         </header>
 
-        <main class="labirinto-main-layout">
+        <main class="nonograma-main-layout">
             <div class="game-info">
-                <div class="info-badge">
-                    Movimentos: <span id="moves-count">0</span>
-                </div>
-                <div class="info-badge" id="hint-text">
-                    Deslize os blocos para conectar o caminho!
+                <div class="conexo-controls-row" style="justify-content: center; margin-bottom: 1vh;">
+                    <div class="info-badge">Movimentos: <span id="moves-count">0</span></div>
                 </div>
             </div>
-            <div id="board-container" class="board-container">
-                <!-- Grid gerado pelo JS -->
+
+            <div class="nonograma-play-area">
+                <div class="nonograma-grid-wrapper">
+                    <div class="empty-corner"></div>
+                    <div id="col-hints" class="col-hints"></div>
+                    <div id="row-hints" class="row-hints"></div>
+                    <div id="nonograma-container" class="nonograma-grid"></div>
+
+                    <!-- Sistema de Vidas -->
+                    <div id="lives-container" class="lives-container">
+                        <img src="../assets/heart.webp" class="heart-icon" alt="Vida">
+                        <img src="../assets/heart.webp" class="heart-icon" alt="Vida">
+                        <img src="../assets/heart.webp" class="heart-icon" alt="Vida">
+                    </div>
+                </div>
+            </div>
+
+            <div class="nonograma-controls">
+                <button class="control-btn active" id="tool-fill" title="Pintar (Espaço)">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                    <span>PINTAR</span>
+                </button>
+                <button class="control-btn" id="tool-x" title="Marcar X (X)">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    <span>MARCAR</span>
+                </button>
             </div>
         </main>
-
-        <div id="global-outros-jogos-modal"></div>
     </div>
 
-    <!-- Modals -->
-    <!-- Modal de Resultado (Vitória/Derrota) -->
+    <!-- Modais Standard -->
     <div id="game-modal" class="modal-overlay">
         <div class="modal result-modal">
             <button class="modal-close" id="btn-close-modal-x" aria-label="Fechar">
@@ -79,7 +114,6 @@
                 <h2 id="modal-title" class="result-title">VITÓRIA!</h2>
                 <p id="modal-text" class="result-subtitle"></p>
             </div>
-            <div id="result-details" class="result-details" style="display:none;"></div>
             <div class="result-stats-grid">
                 <div class="res-stat-item">
                     <span class="res-stat-value" id="res-stat-moves">0</span>
@@ -101,52 +135,44 @@
 
     <div id="help-modal" class="modal-overlay">
         <div class="modal">
-            <button class="modal-close" id="btn-close-help-x" aria-label="Fechar">
+            <button class="modal-close" id="btn-close-help" aria-label="Fechar">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
-            <h2>Como Jogar</h2>
-            <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px;">
-                Mova os blocos para criar um caminho conectando o bloco inicial (vermelho) ao bloco final (azul).
-            </p>
-            <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px;">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">👆</div>
-                    <span style="font-size: 0.85rem;">Toque ou <b>arraste</b> um bloco para movê-lo. Se houver vários espaços vazios, arraste na direção desejada ou toque no bloco e depois no destino.</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 40px; height: 40px; background: rgba(244,63,94,0.3); border: 2px solid var(--error); border-radius: 8px;"></div>
-                    <span style="font-size: 0.85rem;">Blocos iniciais e finais são fixos e não se movem.</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 40px; height: 40px; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 8px; display:flex; justify-content:center; align-items:center;">✖</div>
-                    <span style="font-size: 0.85rem;">Blocos de metal parafusados são obstáculos fixos.</span>
-                </div>
+            <h2>Como Jogar Nonograma</h2>
+            <div class="help-content" style="text-align: left; margin-top: 15px;">
+                <p>Revele a imagem oculta preenchendo os quadrados:</p>
+                <ul style="margin-top: 10px; line-height: 1.6;">
+                    <li>Os números indicam quantos quadrados seguidos devem ser pintados.</li>
+                    <li>Um espaço vazio deve separar cada grupo de números.</li>
+                    <li>Dica: Use o <b>X (Marcar)</b> para excluir lugares onde você sabe que não há nada.</li>
+                </ul>
             </div>
-            <button class="btn btn-primary" id="btn-close-help" style="width: 100%">Entendido!</button>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 25px;" id="btn-close-help-confirm">Entendido!</button>
         </div>
     </div>
 
     <div id="stats-modal" class="modal-overlay">
         <div class="modal">
-            <button class="modal-close" id="btn-close-stats-x" aria-label="Fechar">
+            <button class="modal-close" id="btn-close-stats" aria-label="Fechar">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
             <h2>Estatísticas</h2>
-            <div class="stats-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0;">
-                <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; text-align: center;">
-                    <div style="font-size: 2rem; font-weight: bold; color: var(--primary);" id="stat-played">0</div>
-                    <div style="font-size: 0.8rem; color: var(--text-muted);">Jogos Realizados</div>
+            <div class="stats-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
+                <div class="stat-item" style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; text-align: center;">
+                    <div id="stat-played" style="font-size: 1.5rem; font-weight: bold; color: var(--primary);">0</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">Jogados</div>
                 </div>
-                <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; text-align: center;">
-                    <div style="font-size: 2rem; font-weight: bold; color: var(--success);" id="stat-wins">0%</div>
+                <div class="stat-item" style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; text-align: center;">
+                    <div id="stat-wins" style="font-size: 1.5rem; font-weight: bold; color: var(--success);">0%</div>
                     <div style="font-size: 0.8rem; color: var(--text-muted);">Vitórias</div>
                 </div>
             </div>
-            <button class="btn btn-primary" id="btn-close-stats" style="width: 100%">Fechar</button>
         </div>
     </div>
 
+    <div id="global-outros-jogos-modal"></div>
+
     <script src="../js/ui-components.js"></script>
-    <script src="labirinto.js"></script>
+    <script src="nonograma.js"></script>
 </body>
 </html>

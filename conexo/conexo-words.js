@@ -9,37 +9,37 @@ export const CONEXO_THEMES = [
   },
   {
     theme: "Terminam com 'MÃO'",
-    words: ["SERMÃO", "CORRIMÃO", "MAMÃO", "SUSSURRÃO"]
+    words: ["SERMÃO", "CORRIMÃO", "MAMÃO", "SUSSURRÃO"],
   },
   {
     theme: "Terminam com 'TELA'",
-    words: ["SENTINELA", "CAUTELA", "CARTELA", "COSTELA"]
+    words: ["SENTINELA", "CAUTELA", "CARTELA", "COSTELA"],
   },
   {
     theme: "Terminam com 'LÃO'",
-    words: ["BALÃO", "VILÃO", "ESCALÃO", "SALÃO"]
+    words: ["BALÃO", "VILÃO", "ESCALÃO", "SALÃO"],
   },
   {
     theme: "Terminam com 'RRO'",
-    words: ["FORRÓ", "BEZERRO", "BURRO", "SOCORRO"]
+    words: ["FORRÓ", "BEZERRO", "BURRO", "SOCORRO"],
   },
   {
     theme: "Terminam com 'ATO'",
-    words: ["SAPATO", "RATO", "ORFANATO", "CONTATO"]
+    words: ["SAPATO", "RATO", "ORFANATO", "CONTATO"],
   },
   {
     theme: "Terminam com 'AVE'",
-    words: ["AERONAVE", "SUAVE", "TRAVE", "GRAVE"]
+    words: ["AERONAVE", "SUAVE", "TRAVE", "GRAVE"],
   },
   {
     theme: "Terminam com 'ANA'",
-    words: ["SAVANA", "INSANA", "SEMANA", "ROMANA"]
+    words: ["SAVANA", "INSANA", "SEMANA", "ROMANA"],
   },
   {
     theme: "Terminam com 'ADA'",
-    words: ["COCADA", "ALMOFADA", "RISADA", "EMBOSCADA"]
+    words: ["COCADA", "ALMOFADA", "RISADA", "EMBOSCADA"],
   },
-  
+
   {
     theme: "Têm apenas a vogal 'A'",
     words: ["BANANA", "ARARA", "BACANA", "CABANA"],
@@ -78,7 +78,10 @@ export const CONEXO_THEMES = [
     theme: "Componentes de um Carro",
     words: ["VOLANTE", "FREIO", "EMBREAGEM", "RADIADOR"],
   },
-  { theme: "Signos do Zodíaco", words: ["TOURO", "GÊMEOS", "SAGITÁRIO", "ÁRIES"] },
+  {
+    theme: "Signos do Zodíaco",
+    words: ["TOURO", "GÊMEOS", "SAGITÁRIO", "ÁRIES"],
+  },
   {
     theme: "Presentes em um Tribunal",
     words: ["JUIZ", "RÉU", "ADVOGADO", "PROMOTOR"],
@@ -104,29 +107,29 @@ export const CONEXO_THEMES = [
     words: ["GELO", "MANTEIGA", "SORVETE", "CHOCOLATE"],
   },
   { theme: "Gêneros de Filmes", words: ["TERROR", "COMÉDIA", "AÇÃO", "DRAMA"] },
-    {
+  {
     theme: "Gêneros Literários",
-    words: ["SUSPENSE", "ROMANCE", "FICÇÃO CIENTÍFICA", "FANTASIA"]
+    words: ["SUSPENSE", "ROMANCE", "FICÇÃO CIENTÍFICA", "FANTASIA"],
   },
   {
     theme: "Partes Físicas do Livro",
-    words: ["CAPA", "LOMBADA", "ORELHA", "FOLHA"]
+    words: ["CAPA", "LOMBADA", "ORELHA", "FOLHA"],
   },
   {
     theme: "Tipos de Obras Acadêmicas",
-    words: ["TESE", "DICIONÁRIO", "ATLAS", "ENCICLOPÉDIA"]
+    words: ["TESE", "DICIONÁRIO", "ATLAS", "ENCICLOPÉDIA"],
   },
   {
     theme: "Livros de Imagens",
-    words: ["QUADRINHOS", "MANGÁ", "ÁLBUM", "CATÁLOGO"]
+    words: ["QUADRINHOS", "MANGÁ", "ÁLBUM", "CATÁLOGO"],
   },
   {
     theme: "Classificação por Volume",
-    words: ["TRILOGIA", "SAGA", "ANTOLOGIA", "COLEÇÃO"]
+    words: ["TRILOGIA", "SAGA", "ANTOLOGIA", "COLEÇÃO"],
   },
   {
     theme: "Estilos de Narrativa",
-    words: ["CONTO", "CRÔNICA", "POESIA", "BIOGRAFIA"]
+    words: ["CONTO", "CRÔNICA", "POESIA", "BIOGRAFIA"],
   },
   {
     theme: "Seguidores da palavra 'Ouro'",
@@ -221,8 +224,8 @@ export const CONEXO_THEMES = [
   },
   { theme: "Roupas de Frio", words: ["CASACO", "BLUSA", "CACHECOL", "GORRO"] },
   {
-  theme: "Acessórios de Roupa",
-  words: ["CINTO", "GRAVATA", "SUSPENSÓRIO", " FIVELA"],
+    theme: "Acessórios de Roupa",
+    words: ["CINTO", "GRAVATA", "SUSPENSÓRIO", " FIVELA"],
   },
   {
     theme: "Animais com Chifres",
@@ -232,7 +235,10 @@ export const CONEXO_THEMES = [
     theme: "Esportes Radicais",
     words: ["SURFE", "MOTOCROSS", "PARAQUEDISMO", "RAPEL"],
   },
-  { theme: "Partes do Rosto", words: ["TESTA", "NARIZ", "BOCA", "SOBRANCELHA"] },
+  {
+    theme: "Partes do Rosto",
+    words: ["TESTA", "NARIZ", "BOCA", "SOBRANCELHA"],
+  },
   {
     theme: "Produtos de Higiene",
     words: ["SABONETE", "SHAMPOO", "DESODORANTE", "COTONETE"],
@@ -255,8 +261,8 @@ export const CONEXO_THEMES = [
     words: ["TIRANOSSAURO", "TRICERÁTOPS", "VELOCIRAPTOR", "ESTEGOSSAURO"],
   },
   {
-    theme:"Dinossauros Desconhecidos",
-    words: ["DIPLODOCO","ARGENTINOSSAURO","IRRITATOR","IGUANODONTE"],
+    theme: "Dinossauros Desconhecidos",
+    words: ["DIPLODOCO", "ARGENTINOSSAURO", "IRRITATOR", "IGUANODONTE"],
   },
   {
     theme: "Répteis Voadores Pre-históricos",
@@ -267,8 +273,8 @@ export const CONEXO_THEMES = [
     words: ["MOSASSAURO", "PLESIOSSAURO", "ICTIOSSAURO", "KRONOSSAURO"],
   },
   {
-  theme: "Troca de Pneu",
-  words: ["MACACO", "ESTEPE", "CALOTA", "CHAVE"],
+    theme: "Troca de Pneu",
+    words: ["MACACO", "ESTEPE", "CALOTA", "CHAVE"],
   },
   {
     theme: "Animais Extintos",
@@ -278,7 +284,10 @@ export const CONEXO_THEMES = [
     theme: "Animais Herbívoros",
     words: ["BÚFALO", "BISÃO", "ZEBRA", "COELHO"],
   },
-  { theme: "Animais Carnívoros", words: ["LEÃO", "RATO-GAFANHOTO", "LOBO", "ONÇA"] },
+  {
+    theme: "Animais Carnívoros",
+    words: ["LEÃO", "RATO-GAFANHOTO", "LOBO", "ONÇA"],
+  },
   {
     theme: "Animais que mais matam Humanos",
     words: ["MOSQUITO", "COBRA", "CROCODILO", "HIPOPÓTAMO"],
@@ -419,8 +428,8 @@ export const CONEXO_THEMES = [
     words: ["MESA", "CADEIRA", "COMPASSO", "CALÇA"],
   },
   {
-  theme: "Possuem Teclas",
-  words: ["PIANO", "INTERFONO", "CALCULADORA", "CAIXA REGISTRADORA"],
+    theme: "Possuem Teclas",
+    words: ["PIANO", "INTERFONO", "CALCULADORA", "CAIXA REGISTRADORA"],
   },
   {
     theme: "Têm 'folhas', mas não são árvores",
@@ -533,7 +542,7 @@ export const CONEXO_THEMES = [
   },
   {
     theme: "Têm apenas a vogal 'O'",
-    words: ["MORRO", "PORTO", "MOSCO", "SOPRO"]
+    words: ["MORRO", "PORTO", "MOSCO", "SOPRO"],
   },
   {
     theme: "Abrem e Fecham",
@@ -573,138 +582,138 @@ export const CONEXO_THEMES = [
   },
   {
     theme: "Doenças",
-    words: ["CÂNCER", "GRIPE", "VIROSE", "ANEMIA"]
+    words: ["CÂNCER", "GRIPE", "VIROSE", "ANEMIA"],
   },
   {
     theme: "Peças de Academia",
-    words: ["ESTEIRA", "HALTER", "ANILHA", "BICICLETA"]
+    words: ["ESTEIRA", "HALTER", "ANILHA", "BICICLETA"],
   },
   {
     theme: "Tipos de Corrente",
-    words: ["ELÉTRICA", "MARINHA", "DENTADA", "TRANSMISSÃO"]
+    words: ["ELÉTRICA", "MARINHA", "DENTADA", "TRANSMISSÃO"],
   },
   {
     theme: "Podem ser de Prata",
-    words: ["MOEDA", "ANEL", "TALHER", "BANDEJA"]
+    words: ["MOEDA", "ANEL", "TALHER", "BANDEJA"],
   },
   {
     theme: "Sinônimos de 'Enganar'",
-    words: ["LUDIBRIAR", "BURLAR", "DIBLAR", "LOGRAR"]
+    words: ["LUDIBRIAR", "BURLAR", "DIBLAR", "LOGRAR"],
   },
   {
     theme: "Sabores de Picolé",
-    words: ["CHOCOLATE BRANCO", "MINI SAIA", "MILHO", "AMENDOIM"]
+    words: ["CHOCOLATE BRANCO", "MINI SAIA", "MILHO", "AMENDOIM"],
   },
   {
     theme: "Raças de Cachorro",
-    words: ["BOXER", "POODLE", "BEAGLE", "PUG"]
+    words: ["BOXER", "POODLE", "BEAGLE", "PUG"],
   },
   {
     theme: "Raças de Gato",
-    words: ["PERSA", "SIAMÊS", "ANGORÁ", "BENGAL"]
+    words: ["PERSA", "SIAMÊS", "ANGORÁ", "BENGAL"],
   },
   {
     theme: "Nomes de Pets que são Comida",
-    words: ["PUDIM", "AMORA", "PAÇOCA", "CACAU"]
+    words: ["PUDIM", "AMORA", "PAÇOCA", "CACAU"],
   },
-    {
+  {
     theme: "Gatos Selvagens",
-    words: ["LEOPARDO", "TIGRE", "LINCE", "GUEPARDO"]
+    words: ["LEOPARDO", "TIGRE", "LINCE", "GUEPARDO"],
   },
   {
     theme: "Povos da Antiguidade",
-    words: ["GREGO", "MAIA", "ASTECA", "INCA"]
+    words: ["GREGO", "MAIA", "ASTECA", "INCA"],
   },
   {
     theme: "Tipos de Roupa Intima",
-    words: ["SHORTS", "TANGA", "SAMBA-CANÇÃO", "SUNGA"]
+    words: ["SHORTS", "TANGA", "SAMBA-CANÇÃO", "SUNGA"],
   },
-    {
+  {
     theme: "Cores de Cabelo",
-    words: ["RUIVO", "LOIRO", "CASTANHO", "GRISALHO"]
+    words: ["RUIVO", "LOIRO", "CASTANHO", "GRISALHO"],
   },
   {
     theme: "Coisas que Furam",
-    words: ["AGULHA", "ESPETO", "BROCA", "ALFINETE"]
+    words: ["AGULHA", "ESPETO", "BROCA", "ALFINETE"],
   },
   {
     theme: "Coisas que Saltam/Pulam",
-    words: ["MOLA", "PIPOCA", "CANGURU", "GAFANHOTO"]
+    words: ["MOLA", "PIPOCA", "CANGURU", "GAFANHOTO"],
   },
   {
     theme: "Coisas que Flutuam",
-    words: ["NUVEM", "BOIA", "ISOPOR", "PENA"]
+    words: ["NUVEM", "BOIA", "ISOPOR", "PENA"],
   },
   {
     theme: "Coisas que Esquentam",
-    words: ["FORNO", "VULCÃO", "FEBRE", "SOL"]
+    words: ["FORNO", "VULCÃO", "FEBRE", "SOL"],
   },
   {
     theme: "Coisas que grudam",
-    words: ["IMÃ", "CHICLETE", "ADESIVO", "MEL"]
+    words: ["IMÃ", "CHICLETE", "ADESIVO", "MEL"],
   },
   {
     theme: "Coisas que Dobram",
-    words: ["PAPEL", "JOELHO", "COTOVELO", "ESQUINA"]
+    words: ["PAPEL", "JOELHO", "COTOVELO", "ESQUINA"],
   },
   {
     theme: "Venenos Famosos",
-    words: ["ARSÊNICO", "CIANETO", "CHUMBO", "MERCÚRIO"]
+    words: ["ARSÊNICO", "CIANETO", "CHUMBO", "MERCÚRIO"],
   },
   {
     theme: "Plantas que Podem ser Tóxicas",
-    words: ["MAMONA", "MANDIOCA", "COMIGO-NINGUÉM-PODE", "AZALEIA"]
+    words: ["MAMONA", "MANDIOCA", "COMIGO-NINGUÉM-PODE", "AZALEIA"],
   },
   {
     theme: "Fenômenos Naturais Destrutivos",
-    words: ["TSUNAMI", "FURACÃO", "TERREMOTO", "ERUPÇÃO"]
+    words: ["TSUNAMI", "FURACÃO", "TERREMOTO", "ERUPÇÃO"],
   },
   {
     theme: "Coisas Mais Rápidas que o Som",
-    words: ["CHICOTE", "BALA", "JATO", "TROVÃO"]
+    words: ["CHICOTE", "BALA", "JATO", "TROVÃO"],
   },
   {
     theme: "Existe no Espaço",
-    words: ["VÁCUO", "BURACO-NEGRO", "RADIAÇÃO", "GRAVIDADE"]
+    words: ["VÁCUO", "BURACO-NEGRO", "RADIAÇÃO", "GRAVIDADE"],
   },
   {
     theme: "Grandes Guerras e Conflitos",
-    words: ["VIETNÃ", "CANUDOS", "GOLFO", "REFRIGERAÇÃO"]
+    words: ["VIETNÃ", "CANUDOS", "GOLFO", "REFRIGERAÇÃO"],
   },
   {
     theme: "Revoluções Históricas",
-    words: ["FRANCESA", "INDUSTRIAL", "RUSA", "DIGITAL"]
+    words: ["FRANCESA", "INDUSTRIAL", "RUSSA", "DIGITAL"],
   },
   {
     theme: "Pestes e Pandemias",
-    words: ["ESPANHOLA", "NEGRA", "VARÍOLA", "CÓLERA"]
+    words: ["ESPANHOLA", "NEGRA", "VARÍOLA", "CÓLERA"],
   },
   {
     theme: "Quedas Históricas",
-    words: ["MURO DE BERLIM", "BASTILHA", "IMPÉRIO", "BOLSA"]
+    words: ["MURO DE BERLIM", "BASTILHA", "IMPÉRIO", "BOLSA"],
   },
   {
     theme: "Acontecimentos da Corrida Espacial",
-    words: ["LUA", "SPUTNIK", "APOLLO", "CHALLENGER"]
+    words: ["LUA", "SPUTNIK", "APOLLO", "CHALLENGER"],
   },
   {
     theme: "Acordos e Tratados",
-    words: ["TORDESILHAS", "VERSALHES", "MADRI", "PAZ"]
+    words: ["TORDESILHAS", "VERSALHES", "MADRI", "PAZ"],
   },
   {
     theme: "Períodos da Idade da Pedra",
-    words: ["PALEOLÍTICO", "MESOLÍTICO", "NEOLÍTICO", "GLACIAÇÃO"]
+    words: ["PALEOLÍTICO", "MESOLÍTICO", "NEOLÍTICO", "GLACIAÇÃO"],
   },
   {
     theme: "Materiais de Escultura",
-    words: ["ARGILA", "MÁRMORE", "PEDRA", "MARFIM"]
+    words: ["ARGILA", "MÁRMORE", "PEDRA", "MARFIM"],
   },
   {
     theme: "O que compõe uma Rocha",
-    words: ["MINERAL", "CRISTAL", "FERRO", "QUARTZO"]
+    words: ["MINERAL", "CRISTAL", "FERRO", "QUARTZO"],
   },
   {
     theme: "Vestígios do Passado",
-    words: ["FÓSSIL", "RUÍNA", "PINTURA", "OSSADA"]
-  }
+    words: ["FÓSSIL", "RUÍNA", "PINTURA", "OSSADA"],
+  },
 ];

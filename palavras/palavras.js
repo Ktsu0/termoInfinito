@@ -319,6 +319,7 @@ class PalavrasGame {
     ];
 
     // Place each word
+    const placedWords = [];
     for (let word of this.wordsToFind) {
       let placed = false;
       let attempts = 0;
@@ -331,6 +332,7 @@ class PalavrasGame {
         if (this.canPlaceWord(word, startRow, startCol, dir[0], dir[1])) {
           this.placeWord(word, startRow, startCol, dir[0], dir[1]);
           placed = true;
+          placedWords.push(word);
         }
         attempts++;
       }
@@ -339,6 +341,9 @@ class PalavrasGame {
         console.warn(`Could not place word: ${word}`);
       }
     }
+    
+    // Update wordsToFind to only include what was actually placed
+    this.wordsToFind = placedWords;
 
     // Fill empty spaces with random letters
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -744,17 +749,27 @@ class PalavrasGame {
   }
 
   showGameResultModal(win) {
+    const modal = this.modal;
+    const modalContent = modal.querySelector(".modal");
     const title = document.getElementById("modal-title");
     const text = document.getElementById("modal-text");
-    const icon = document.getElementById("modal-icon");
+    const icon = document.getElementById("result-icon");
 
-    this.modal.classList.add("active");
+    modalContent.classList.remove("win", "lose");
+    modalContent.classList.add(win ? "win" : "lose");
 
-    // No caça palavras agora só há vitória (não há mais limite de tempo)
-    title.textContent = "VITÓRIA";
-    title.style.color = "var(--success)";
-    text.textContent = `Você encontrou todas as palavras em ${Math.floor(this.timeElapsed / 60)}m ${this.timeElapsed % 60}s!`;
-    if (icon) icon.innerHTML = "";
+    if (win) {
+      title.textContent = "VITÓRIA!";
+      icon.textContent = "🏆";
+      text.textContent = "Incrível! Você encontrou todas as palavras do desafio!";
+    }
+
+    const m = Math.floor(this.timeElapsed / 60).toString().padStart(2, '0');
+    const s = (this.timeElapsed % 60).toString().padStart(2, '0');
+    document.getElementById("res-stat-time").textContent = `${m}:${s}`;
+    document.getElementById("res-stat-words").textContent = this.wordsToFind.length;
+
+    modal.classList.add("active");
   }
 
   setupEventListeners() {

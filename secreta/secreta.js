@@ -63,6 +63,10 @@ class SecretaGame {
         this.hideSuggestions();
         this.updateAttemptsDisplay();
         
+        // Esconde o botão de novo jogo do header até o fim
+        const headerNewBtn = document.getElementById("btn-persistent-new-game");
+        if (headerNewBtn) headerNewBtn.classList.remove("visible");
+        
         if (this.theme === "numeros") {
             this.secretNumber = Math.floor(Math.random() * 1000) + 1;
             this.secretWord = this.secretNumber.toString();
@@ -191,22 +195,34 @@ class SecretaGame {
     }
     
     showGameResultModal(win) {
-        const title = document.getElementById('modal-title');
-        const text = document.getElementById('modal-text');
-        const secret = document.getElementById('modal-secret');
-        
-        this.modal.classList.add('active');
-        
+        const modal = this.modal;
+        const modalContent = modal.querySelector(".modal");
+        const title = document.getElementById("modal-title");
+        const text = document.getElementById("modal-text");
+        const details = document.getElementById("result-details");
+        const icon = document.getElementById("result-icon");
+
+        modalContent.classList.remove("win", "lose");
+        modalContent.classList.add(win ? "win" : "lose");
+
         if (win) {
             title.textContent = "VITÓRIA!";
-            title.style.color = "var(--success)";
-            text.textContent = `Você descobriu a palavra em ${this.attemptsUsed} tentativas!`;
+            icon.textContent = "🏆";
+            text.textContent = "Excelente! Você desvendou o segredo!";
+            details.innerHTML = `O segredo era: <span style="color: var(--primary)">${this.secretWord}</span>`;
         } else {
             title.textContent = "DERROTA";
-            title.style.color = "var(--error)";
-            text.textContent = `Você esgotou suas ${this.maxAttempts} tentativas.`;
+            icon.textContent = "😔";
+            text.textContent = "Não foi dessa vez. Suas tentativas acabaram.";
+            details.innerHTML = `O segredo era: <span style="color: var(--error)">${this.secretWord}</span>`;
         }
-        secret.textContent = `O segredo era: ${this.secretWord}`;
+
+        const m = Math.floor(this.timeElapsed / 60).toString().padStart(2, '0');
+        const s = (this.timeElapsed % 60).toString().padStart(2, '0');
+        document.getElementById("res-stat-time").textContent = `${m}:${s}`;
+        document.getElementById("res-stat-guesses").textContent = this.attemptsUsed;
+
+        modal.classList.add("active");
     }
     
     showToast(msg) {
@@ -329,7 +345,11 @@ class SecretaGame {
         const closeHelp = document.getElementById('btn-close-help');
         if (closeHelp) closeHelp.onclick = () => document.getElementById('help-modal').classList.remove('active');
         const closeGameX = document.getElementById('btn-close-modal-x');
-        if (closeGameX) closeGameX.onclick = () => this.modal.classList.remove('active');
+        if (closeGameX) closeGameX.onclick = () => {
+            this.modal.classList.remove('active');
+            const headerNewBtn = document.getElementById("btn-persistent-new-game");
+            if (headerNewBtn) headerNewBtn.classList.add("visible");
+        };
         
         [this.modal, document.getElementById('help-modal')].forEach(m => {
             if (!m) return;

@@ -540,18 +540,20 @@ class CoresGame {
 
     setTimeout(() => {
       const modal = document.getElementById("game-modal");
+      const modalContent = modal.querySelector(".modal");
       const title = document.getElementById("modal-title");
       const text = document.getElementById("modal-text");
-      const icon = document.getElementById("modal-icon");
+      const icon = document.getElementById("result-icon");
 
-      title.textContent = "VITÓRIA! 🎨";
-      title.style.color = "var(--success)";
-      text.innerHTML = `Incrível! Você organizou todas as cores!<br>
-                Nível: <b>${this.difficulty.toUpperCase()}</b> &nbsp;|&nbsp;
-                Movimentos: <b>${this.moves}</b> &nbsp;|&nbsp;
-                Tempo: <b>${this.formatTime(this.timeUsed())}</b>`;
+      modalContent.classList.remove("win", "lose");
+      modalContent.classList.add("win");
 
-      if (icon) icon.innerHTML = "";
+      title.textContent = "VITÓRIA!";
+      icon.textContent = "🏆";
+      text.textContent = "Magnífico! Você organizou todas as cores com perfeição!";
+
+      document.getElementById("res-stat-moves").textContent = this.moves;
+      document.getElementById("res-stat-time").textContent = this.formatTime(this.timeUsed());
 
       modal.classList.add("active");
 
@@ -567,17 +569,20 @@ class CoresGame {
 
     setTimeout(() => {
       const modal = document.getElementById("game-modal");
+      const modalContent = modal.querySelector(".modal");
       const title = document.getElementById("modal-title");
       const text = document.getElementById("modal-text");
-      const icon = document.getElementById("modal-icon");
+      const icon = document.getElementById("result-icon");
+
+      modalContent.classList.remove("win", "lose");
+      modalContent.classList.add("lose");
 
       title.textContent = "TEMPO ESGOTADO!";
-      title.style.color = "var(--error)";
-      text.innerHTML = `O tempo acabou antes de organizar todas as cores.<br>
-                Nível: <b>${this.difficulty.toUpperCase()}</b> &nbsp;|&nbsp;
-                Tubos prontos: <b>${this.completedTubes} / ${this.config[this.difficulty].colors}</b>`;
+      icon.textContent = "😔";
+      text.textContent = "O tempo acabou. Quase lá! Tente mais uma vez.";
 
-      if (icon) icon.innerHTML = "";
+      document.getElementById("res-stat-moves").textContent = this.moves;
+      document.getElementById("res-stat-time").textContent = this.formatTime(this.timeLeft);
 
       modal.classList.add("active");
 

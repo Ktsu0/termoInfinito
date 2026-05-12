@@ -294,7 +294,20 @@ class SudokuGame {
         for (let n = 1; n <= 9; n++) {
             const span = document.createElement('span');
             span.className = 'note-num';
-            span.textContent = noteSet.has(n) ? n : '';
+            if (noteSet.has(n)) {
+                span.textContent = n;
+                span.style.cursor = 'pointer';
+                span.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.selectedCell = { r, c };
+                    const currentSet = this.notes[r][c];
+                    currentSet.delete(n);
+                    this._updateCellDOM(r, c);
+                    this.updateHighlights();
+                });
+            } else {
+                span.textContent = '';
+            }
             grid.appendChild(span);
         }
         cell.appendChild(grid);
@@ -510,18 +523,22 @@ class SudokuGame {
         
         setTimeout(() => {
             const modal = document.getElementById('game-modal');
-            const title = document.getElementById('modal-title');
-            const text = document.getElementById('modal-text');
-            const icon = document.getElementById('modal-icon');
-            
-            if (icon) icon.innerHTML = ''; // Remove icon
-            title.textContent = 'VITÓRIA!';
-            title.style.color = 'var(--success)';
-            text.innerHTML = `Excelente! Você resolveu o Sudoku no modo <b>${this.difficulty.toUpperCase()}</b><br>Tempo final: <b>${this.formatTime(this.timer)}</b>`;
-            
-            modal.classList.add('active');
+            const modalContent = modal.querySelector(".modal");
+            const title = document.getElementById("modal-title");
+            const text = document.getElementById("modal-text");
+            const icon = document.getElementById("result-icon");
 
-            // Show persistent new game button in header
+            modalContent.classList.remove("win", "lose");
+            modalContent.classList.add("win");
+
+            title.textContent = "VITÓRIA!";
+            icon.textContent = "🏆";
+            text.textContent = "Fantástico! Você completou o desafio Sudoku sem falhas!";
+
+            document.getElementById("res-stat-time").textContent = this.formatTime(this.timer);
+            document.getElementById("res-stat-errors").textContent = (this.difficulty === 'hard' ? 4 : 3) - this.lives;
+
+            modal.classList.add('active');
             const btnPersistentNew = document.getElementById('btn-persistent-new-game');
             if (btnPersistentNew) btnPersistentNew.classList.add('visible');
         }, 500);
@@ -534,18 +551,22 @@ class SudokuGame {
         
         setTimeout(() => {
             const modal = document.getElementById('game-modal');
-            const title = document.getElementById('modal-title');
-            const text = document.getElementById('modal-text');
-            const icon = document.getElementById('modal-icon');
-            
-            if (icon) icon.innerHTML = ''; // Remove icon
-            title.textContent = 'GAME OVER';
-            title.style.color = 'var(--error)';
-            text.innerHTML = `Você cometeu muitos erros!<br>Nível: <b>${this.difficulty.toUpperCase()}</b>`;
-            
-            modal.classList.add('active');
+            const modalContent = modal.querySelector(".modal");
+            const title = document.getElementById("modal-title");
+            const text = document.getElementById("modal-text");
+            const icon = document.getElementById("result-icon");
 
-            // Show persistent new game button in header
+            modalContent.classList.remove("win", "lose");
+            modalContent.classList.add("lose");
+
+            title.textContent = "DERROTA";
+            icon.textContent = "😔";
+            text.textContent = "Você esgotou suas chances. Não desista!";
+
+            document.getElementById("res-stat-time").textContent = this.formatTime(this.timer);
+            document.getElementById("res-stat-errors").textContent = (this.difficulty === 'hard' ? 4 : 3);
+
+            modal.classList.add('active');
             const btnPersistentNew = document.getElementById('btn-persistent-new-game');
             if (btnPersistentNew) btnPersistentNew.classList.add('visible');
         }, 500);

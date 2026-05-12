@@ -354,7 +354,14 @@ function endGame(isWin) {
   const diffStats = gameStats[currentLevel];
   diffStats.played++;
 
-  const icon = document.getElementById("modal-icon");
+  const modal = document.getElementById('game-modal');
+  const modalContent = modal.querySelector(".modal");
+  const title = document.getElementById("modal-title");
+  const text = document.getElementById("modal-text");
+  const icon = document.getElementById("result-icon");
+
+  modalContent.classList.remove("win", "lose");
+  modalContent.classList.add(isWin ? "win" : "lose");
 
   if (isWin) {
     diffStats.wins++;
@@ -364,21 +371,19 @@ function endGame(isWin) {
       diffStats.maxStreak,
     );
 
-    modalTitle.textContent = "VOCÊ VENCEU!";
-    modalTitle.style.color = "var(--success)";
-    modalText.innerHTML = `Parabéns! Você encontrou todos os temas com <b>${updateTimerDisplayToString()}</b> restantes no nível ${getLevelName(currentLevel)}.`;
-    if (icon) icon.innerHTML = "";
-    // Removed confetti
-    // createConfetti();
+    title.textContent = "VITÓRIA!";
+    icon.textContent = "🏆";
+    text.textContent = "Excelente! Você encontrou todas as conexões!";
   } else {
     diffStats.currentStreak = 0;
-
-    modalTitle.textContent = "TEMPO ESGOTADO";
-    modalTitle.style.color = "var(--error)";
-    modalText.innerHTML = `As categorias que faltavam eram exibidas agora. Tente novamente no nível ${getLevelName(currentLevel)}!`;
-    if (icon) icon.innerHTML = "";
+    title.textContent = "DERROTA";
+    icon.textContent = "😔";
+    text.textContent = "O tempo acabou. As conexões foram reveladas!";
     solveRemaining();
   }
+
+  document.getElementById("res-stat-time").textContent = updateTimerDisplayToString();
+  document.getElementById("res-stat-groups").textContent = solvedThemes.length;
 
   ConexoStatsManager.save(gameStats);
   if (btnHeaderNew) btnHeaderNew.classList.add("visible");
