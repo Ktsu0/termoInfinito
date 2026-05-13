@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Adivinha - Infinito</title>
+    
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/utils.css">
+    <link rel="stylesheet" href="adivinha.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Global Header -->
+        <header class="header">
+            <div class="header-left">
+                <button class="btn-outros-jogos" id="btn-outros-jogos" title="Outros Jogos">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                    Outros Jogos
+                </button>
+            </div>
+            
+            <h1>ADIVINHA</h1>
+            
+            <div class="header-actions">
+                <button class="btn-header-new" id="btn-persistent-new-game">Novo Jogo</button>
+                <button class="icon-button" id="btn-help-trigger" aria-label="Como Jogar">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </button>
+                <button class="icon-button" id="btn-stats-trigger" aria-label="Estatísticas">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Game Layout -->
+        <main class="adivinha-main-layout">
+            <div class="game-info">
+                <div class="info-badge">Fase: <span id="current-phase">1/4</span></div>
+            </div>
+
+            <div class="adivinha-play-area">
+                <div class="cards-container">
+                    <!-- Carta 1 -->
+                    <div class="playing-card" id="card-0">
+                        <div class="card-inner">
+                            <div class="card-back"></div>
+                            <div class="card-front">
+                                <div class="card-value-top"></div>
+                                <div class="card-suit-center"></div>
+                                <div class="card-value-bottom"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Carta 2 -->
+                    <div class="playing-card" id="card-1">
+                        <div class="card-inner">
+                            <div class="card-back"></div>
+                            <div class="card-front">
+                                <div class="card-value-top"></div>
+                                <div class="card-suit-center"></div>
+                                <div class="card-value-bottom"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Carta 3 -->
+                    <div class="playing-card" id="card-2">
+                        <div class="card-inner">
+                            <div class="card-back"></div>
+                            <div class="card-front">
+                                <div class="card-value-top"></div>
+                                <div class="card-suit-center"></div>
+                                <div class="card-value-bottom"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Carta 4 -->
+                    <div class="playing-card" id="card-3">
+                        <div class="card-inner">
+                            <div class="card-back"></div>
+                            <div class="card-front">
+                                <div class="card-value-top"></div>
+                                <div class="card-suit-center"></div>
+                                <div class="card-value-bottom"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Painel de Controle Dinâmico -->
+            <div class="adivinha-controls">
+                <h3 id="phase-instruction" class="phase-instruction">Vermelha ou Preta?</h3>
+                <div id="controls-container" class="controls-container">
+                    <!-- Botões injetados via JS -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modais de UI Global -->
+    <div id="global-drawer"></div>
+    <div id="global-outros-jogos-modal"></div>
+    <div id="toast" class="toast"></div>
+
+    <!-- Modal de Resultado (Game Over / Win) -->
+    <div id="game-modal" class="modal-overlay">
+        <div class="modal result-modal">
+            <button class="modal-close" id="btn-close-modal-x" aria-label="Fechar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <div class="result-header">
+                <div class="result-icon-container">
+                    <div id="result-icon" class="result-icon"></div>
+                </div>
+                <h2 id="modal-title" class="result-title">VITÓRIA!</h2>
+                <p id="modal-text" class="result-subtitle">Você sobreviveu ao baralho.</p>
+            </div>
+            <div class="result-stats-grid">
+                <div class="res-stat-item">
+                    <span class="res-stat-value" id="res-stat-wins">0</span>
+                    <span class="res-stat-label">Vitórias</span>
+                </div>
+                <div class="res-stat-item">
+                    <span class="res-stat-value" id="res-stat-played">0</span>
+                    <span class="res-stat-label">Jogados</span>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="btn-new-game-modal">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                    Tentar Novamente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Ajuda -->
+    <div id="help-modal" class="modal-overlay">
+        <div class="modal help-modal-premium">
+            <button class="modal-close" aria-label="Fechar" onclick="this.closest('.modal-overlay').classList.remove('active')">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <h2>Como Jogar</h2>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.95rem;">
+                Tente sobreviver às 4 fases do baralho. Um erro e o jogo acaba!
+            </p>
+            
+            <div class="help-step">
+                <div class="step-num" style="background: var(--error); box-shadow: 0 0 15px rgba(244, 63, 94, 0.5);">1</div>
+                <div>
+                    <p><b>Cor:</b> A primeira carta será Vermelha (Copas/Ouros) ou Preta (Espadas/Paus)?</p>
+                </div>
+            </div>
+
+            <div class="help-step">
+                <div class="step-num" style="background: var(--primary); box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);">2</div>
+                <div>
+                    <p><b>Maior ou Menor:</b> A segunda carta será Maior ou Menor que a primeira? (O Ás é a carta mais alta).</p>
+                </div>
+            </div>
+            
+            <div class="help-step">
+                <div class="step-num" style="background: var(--success); box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);">3</div>
+                <div>
+                    <p><b>Entre ou Fora:</b> A terceira carta tem um valor que fica Entre as duas primeiras ou de Fora delas?</p>
+                </div>
+            </div>
+
+            <div class="help-step">
+                <div class="step-num" style="background: #eab308; color: #000; box-shadow: 0 0 15px rgba(234, 179, 8, 0.5);">4</div>
+                <div>
+                    <p><b>Qual o Naipe:</b> Por fim, adivinhe o naipe exato da quarta e última carta (Copas, Espadas, Ouros ou Paus).</p>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="this.closest('.modal-overlay').classList.remove('active')" style="width: 100%; margin-top: 1rem; border-radius: 12px; padding: 1rem; font-size: 1.1rem;">Vamos Jogar!</button>
+        </div>
+    </div>
+
+    <!-- Modal de Estatísticas -->
+    <div id="stats-modal" class="modal-overlay">
+        <div class="modal result-modal">
+            <button class="modal-close" aria-label="Fechar" onclick="this.closest('.modal-overlay').classList.remove('active')">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <h2 class="result-title">Estatísticas</h2>
+            <div class="result-stats-grid" style="margin-top: 20px;">
+                <div class="res-stat-item">
+                    <span class="res-stat-value" id="stats-wins">0</span>
+                    <span class="res-stat-label">Vitórias</span>
+                </div>
+                <div class="res-stat-item">
+                    <span class="res-stat-value" id="stats-played">0</span>
+                    <span class="res-stat-label">Jogados</span>
+                </div>
+                <div class="res-stat-item">
+                    <span class="res-stat-value" id="stats-streak">0</span>
+                    <span class="res-stat-label">Sequência Atual</span>
+                </div>
+                <div class="res-stat-item">
+                    <span class="res-stat-value" id="stats-max-streak">0</span>
+                    <span class="res-stat-label">Melhor Sequência</span>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="this.closest('.modal-overlay').classList.remove('active')" style="width: 100%; margin-top: 25px;">Fechar</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="../js/ui-components.js"></script>
+    <script src="adivinha.js"></script>
+</body>
+</html>

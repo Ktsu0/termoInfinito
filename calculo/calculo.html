@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NONOGRAMA - Termo Infinito</title>
+    <title>CÁLCULO - Termo Infinito</title>
     
     <!-- CSS Global -->
     <link rel="stylesheet" href="../css/base.css">
@@ -13,18 +13,7 @@
     <link rel="stylesheet" href="../css/utils.css">
     
     <!-- CSS Específico -->
-    <link rel="stylesheet" href="nonograma.css">
-    
-    <style>
-        /* Ajuste de emergência para garantir visibilidade */
-        body {
-            background-color: #030712 !important;
-            color: #f9fafb !important;
-        }
-        .app-container {
-            overflow: hidden !important;
-        }
-    </style>
+    <link rel="stylesheet" href="calculo.css">
 </head>
 <body data-root="false">
     <div class="app-container">
@@ -39,7 +28,7 @@
                 <div id="global-difficulty-selector"></div>
             </div>
 
-            <h1>NONOGRAMA</h1>
+            <h1>CÁLCULO</h1>
 
             <div class="header-actions">
                 <button class="btn-header-new" id="btn-persistent-new-game">
@@ -65,25 +54,9 @@
             </div>
         </header>
 
-        <main class="nonograma-main-layout">
+        <main class="calculo-main-layout">
             <div class="game-info">
-                <div class="conexo-controls-row" style="justify-content: center; margin-bottom: 1vh;">
-                    <div class="info-badge">Movimentos: <span id="moves-count">0</span></div>
-                </div>
-            </div>
-
-            <div class="nonograma-play-area" id="nonograma-play-area">
-                <div class="zoom-controls">
-                    <button class="icon-button" id="btn-zoom-in" title="Aumentar Zoom">+</button>
-                    <button class="icon-button" id="btn-zoom-out" title="Diminuir Zoom">-</button>
-                    <button class="icon-button" id="btn-zoom-reset" title="Centralizar">⟲</button>
-                </div>
-                <div class="nonograma-grid-wrapper" id="nonograma-grid-wrapper">
-                    <div class="empty-corner"></div>
-                    <div id="col-hints" class="col-hints"></div>
-                    <div id="row-hints" class="row-hints"></div>
-                    <div id="nonograma-container" class="nonograma-grid"></div>
-
+                <div class="conexo-controls-row" style="justify-content: center; gap: 20px;">
                     <!-- Sistema de Vidas -->
                     <div id="lives-container" class="lives-container">
                         <img src="../assets/heart.webp" class="heart-icon" alt="Vida">
@@ -93,15 +66,17 @@
                 </div>
             </div>
 
-            <div class="nonograma-controls">
-                <button class="control-btn active" id="tool-fill" title="Pintar (Espaço)">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
-                    <span>PINTAR</span>
-                </button>
-                <button class="control-btn" id="tool-x" title="Marcar X (X)">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    <span>MARCAR</span>
-                </button>
+            <div class="calculo-play-area" id="calculo-play-area">
+                <div class="zoom-controls">
+                    <button class="icon-button" id="btn-zoom-in" title="Aumentar Zoom">+</button>
+                    <button class="icon-button" id="btn-zoom-out" title="Diminuir Zoom">-</button>
+                    <button class="icon-button" id="btn-zoom-reset" title="Centralizar">⟲</button>
+                </div>
+                <div id="calculo-grid" class="calculo-grid"></div>
+            </div>
+
+            <div class="calculo-bank-area">
+                <div id="calc-bank" class="calc-bank"></div>
             </div>
         </main>
     </div>
@@ -109,7 +84,7 @@
     <!-- Modais Standard -->
     <div id="game-modal" class="modal-overlay">
         <div class="modal result-modal">
-            <button class="modal-close" id="btn-close-modal-x" aria-label="Fechar">
+            <button class="modal-close" aria-label="Fechar">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
             <div class="result-header">
@@ -120,10 +95,6 @@
                 <p id="modal-text" class="result-subtitle"></p>
             </div>
             <div class="result-stats-grid">
-                <div class="res-stat-item">
-                    <span class="res-stat-value" id="res-stat-moves">0</span>
-                    <span class="res-stat-label">Movimentos</span>
-                </div>
                 <div class="res-stat-item">
                     <span class="res-stat-value" id="res-stat-time">00:00</span>
                     <span class="res-stat-label">Tempo</span>
@@ -140,49 +111,56 @@
 
     <div id="help-modal" class="modal-overlay">
         <div class="modal help-modal-premium">
-            <button class="modal-close" id="btn-close-help" aria-label="Fechar">
+            <button class="modal-close" aria-label="Fechar">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
             <h2>Como Jogar</h2>
             <p style="text-align: center; color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.95rem;">
-                Revele a imagem oculta pintando os quadrados corretos do tabuleiro!
+                Complete a cruzadinha matemática preenchendo todos os números e resultados que faltam!
             </p>
             
             <div class="help-step">
                 <div class="step-num" style="background: var(--primary); box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);">1</div>
                 <div>
-                    <p><b>Leia as Dicas:</b> Os números indicam quantos quadrados <b>seguidos</b> devem ser pintados naquela linha ou coluna.</p>
+                    <p><b>Preencha os Espaços:</b> Clique em um espaço vazio (ou arraste) e selecione uma peça do banco para colocá-la.</p>
+                    <div style="display: flex; gap: 4px; margin-top: 12px; align-items: center; justify-content: center; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 12px; border: 1px solid var(--glass-border);">
+                        <div class="calc-cell fixed-operand" style="width:32px; height:32px; font-size: 1rem;">4</div>
+                        <div class="calc-cell operator" style="width:32px; height:32px; font-size: 1rem;">+</div>
+                        <div class="calc-cell blank selected" style="width:32px; height:32px; font-size: 1rem;"></div>
+                        <div class="calc-cell equals" style="width:32px; height:32px; font-size: 1rem;">=</div>
+                        <div class="calc-cell blank" style="width:32px; height:32px; font-size: 1rem;"></div>
+                    </div>
                 </div>
             </div>
 
             <div class="help-step">
                 <div class="step-num" style="background: var(--success); box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);">2</div>
                 <div>
-                    <p><b>Use os Espaços:</b> Se houver mais de um número (ex: "2 3"), deve haver <b>pelo menos um espaço vazio</b> separando os grupos.</p>
-                </div>
-            </div>
-            
-            <div class="help-step">
-                <div class="step-num" style="background: #eab308; color: #000; box-shadow: 0 0 15px rgba(234, 179, 8, 0.5);">!</div>
-                <div>
-                    <p><b>Marque com X:</b> Use a ferramenta <b>MARCAR (X)</b> para preencher com um "X" os lugares onde você tem certeza que não há nada.</p>
+                    <p><b>Atenção à Lógica:</b> As equações se cruzam. A linha inteira só é avaliada quando as 3 partes da conta estiverem preenchidas.</p>
                 </div>
             </div>
 
             <div class="help-step">
                 <div class="step-num" style="background: var(--error); box-shadow: 0 0 15px rgba(244, 63, 94, 0.5);">3</div>
                 <div>
-                    <p><b>Cuidado com Vidas:</b> Pintar um quadrado errado fará você perder uma vida. A lógica é sua maior arma.</p>
+                    <p><b>Cuidado com Vidas:</b> Se a conta estiver errada, ela piscará em <span style="color:var(--error); font-weight:bold;">vermelho</span> e você perde uma vida!</p>
+                </div>
+            </div>
+            
+            <div class="help-step">
+                <div class="step-num" style="background: #eab308; color: #000; box-shadow: 0 0 15px rgba(234, 179, 8, 0.5);">!</div>
+                <div>
+                    <p><b>Dica de Ouro:</b> Ordem das operações! (Multiplicação e Divisão são feitas antes de Adição/Subtração).</p>
                 </div>
             </div>
 
-            <button class="btn btn-primary" id="btn-close-help-confirm" onclick="this.closest('.modal-overlay').classList.remove('active')" style="width: 100%; margin-top: 1rem; border-radius: 12px; padding: 1rem; font-size: 1.1rem;">Vamos Jogar!</button>
+            <button class="btn btn-primary" onclick="this.closest('.modal-overlay').classList.remove('active')" style="width: 100%; margin-top: 1rem; border-radius: 12px; padding: 1rem; font-size: 1.1rem;">Vamos Jogar!</button>
         </div>
     </div>
 
     <div id="stats-modal" class="modal-overlay">
         <div class="modal">
-            <button class="modal-close" id="btn-close-stats" aria-label="Fechar">
+            <button class="modal-close" aria-label="Fechar">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
             <h2>Estatísticas</h2>
@@ -202,6 +180,6 @@
     <div id="global-outros-jogos-modal"></div>
 
     <script src="../js/ui-components.js"></script>
-    <script src="nonograma.js"></script>
+    <script src="calculo.js"></script>
 </body>
 </html>

@@ -145,6 +145,23 @@ function injectUI() {
                 </div>
                 <span class="jogo-card-nome">NONOGRAMA</span>
               </div>
+              <div class="jogo-card" onclick="window.location.href='${prefix}calculo/calculo.html'" title="Jogar Cálculo">
+                <div class="jogo-card-img jogo-card-calculo">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                </div>
+                <span class="jogo-card-nome">CÁLCULO</span>
+              </div>
+              <div class="jogo-card" onclick="window.location.href='${prefix}adivinha/adivinha.html'" title="Jogar Adivinha">
+                <div class="jogo-card-img jogo-card-adivinha" style="background: linear-gradient(135deg, #ef4444, #000);">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="3" width="20" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line>
+                  </svg>
+                </div>
+                <span class="jogo-card-nome">ADIVINHA</span>
+              </div>
             </div>
           </div>
         </div>

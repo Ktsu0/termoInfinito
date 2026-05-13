@@ -104,6 +104,8 @@ class NonogramaGame {
         this.lives = 3;
         this.isDragging = false;
         this.dragStateToApply = null; // State to set during current drag (1, 2, or 0)
+        this.dragDirection = null; // 'row' or 'col'
+        this.dragStartPos = null; // {r, c}
 
         this.config = {
             easy: { size: 5 },
@@ -111,12 +113,95 @@ class NonogramaGame {
             hard: { size: 15 }
         };
 
+        this.themes = [
+            { hue: 235, name: 'indigo' },
+            { hue: 160, name: 'emerald' },
+            { hue: 340, name: 'rose' },
+            { hue: 200, name: 'cyan' },
+            { hue: 35, name: 'amber' },
+            { hue: 270, name: 'violet' },
+            { hue: 15, name: 'orange' }
+        ];
+
         this.init();
     }
 
     init() {
         this.setupEventListeners();
+        this.setupPanZoom();
         this.startNewGame();
+    }
+
+    setupPanZoom() {
+        this.boardScale = 1;
+        this.boardPanX = 0;
+        this.boardPanY = 0;
+        
+        const playArea = document.getElementById('nonograma-play-area');
+        const gridEl = document.getElementById('nonograma-grid-wrapper');
+        
+        this.updateBoardTransform = () => {
+            gridEl.style.transform = `translate(${this.boardPanX}px, ${this.boardPanY}px) scale(${this.boardScale})`;
+        };
+
+        const zoomInBtn = document.getElementById('btn-zoom-in');
+        const zoomOutBtn = document.getElementById('btn-zoom-out');
+        const zoomResetBtn = document.getElementById('btn-zoom-reset');
+
+        if(zoomInBtn) zoomInBtn.addEventListener('click', () => {
+            this.boardScale = Math.min(2.5, this.boardScale + 0.2);
+            this.updateBoardTransform();
+        });
+        
+        if(zoomOutBtn) zoomOutBtn.addEventListener('click', () => {
+            this.boardScale = Math.max(0.4, this.boardScale - 0.2);
+            this.updateBoardTransform();
+        });
+        
+        if(zoomResetBtn) zoomResetBtn.addEventListener('click', () => {
+            this.boardScale = 1;
+            this.boardPanX = 0;
+            this.boardPanY = 0;
+            this.updateBoardTransform();
+        });
+
+        playArea.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? -0.1 : 0.1;
+            this.boardScale = Math.min(Math.max(0.4, this.boardScale + delta), 2.5);
+            this.updateBoardTransform();
+        }, { passive: false });
+
+        let isPanning = false;
+        let startX = 0, startY = 0;
+        let initialPanX = 0, initialPanY = 0;
+
+        playArea.addEventListener('pointerdown', (e) => {
+            if (e.target.closest('.nonograma-grid-wrapper') || e.target.closest('.zoom-controls')) return;
+            if (e.button && e.button !== 0) return;
+            
+            isPanning = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            initialPanX = this.boardPanX;
+            initialPanY = this.boardPanY;
+            playArea.style.cursor = 'grabbing';
+            e.preventDefault();
+        });
+
+        window.addEventListener('pointermove', (e) => {
+            if (!isPanning) return;
+            this.boardPanX = initialPanX + (e.clientX - startX);
+            this.boardPanY = initialPanY + (e.clientY - startY);
+            this.updateBoardTransform();
+        });
+
+        window.addEventListener('pointerup', () => {
+            if (isPanning) {
+                isPanning = false;
+                playArea.style.cursor = 'default';
+            }
+        });
     }
 
     setupEventListeners() {
@@ -164,6 +249,14 @@ class NonogramaGame {
         window.addEventListener('mouseup', () => {
             this.isDragging = false;
             this.dragStateToApply = null;
+            this.dragDirection = null;
+        });
+
+        // Touch support using pointer events
+        window.addEventListener('pointerup', () => {
+            this.isDragging = false;
+            this.dragStateToApply = null;
+            this.dragDirection = null;
         });
     }
 
@@ -179,11 +272,80 @@ class NonogramaGame {
         this.updateLivesDisplay();
         document.getElementById('moves-count').textContent = '0';
         
+        this.applyRandomTheme();
+
         const btnHeaderNew = document.getElementById("btn-persistent-new-game");
         if (btnHeaderNew) btnHeaderNew.classList.remove("visible");
 
         this.generatePuzzle();
         this.renderBoard();
+        
+        // Reset Pan/Zoom
+        this.boardScale = 1;
+        this.boardPanX = 0;
+        this.boardPanY = 0;
+        if (this.updateBoardTransform) this.updateBoardTransform();
+    }
+
+    generateProceduralGrid(size) {
+        let grid = Array(size).fill().map(() => 
+            Array(size).fill().map(() => Math.random() > 0.55 ? 1 : 0)
+        );
+
+        const applyCA = (g) => {
+            let nextG = Array(size).fill().map(() => Array(size).fill(0));
+            for (let r = 0; r < size; r++) {
+                for (let c = 0; c < size; c++) {
+                    let neighbors = 0;
+                    for (let dr = -1; dr <= 1; dr++) {
+                        for (let dc = -1; dc <= 1; dc++) {
+                            if (dr === 0 && dc === 0) continue;
+                            let nr = r + dr, nc = c + dc;
+                            if (nr >= 0 && nr < size && nc >= 0 && nc < size) {
+                                neighbors += g[nr][nc];
+                            }
+                        }
+                    }
+                    if (neighbors > 4) nextG[r][c] = 1;
+                    else if (neighbors < 4) nextG[r][c] = 0;
+                    else nextG[r][c] = g[r][c];
+                }
+            }
+            return nextG;
+        };
+
+        for (let i = 0; i < 3; i++) {
+            grid = applyCA(grid);
+        }
+
+        if (Math.random() > 0.4) {
+            for (let r = 0; r < size; r++) {
+                for (let c = 0; c < Math.floor(size / 2); c++) {
+                    grid[r][size - 1 - c] = grid[r][c];
+                }
+            }
+        }
+
+        for (let r = 0; r < size; r++) {
+            if (!grid[r].includes(1)) {
+                let center = Math.floor(size/2);
+                grid[r][center] = 1;
+                if (center > 0) grid[r][center-1] = 1;
+            }
+        }
+        for (let c = 0; c < size; c++) {
+            let hasFilled = false;
+            for (let r = 0; r < size; r++) {
+                if (grid[r][c] === 1) { hasFilled = true; break; }
+            }
+            if (!hasFilled) {
+                let center = Math.floor(size/2);
+                grid[center][c] = 1;
+                if (center > 0) grid[center-1][c] = 1;
+            }
+        }
+
+        return grid;
     }
 
     generatePuzzle() {
@@ -193,14 +355,13 @@ class NonogramaGame {
         while (!valid && attempts < 100) {
             attempts++;
             const patterns = PATTERNS[this.size] || [];
-            if (patterns.length > 0 && attempts < 5) {
+            
+            // Reduzida a chance de usar pattern estático para focar no sistema inteligente
+            if (patterns.length > 0 && Math.random() < 0.15) {
                 const pattern = patterns[Math.floor(Math.random() * patterns.length)];
                 this.grid = JSON.parse(JSON.stringify(pattern.grid));
             } else {
-                // Generate random but respect MAX_HINTS constraint roughly
-                this.grid = Array(this.size).fill().map(() => 
-                    Array(this.size).fill().map(() => Math.random() > 0.5 ? 1 : 0)
-                );
+                this.grid = this.generateProceduralGrid(this.size);
             }
 
             this.calculateHints();
@@ -226,7 +387,8 @@ class NonogramaGame {
                 else if (count > 0) { hints.push(count); count = 0; }
             });
             if (count > 0) hints.push(count);
-            return hints.length ? hints : [0];
+            if (hints.length === 0) hints.push(0);
+            return hints;
         });
 
         this.colHints = [];
@@ -238,7 +400,8 @@ class NonogramaGame {
                 else if (count > 0) { hints.push(count); count = 0; }
             }
             if (count > 0) hints.push(count);
-            this.colHints.push(hints.length ? hints : [0]);
+            if (hints.length === 0) hints.push(0);
+            this.colHints.push(hints);
         }
     }
 
@@ -297,10 +460,14 @@ class NonogramaGame {
                 
                 this.updateCellVisual(cell, r, c);
 
-                cell.addEventListener('mousedown', (e) => {
+                const onStart = (e) => {
                     if (this.isGameOver) return;
+                    if (e.type === 'mousedown' && e.button !== 0) return;
+                    
                     e.preventDefault();
                     this.isDragging = true;
+                    this.dragStartPos = { r, c };
+                    this.dragDirection = null;
                     
                     const currentState = this.playerGrid[r][c];
                     if (this.currentTool === 'fill') {
@@ -310,11 +477,29 @@ class NonogramaGame {
                     }
                     
                     this.handleCellAction(r, c);
-                });
+                };
+
+                const onEnter = (e) => {
+                    if (this.isDragging) {
+                        // Axis locking logic
+                        if (!this.dragDirection) {
+                            if (r !== this.dragStartPos.r) this.dragDirection = 'col';
+                            else if (c !== this.dragStartPos.c) this.dragDirection = 'row';
+                        }
+                        
+                        if (this.dragDirection === 'row' && r !== this.dragStartPos.r) return;
+                        if (this.dragDirection === 'col' && c !== this.dragStartPos.c) return;
+                        
+                        this.handleCellAction(r, c);
+                    }
+                };
+
+                cell.addEventListener('mousedown', onStart);
+                cell.addEventListener('mouseenter', onEnter);
                 
-                cell.addEventListener('mouseenter', () => {
-                    if (this.isDragging) this.handleCellAction(r, c);
-                });
+                // Pointer events for mobile
+                cell.addEventListener('pointerdown', onStart);
+                cell.addEventListener('pointerenter', onEnter);
                 
                 container.appendChild(cell);
             }
@@ -374,6 +559,9 @@ class NonogramaGame {
         if (currentState === 1 || currentState === 3) return;
 
         if (this.currentTool === 'fill') {
+            // If dragging and target state is 0 (unfill), we skip because correct cells can't be unfilled
+            if (this.dragStateToApply === 0) return;
+
             // Only fill if it's correct
             if (shouldBeFilled) {
                 if (this.playerGrid[r][c] !== 1) {
@@ -383,10 +571,15 @@ class NonogramaGame {
                     this.checkWin();
                 }
             } else {
-                // Wrong move
+                // Wrong move: penalize and stop drag
+                if (this.playerGrid[r][c] === 3) return;
+                
                 this.playerGrid[r][c] = 3;
                 this.loseLife();
                 this.updateCellVisual(cellEl, r, c);
+                
+                // CRITICAL: Stop dragging on mistake to prevent brute-force
+                this.isDragging = false;
             }
         } else {
             // Marker tool (X)
@@ -494,6 +687,20 @@ class NonogramaGame {
         document.getElementById('stat-played').textContent = stats.played;
         const winPct = stats.played > 0 ? Math.round((stats.wins / stats.played) * 100) : 0;
         document.getElementById('stat-wins').textContent = winPct + '%';
+    }
+
+    applyRandomTheme() {
+        const theme = this.themes[Math.floor(Math.random() * this.themes.length)];
+        const root = document.documentElement;
+        
+        // Use HSL for consistent look but different colors
+        const primary = `hsl(${theme.hue}, 85%, 65%)`;
+        const primaryGlow = `hsla(${theme.hue}, 85%, 65%, 0.4)`;
+        const primaryBorder = `hsla(${theme.hue}, 85%, 65%, 0.3)`;
+        
+        root.style.setProperty('--current-primary', primary);
+        root.style.setProperty('--current-primary-glow', primaryGlow);
+        root.style.setProperty('--current-primary-border', primaryBorder);
     }
 }
 

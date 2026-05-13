@@ -1,0 +1,272 @@
+/* =============================================
+   ADIVINHA – Estilos Específicos
+   ============================================= */
+
+.adivinha-main-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2vh;
+    width: 100%;
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 0.5rem;
+    flex: 1;
+    z-index: 1;
+}
+
+.adivinha-play-area {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1000px;
+    margin: 2vh 0;
+}
+
+.cards-container {
+    display: flex;
+    gap: clamp(10px, 3vw, 25px);
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Playing Cards */
+.playing-card {
+    width: clamp(70px, 18vw, 130px);
+    height: clamp(100px, 26vw, 185px);
+    perspective: 1000px;
+    cursor: default;
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+}
+
+.playing-card.revealed .card-inner {
+    transform: rotateY(180deg);
+}
+
+.playing-card.highlight .card-inner {
+    box-shadow: 0 0 25px var(--primary);
+    border-radius: 12px;
+}
+
+.card-back, .card-front {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-back {
+    background: repeating-linear-gradient(
+        45deg,
+        #1e1b4b,
+        #1e1b4b 10px,
+        #312e81 10px,
+        #312e81 20px
+    );
+    border: 3px solid white;
+}
+
+.card-front {
+    background-color: white;
+    transform: rotateY(180deg);
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.card-value-top, .card-value-bottom {
+    font-size: clamp(1.2rem, 4vw, 2rem);
+    font-weight: 800;
+    line-height: 1;
+}
+
+.card-value-top {
+    text-align: left;
+}
+
+.card-value-bottom {
+    text-align: right;
+    transform: rotate(180deg);
+}
+
+.card-suit-center {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+.card-red {
+    color: #ef4444; /* Vermelho vibrante */
+}
+
+.card-black {
+    color: #111827; /* Preto/Cinza escuro */
+}
+
+/* Controls Box */
+.adivinha-controls {
+    width: 100%;
+    max-width: 500px;
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 25px;
+    backdrop-filter: blur(15px);
+    box-shadow: var(--shadow-xl);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.phase-instruction {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    color: var(--text);
+    font-weight: 700;
+}
+
+.controls-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+/* Specific Buttons */
+.btn-guess {
+    flex: 1;
+    min-width: 120px;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+.btn-guess:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.btn-red {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+}
+.btn-red:hover { background: linear-gradient(135deg, #f87171, #ef4444); }
+
+.btn-black {
+    background: linear-gradient(135deg, #374151, #111827);
+    color: white;
+}
+.btn-black:hover { background: linear-gradient(135deg, #4b5563, #374151); }
+
+.btn-suit {
+    flex: 1;
+    min-width: 45%;
+    font-size: 1.5rem;
+    background: var(--bg);
+    border: 2px solid var(--glass-border);
+    color: white;
+}
+.btn-suit.suit-red { color: #ef4444; }
+.btn-suit.suit-black { color: #9ca3af; } /* lighter black for dark theme */
+.btn-suit:hover {
+    border-color: var(--primary);
+    background: rgba(255,255,255,0.05);
+}
+
+.btn-generic {
+    background: linear-gradient(135deg, var(--primary), #818cf8);
+    color: white;
+}
+.btn-generic:hover { filter: brightness(1.1); }
+
+/* Premium Help Modal classes (if not loaded globally) */
+.help-modal-premium {
+    max-width: 32rem !important;
+    text-align: left !important;
+    padding: 2rem !important;
+  }
+  
+  .help-modal-premium h2 {
+    text-align: center;
+    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+  }
+  
+  .help-step {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+    padding: 1.25rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 1rem;
+    border: 1px solid var(--glass-border);
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+  
+  .help-step:hover {
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-2px);
+  }
+  
+  .step-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    font-weight: 800;
+    font-size: 1.2rem;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    flex-shrink: 0;
+  }
+  
+  .help-step p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--text);
+  }
+  
+  .help-step b {
+      color: white;
+  }
+
+/* Animations */
+@keyframes shakeWrong {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.shake {
+    animation: shakeWrong 0.4s ease-in-out;
+}
