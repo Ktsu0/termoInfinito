@@ -1,0 +1,432 @@
+/* =============================================
+   BLACKJACK 21 — blackjack.css
+   ============================================= */
+
+/* Casino felt background */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 50% 40%, rgba(5, 95, 45, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 20% 80%, rgba(234,179,8,0.04) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Header chips */
+.chips-display-bj {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, rgba(234,179,8,0.15), rgba(234,179,8,0.05));
+    border: 1px solid rgba(234,179,8,0.3);
+    border-radius: 2rem;
+    padding: 0.4rem 1.1rem;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #fbbf24;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ─── MAIN LAYOUT ──────────────────────────────── */
+.bj-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1rem 1rem 2rem;
+    flex: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+}
+
+/* ─── TABLE ────────────────────────────────────── */
+.bj-table {
+    width: 100%;
+    background: linear-gradient(180deg, rgba(5,95,45,0.25) 0%, rgba(5,75,35,0.15) 100%);
+    border: 1px solid rgba(5,150,80,0.2);
+    border-radius: 1.75rem;
+    padding: 1.5rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-height: 300px;
+}
+
+.bj-zone {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1;
+}
+
+.bj-zone-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.5);
+}
+
+.bj-score-badge {
+    background: rgba(0,0,0,0.3);
+    border-radius: 2rem;
+    padding: 0.1rem 0.6rem;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #fbbf24;
+    font-variant-numeric: tabular-nums;
+    border: 1px solid rgba(234,179,8,0.2);
+}
+
+.bj-score-badge.bust { color: #f87171; border-color: rgba(248,113,113,0.3); }
+.bj-score-badge.bj   { color: #34d399; border-color: rgba(52,211,153,0.3); }
+
+.bj-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    margin: 0.25rem 0;
+}
+
+/* ─── CARDS ────────────────────────────────────── */
+.bj-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-height: 90px;
+    align-items: center;
+}
+
+.bj-playing-card {
+    width: 62px;
+    height: 90px;
+    background: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 6px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,0,0,0.1);
+    position: relative;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: dealCard 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    flex-shrink: 0;
+}
+
+@keyframes dealCard {
+    from { transform: translateY(-20px) scale(0.8); opacity: 0; }
+    to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.bj-playing-card.red { color: #dc2626; }
+.bj-playing-card.black { color: #111827; }
+
+.card-value-top {
+    font-size: 1rem;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.card-suit-center {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.card-value-bottom {
+    font-size: 1rem;
+    font-weight: 900;
+    line-height: 1;
+    align-self: flex-end;
+    transform: rotate(180deg);
+}
+
+/* Hidden card */
+.bj-playing-card.hidden-card {
+    background: linear-gradient(135deg, #1e3a5f, #0f2647);
+    background-image: repeating-linear-gradient(
+        45deg,
+        rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 2px,
+        transparent 2px, transparent 10px
+    );
+    border: 1px solid rgba(234,179,8,0.3);
+}
+
+/* ─── CONTROLS ─────────────────────────────────── */
+.bj-controls {
+    width: 100%;
+}
+
+/* Bet Section */
+.bj-bet-section {
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 1.5rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+.bj-bet-label {
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+}
+
+.bj-bet-amount {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #fbbf24;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+
+.bj-chips-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.chip {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-size: 0.85rem;
+    font-weight: 900;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    user-select: none;
+    
+    /* Base da Ficha (Borda Serrilhada) */
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    border: 6px solid transparent;
+    box-shadow: 
+        0 6px 15px rgba(0,0,0,0.4), 
+        inset 0 0 0 2px rgba(255,255,255,0.1);
+}
+
+/* Efeito de listras na borda usando gradiente cônico */
+.chip::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    background: repeating-conic-gradient(
+        transparent 0deg 15deg,
+        rgba(255,255,255,0.2) 15deg 30deg
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Anel Interno Metálico */
+.chip::after {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border-radius: 50%;
+    border: 1px dashed rgba(255,255,255,0.3);
+    pointer-events: none;
+}
+
+.chip:hover {
+    transform: translateY(-5px) rotate(8deg) scale(1.1);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.5);
+}
+
+.chip:active {
+    transform: scale(0.95);
+}
+
+/* Cores das Fichas - Tons de Joia */
+.chip-10  { 
+    background-color: #1e40af; 
+    background-image: radial-gradient(circle at center, #2563eb, #1e40af);
+    border-color: #1e3a8a;
+}
+.chip-25  { 
+    background-color: #15803d; 
+    background-image: radial-gradient(circle at center, #16a34a, #15803d);
+    border-color: #14532d;
+}
+.chip-50  { 
+    background-color: #b45309; 
+    background-image: radial-gradient(circle at center, #d97706, #b45309);
+    border-color: #78350f;
+}
+.chip-100 { 
+    background-color: #7c3aed; 
+    background-image: radial-gradient(circle at center, #8b5cf6, #7c3aed);
+    border-color: #5b21b6;
+}
+.chip-250 { 
+    background-color: #be123c; 
+    background-image: radial-gradient(circle at center, #e11d48, #be123c);
+    border-color: #881337;
+}
+.chip-500 { 
+    background-color: #111827; 
+    background-image: radial-gradient(circle at center, #374151, #111827);
+    border-color: #fbbf24; /* Ouro */
+    color: #fbbf24;
+}
+
+/* Action Buttons */
+.bj-bet-actions {
+    display: flex;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+.bj-game-actions {
+    display: flex;
+    gap: 0.75rem;
+    width: 100%;
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 1.5rem;
+    padding: 1rem;
+}
+
+.bj-game-actions.hidden { display: none; }
+.bj-bet-section.hidden  { display: none; }
+
+.bj-btn {
+    flex: 1;
+    padding: 0.85rem;
+    border: none;
+    border-radius: 1rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+}
+
+.bj-btn-primary {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+}
+.bj-btn-primary:hover  { filter: brightness(1.1); transform: translateY(-1px); }
+.bj-btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.bj-btn-secondary {
+    background: rgba(255,255,255,0.06);
+    color: var(--text);
+    border: 1px solid var(--glass-border);
+}
+.bj-btn-secondary:hover { background: rgba(255,255,255,0.1); }
+
+.bj-btn-double {
+    background: linear-gradient(135deg, #d97706, #b45309);
+    color: white;
+    box-shadow: 0 4px 12px rgba(217,119,6,0.3);
+}
+.bj-btn-double:hover    { filter: brightness(1.1); }
+.bj-btn-double:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ─── RESULT ───────────────────────────────────── */
+.bj-result {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1.75rem;
+    z-index: 50;
+    animation: fadeIn 0.3s ease;
+}
+
+.bj-result.hidden { display: none; }
+
+.bj-result-card {
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 1.5rem;
+    padding: 2rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    min-width: 260px;
+}
+
+@keyframes popIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+}
+
+.bj-result-icon { font-size: 3rem; line-height: 1; }
+
+.bj-result-title {
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+}
+
+.bj-result-title.win  { color: #34d399; }
+.bj-result-title.lose { color: #f87171; }
+.bj-result-title.push { color: #94a3b8; }
+.bj-result-title.bj   { color: #fbbf24; }
+
+.bj-result-sub {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.bj-result-chips {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    padding: 0.5rem 1rem;
+    background: rgba(255,255,255,0.04);
+    border-radius: 0.75rem;
+    border: 1px solid var(--glass-border);
+}
+
+.bj-result-chips strong { color: #fbbf24; font-size: 1rem; }
+
+.bj-result-actions {
+    display: flex;
+    gap: 0.75rem;
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+/* ─── RESPONSIVE ────────────────────────────────── */
+@media (max-width: 480px) {
+    .bj-playing-card { width: 52px; height: 76px; }
+    .card-value-top, .card-value-bottom { font-size: 0.85rem; }
+    .card-suit-center { font-size: 1.2rem; }
+    .chip { width: 46px; height: 46px; font-size: 0.65rem; }
+    .bj-bet-amount { font-size: 2rem; }
+}

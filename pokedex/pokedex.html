@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PokéDex - Adivinhe o Pokémon</title>
+    <meta name="description" content="Adivinhe o Pokémon secreto com dicas de tipagem, geração, peso e altura. Pokémons da 1ª à 3ª geração!">
+    <link rel="icon" href="../assets/t.png" type="image/png">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/utils.css">
+    <link rel="stylesheet" href="pokedex.css">
+</head>
+<body data-root="false">
+    <div class="app-container">
+        <header>
+            <div class="header-left">
+                <button class="btn-outros-jogos" id="btn-outros-jogos" title="Outros Jogos">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                    Outros Jogos
+                </button>
+            </div>
+            <h1>POKÉDEX</h1>
+            <div class="header-actions">
+                <button class="btn-header-new" id="btn-persistent-new-game">Novo Jogo</button>
+                <button class="icon-button" id="btn-help-trigger" title="Como Jogar">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </button>
+                <button class="icon-button" id="btn-stats-trigger" title="Estatísticas">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <main class="pokedex-main-layout">
+
+            <!-- Input Section -->
+            <div class="pokedex-input-section">
+                <div class="guess-wrapper">
+                    <div class="guess-input-container">
+                        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" id="guess-input" class="guess-input" placeholder="Digite o nome de um Pokémon..." autocomplete="off">
+                        <button type="button" id="btn-submit-guess" class="guess-btn" title="Verificar">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                    <ul id="suggestions-list" class="suggestions-list hidden"></ul>
+                </div>
+
+                <div class="pokedex-meta">
+                    <div class="meta-select-wrapper">
+                        <label>Gerações</label>
+                        <div class="gen-multiselect-container">
+                            <button class="gen-multiselect-trigger" id="gen-dropdown-btn">
+                                <span id="gen-current-label">Gen 1, 2, 3</span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                            <div class="gen-multiselect-menu" id="gen-dropdown-menu">
+                                <div class="gen-option selected" data-gen="1"><div class="gen-checkbox"></div>🔴 Gen 1 (Kanto)</div>
+                                <div class="gen-option selected" data-gen="2"><div class="gen-checkbox"></div>🔵 Gen 2 (Johto)</div>
+                                <div class="gen-option selected" data-gen="3"><div class="gen-checkbox"></div>🟢 Gen 3 (Hoenn)</div>
+                                <div class="gen-option" data-gen="4"><div class="gen-checkbox"></div>💎 Gen 4 (Sinnoh)</div>
+                                <div class="gen-option" data-gen="5"><div class="gen-checkbox"></div>🌑 Gen 5 (Unova)</div>
+                                <div class="gen-option" data-gen="6"><div class="gen-checkbox"></div>💠 Gen 6 (Kalos)</div>
+                                <div class="gen-option" data-gen="7"><div class="gen-checkbox"></div>☀️ Gen 7 (Alola)</div>
+                                <div class="gen-option" data-gen="8"><div class="gen-checkbox"></div>⚔️ Gen 8 (Galar)</div>
+                                <div class="gen-option" data-gen="9"><div class="gen-checkbox"></div>🎭 Gen 9 (Paldea)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meta-select-wrapper">
+                        <label>Chutes</label>
+                        <div class="meta-badge">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                            <span style="opacity: 0.8">Restantes:</span> <strong id="attempts-left">10</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guess Table -->
+            <div class="pokedex-table-wrapper">
+                <div class="pokedex-table-header">
+                    <div class="col-pokemon">Pokémon</div>
+                    <div class="col-hint">Geração</div>
+                    <div class="col-hint">Tipo 1</div>
+                    <div class="col-hint">Tipo 2</div>
+                    <div class="col-hint">Altura</div>
+                    <div class="col-hint">Peso</div>
+                    <div class="col-hint">Nº Pokédex</div>
+                </div>
+                <div id="guesses-container" class="guesses-container">
+                    <div class="empty-state">
+                        <span>⚡ Faça seu primeiro palpite!</span>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Global modal -->
+    <div id="global-outros-jogos-modal"></div>
+
+    <!-- Help Modal -->
+    <div id="help-modal" class="modal-overlay">
+        <div class="modal">
+            <button class="modal-close" id="btn-close-help-x" aria-label="Fechar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <h2>🎮 Como Jogar PokéDex</h2>
+            <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.5rem;">
+                Adivinhe o <strong>Pokémon Secreto</strong> da 1ª à 3ª geração! A cada chute, você recebe dicas visuais.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 1.5rem;">
+                <div class="help-item">
+                    <div class="help-icon correct">✅</div>
+                    <div class="help-text">Célula <strong>Verde</strong>: acertou exatamente esse atributo!</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon up">🔼</div>
+                    <div class="help-text">Célula <strong>Laranja + Seta</strong>: o valor real é <strong>maior</strong> que seu chute.</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon down">🔽</div>
+                    <div class="help-text">Célula <strong>Laranja + Seta</strong>: o valor real é <strong>menor</strong> que seu chute.</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon wrong">❌</div>
+                    <div class="help-text">Célula <strong>Vermelha</strong>: Atributo completamente diferente.</div>
+                </div>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.5rem; text-align: center;">Você tem <strong>10 tentativas</strong>. Os dados são carregados da PokéAPI em tempo real.</p>
+            <button class="btn btn-primary" id="btn-close-help" style="width: 100%">Entendido! Vamos Capturar!</button>
+        </div>
+    </div>
+
+    <!-- Stats Modal -->
+    <div id="stats-modal" class="modal-overlay">
+        <div class="modal">
+            <button class="modal-close" id="btn-close-stats-x" aria-label="Fechar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <h2>Estatísticas</h2>
+            <div class="stats-container" style="margin: 1.5rem 0;">
+                <div class="stat-item"><span class="stat-value" id="stat-played">0</span><span class="stat-label">Jogados</span></div>
+                <div class="stat-item"><span class="stat-value" id="stat-wins">0%</span><span class="stat-label">Vitórias</span></div>
+                <div class="stat-item"><span class="stat-value" id="stat-streak">0</span><span class="stat-label">Sequência</span></div>
+                <div class="stat-item"><span class="stat-value" id="stat-max-streak">0</span><span class="stat-label">Melhor</span></div>
+            </div>
+            <button class="btn btn-secondary" id="btn-close-stats" style="width:100%">Fechar</button>
+        </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div id="game-modal" class="modal-overlay">
+        <div class="modal result-modal">
+            <button class="modal-close" id="btn-close-modal-x" aria-label="Fechar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <div class="result-header">
+                <div class="result-icon-container">
+                    <div id="result-icon" class="result-icon"></div>
+                </div>
+                <h2 id="modal-title" class="result-title"></h2>
+                <p id="modal-text" class="result-subtitle"></p>
+            </div>
+            <div id="pokemon-reveal" class="pokemon-reveal"></div>
+            <div class="result-stats-grid">
+                <div class="res-stat-item">
+                    <span class="res-stat-value" id="res-stat-guesses">0</span>
+                    <span class="res-stat-label">Chutes</span>
+                </div>
+                <div class="res-stat-item">
+                    <span class="res-stat-value" id="res-stat-gen">–</span>
+                    <span class="res-stat-label">Geração</span>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="btn-new-game-modal">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                    Jogar Novamente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/ui-components.js"></script>
+    <script src="pokedex.js"></script>
+</body>
+</html>

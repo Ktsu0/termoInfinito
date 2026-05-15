@@ -15,8 +15,8 @@ class CoresGame {
     // Config per difficulty
     this.config = {
       easy: { colors: 5, ballsPerTube: 4, time: 60 }, // 1:00
-      medium: { colors: 7, ballsPerTube: 4, time: 120 }, // 2:00
-      hard: { colors: 9, ballsPerTube: 4, time: 180 }, // 3:00
+      medium: { colors: 8, ballsPerTube: 5, time: 120 }, // 2:00
+      hard: { colors: 11, ballsPerTube: 5, time: 180 }, // 3:00
     };
 
     this.colorNames = [
@@ -29,6 +29,9 @@ class CoresGame {
       "cyan",
       "pink",
       "lime",
+      "brown",
+      "teal",
+      "coral",
     ];
     this.colorLabels = {
       red: "Vermelho",
@@ -40,6 +43,9 @@ class CoresGame {
       cyan: "Ciano",
       pink: "Rosa",
       lime: "Lima",
+      brown: "Marrom",
+      teal: "Verde-Azulado",
+      coral: "Coral",
     };
 
     this.stats = this.loadStats();
@@ -123,11 +129,11 @@ class CoresGame {
       btnCloseModalX.addEventListener("click", () => {
         gameModal.classList.remove("active");
       });
-      if (gameModal) {
-        gameModal.addEventListener("click", (e) => {
-          if (e.target === gameModal) gameModal.classList.remove("active");
-        });
-      }
+    if (gameModal) {
+      gameModal.addEventListener("click", (e) => {
+        if (e.target === gameModal) gameModal.classList.remove("active");
+      });
+    }
 
     // Resize listener for orientation/window size changes
     window.addEventListener("resize", () => {
@@ -175,7 +181,7 @@ class CoresGame {
       for (let i = 0; i < ballsPerTube; i++) pool.push(c);
     });
 
-    // Shuffle pool
+    // Shuffle pool using Fisher-Yates
     for (let i = pool.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [pool[i], pool[j]] = [pool[j], pool[i]];
@@ -187,15 +193,17 @@ class CoresGame {
       this.tubes.push(pool.slice(t * ballsPerTube, (t + 1) * ballsPerTube));
     }
 
-    // Validate: ensure no tube starts already sorted (pure color) — reshuffle if needed
-    // (simple check — if all tubes are already solved, regenerate)
+    // Validate: avoid trivially solved boards
     if (this.isSolved()) {
       this.generateTubes(numColors, ballsPerTube);
       return;
     }
 
-    // Add empty tube(s) — one empty at the end
+    // Empty tubes: 1 for easy/medium, 2 for hard (11 colors needs 2 buffers)
     this.tubes.push([]);
+    if (this.difficulty === "hard") {
+      this.tubes.push([]);
+    }
   }
 
   // ─── RENDERING ────────────────────────────────────────────────────────────
@@ -212,20 +220,23 @@ class CoresGame {
     const numTubes = this.tubes.length;
 
     // Columns used per difficulty
-    const isMobile = window.innerWidth <= 768; // Sincronizado com CSS (48rem)
+    const isMobile = window.innerWidth <= 768;
     let colsUsed;
     if (this.difficulty === "easy") {
       colsUsed = isMobile ? 3 : numTubes;
     } else if (this.difficulty === "medium") {
-      colsUsed = isMobile ? 4 : 4; 
+      colsUsed = isMobile ? 5 : 5;
     } else {
-      colsUsed = isMobile ? 4 : 5; 
+      // hard: 13 tubes (11 colors + 2 empty)
+      colsUsed = isMobile ? 5 : 7;
     }
     const numRows = Math.ceil(numTubes / colsUsed);
 
     // --- Ball size from available WIDTH ---
     const containerEl = document.getElementById("tubes-container");
-    const containerPx = containerEl ? containerEl.clientWidth || window.innerWidth * 0.95 : window.innerWidth * 0.95;
+    const containerPx = containerEl
+      ? containerEl.clientWidth || window.innerWidth * 0.95
+      : window.innerWidth * 0.95;
     const gapH = (colsUsed - 1) * (isMobile ? 8 : 16);
     const padH = isMobile ? 16 : 32;
     const maxSizeFromWidth = Math.floor((containerPx - gapH - padH) / colsUsed);
@@ -235,18 +246,19 @@ class CoresGame {
     const containerH = containerEl
       ? containerEl.clientHeight || window.innerHeight * 0.6
       : window.innerHeight * 0.6;
-    const rowGap = isMobile ? 8 : 16;          // px gap between rows
-    const padV = isMobile ? 16 : 32;           // container vertical padding (increased for safety)
-    const tubeOverhead = 16;                    // Cap (8px) + shell padding/border (~8px)
-    const ballGapV = 3;                         // Gap between balls (must match tubeHeight calc)
-    
+    const rowGap = isMobile ? 8 : 16; // px gap between rows
+    const padV = isMobile ? 16 : 32; // container vertical padding (increased for safety)
+    const tubeOverhead = 16; // Cap (8px) + shell padding/border (~8px)
+    const ballGapV = 3; // Gap between balls (must match tubeHeight calc)
+
     // Height available per single row of tubes, minus safety margin
     const rowH = (containerH - padV - (numRows - 1) * rowGap) / numRows;
-    const safetyMargin = 6; 
-    
+    const safetyMargin = 6;
+
     // Each tube = ballsPerTube balls + gaps + overhead
     const maxSizeFromHeight = Math.floor(
-      (rowH - safetyMargin - tubeOverhead - (ballsPerTube - 1) * ballGapV) / ballsPerTube
+      (rowH - safetyMargin - tubeOverhead - (ballsPerTube - 1) * ballGapV) /
+        ballsPerTube,
     );
 
     // Pick smaller of width/height constraints, cap at 56px, floor at 24px
@@ -550,10 +562,13 @@ class CoresGame {
 
       title.textContent = "VITÓRIA!";
       icon.textContent = "🏆";
-      text.textContent = "Magnífico! Você organizou todas as cores com perfeição!";
+      text.textContent =
+        "Magnífico! Você organizou todas as cores com perfeição!";
 
       document.getElementById("res-stat-moves").textContent = this.moves;
-      document.getElementById("res-stat-time").textContent = this.formatTime(this.timeUsed());
+      document.getElementById("res-stat-time").textContent = this.formatTime(
+        this.timeUsed(),
+      );
 
       modal.classList.add("active");
 
@@ -582,7 +597,9 @@ class CoresGame {
       text.textContent = "O tempo acabou. Quase lá! Tente mais uma vez.";
 
       document.getElementById("res-stat-moves").textContent = this.moves;
-      document.getElementById("res-stat-time").textContent = this.formatTime(this.timeLeft);
+      document.getElementById("res-stat-time").textContent = this.formatTime(
+        this.timeLeft,
+      );
 
       modal.classList.add("active");
 
@@ -590,8 +607,6 @@ class CoresGame {
       if (btnHeaderNew) btnHeaderNew.classList.add("visible");
     }, 500);
   }
-
-
 
   // ─── STATS ────────────────────────────────────────────────────────────────
 

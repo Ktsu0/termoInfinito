@@ -105,21 +105,25 @@
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
             <h2>Como Jogar</h2>
-            <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px;">
-                Mova os blocos para criar um caminho conectando o bloco inicial (vermelho) ao bloco final (azul).
+            <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">
+                Crie um caminho conectando o bloco inicial (vermelho) ao final (azul) e colete as estrelas!
             </p>
-            <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px;">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">👆</div>
-                    <span style="font-size: 0.85rem;">Toque ou <b>arraste</b> um bloco para movê-lo. Se houver vários espaços vazios, arraste na direção desejada ou toque no bloco e depois no destino.</span>
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px;">
+                <div class="help-item">
+                    <div class="help-icon rotate">🔄</div>
+                    <div class="help-text">Dê um <b>toque rápido</b> para <b>girar</b> o bloco e mudar a direção do cano.</div>
                 </div>
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 40px; height: 40px; background: rgba(244,63,94,0.3); border: 2px solid var(--error); border-radius: 8px;"></div>
-                    <span style="font-size: 0.85rem;">Blocos iniciais e finais são fixos e não se movem.</span>
+                <div class="help-item">
+                    <div class="help-icon slide">↔️</div>
+                    <div class="help-text"><b>Arraste</b> um bloco para deslizá-lo para o espaço vazio adjacente.</div>
                 </div>
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 40px; height: 40px; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 8px; display:flex; justify-content:center; align-items:center;">✖</div>
-                    <span style="font-size: 0.85rem;">Blocos de metal parafusados são obstáculos fixos.</span>
+                <div class="help-item">
+                    <div class="help-icon star">⭐</div>
+                    <div class="help-text">Passe pelas <b>3 estrelas</b> no caminho para obter a pontuação perfeita!</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon energy">⚡</div>
+                    <div class="help-text">Quando o caminho estiver conectado, os canos <b>brilharão</b> com energia!</div>
                 </div>
             </div>
             <button class="btn btn-primary" id="btn-close-help" style="width: 100%">Entendido!</button>

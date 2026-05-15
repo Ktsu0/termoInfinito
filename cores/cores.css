@@ -233,6 +233,9 @@
 .ball.cyan     { background: radial-gradient(circle at 35% 35%, #81ecec, #00cec9); }
 .ball.pink     { background: radial-gradient(circle at 35% 35%, #fd79a8, #e84393); }
 .ball.lime     { background: radial-gradient(circle at 35% 35%, #59e946, #257503); }
+.ball.brown    { background: radial-gradient(circle at 35% 35%, #b97a45, #6b3e1e); }
+.ball.teal     { background: radial-gradient(circle at 35% 35%, #2dd4bf, #0f766e); }
+.ball.coral    { background: radial-gradient(circle at 35% 35%, #fb7185, #be123c); }
 
 /* Ball animation when it's the top ball selected */
 .tube.selected .ball:last-child {

@@ -21,6 +21,7 @@ class SecretaGame {
         this.suggestionsList = document.getElementById('suggestions-list');
         this.modal = document.getElementById('game-modal');
         this.keyboardEl = document.getElementById('keyboard');
+        this.currentSuggestionIndex = -1;
         
         this.init();
         this.setupEventListeners();
@@ -241,19 +242,33 @@ class SecretaGame {
         }
         
         const list = THEMES[this.theme];
-        // Custom simple logic to ignore accents in search
         const removeAccents = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         const searchVal = removeAccents(val);
         
-        const matches = list.filter(w => removeAccents(w.toLowerCase()).includes(searchVal)).slice(0, 5);
+        const matches = list.filter(w => removeAccents(w.toLowerCase()).includes(searchVal)).slice(0, 8);
         
         if (matches.length > 0) {
-            this.suggestionsList.innerHTML = matches.map(m => `
-                <li class="suggestion-item" data-word="${m}">
-                    ${m}
-                </li>
-            `).join('');
+            this.suggestionsList.innerHTML = matches.map(m => {
+                const accentlessM = removeAccents(m.toLowerCase());
+                const startIdx = accentlessM.indexOf(searchVal);
+                
+                let highlighted = m;
+                if (startIdx !== -1) {
+                    const before = m.substring(0, startIdx);
+                    const match = m.substring(startIdx, startIdx + searchVal.length);
+                    const after = m.substring(startIdx + searchVal.length);
+                    highlighted = `${before}<b>${match}</b>${after}`;
+                }
+                
+                return `
+                    <li class="suggestion-item" data-word="${m}">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <span>${highlighted}</span>
+                    </li>
+                `;
+            }).join('');
             this.suggestionsList.classList.remove('hidden');
+            this.currentSuggestionIndex = -1;
         } else {
             this.hideSuggestions();
         }
@@ -262,6 +277,7 @@ class SecretaGame {
     hideSuggestions() {
         this.suggestionsList.innerHTML = '';
         this.suggestionsList.classList.add('hidden');
+        this.currentSuggestionIndex = -1;
     }
     
     selectSuggestion(e) {
@@ -298,7 +314,36 @@ class SecretaGame {
         input.focus();
     }
     
+    updateActiveSuggestion(items) {
+        items.forEach((item, index) => {
+            item.classList.toggle('active', index === this.currentSuggestionIndex);
+            if (index === this.currentSuggestionIndex) {
+                item.scrollIntoView({ block: 'nearest' });
+            }
+        });
+    }
+
     setupEventListeners() {
+        // Keyboard Navigation for Suggestions
+        this.guessInput.addEventListener('keydown', (e) => {
+            const items = this.suggestionsList.querySelectorAll('.suggestion-item');
+            if (this.suggestionsList.classList.contains('hidden') || items.length === 0) return;
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                this.currentSuggestionIndex = (this.currentSuggestionIndex + 1) % items.length;
+                this.updateActiveSuggestion(items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                this.currentSuggestionIndex = (this.currentSuggestionIndex - 1 + items.length) % items.length;
+                this.updateActiveSuggestion(items);
+            } else if (e.key === 'Enter' && this.currentSuggestionIndex > -1) {
+                e.preventDefault();
+                this.selectSuggestion({ target: items[this.currentSuggestionIndex] });
+            } else if (e.key === 'Escape') {
+                this.hideSuggestions();
+            }
+        });
         // Dificuldade
         document.addEventListener('click', (e) => {
             if (e.target.classList.contains('diff-btn')) {
@@ -344,7 +389,7 @@ class SecretaGame {
         document.getElementById('btn-help-trigger').onclick = () => document.getElementById('help-modal').classList.add('active');
         const closeHelp = document.getElementById('btn-close-help');
         if (closeHelp) closeHelp.onclick = () => document.getElementById('help-modal').classList.remove('active');
-        const closeGameX = document.getElementById('btn-close-modal-x');
+        const closeGameX = document.getElementById('btn-close-result-modal-x');
         if (closeGameX) closeGameX.onclick = () => {
             this.modal.classList.remove('active');
             const headerNewBtn = document.getElementById("btn-persistent-new-game");

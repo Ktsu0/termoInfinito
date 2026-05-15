@@ -128,32 +128,48 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 8px;
-    font-size: clamp(0.8rem, 2.5vw, 1.1rem);
+    gap: 4px;
     font-weight: 800;
     color: var(--text-muted);
 }
 
 .hint-cell.row {
-    min-height: clamp(35px, 8vw, 60px);
-    padding-right: 5px;
+    height: var(--cell-size, 40px);
+    padding-right: 8px;
+    font-size: clamp(0.7rem, 2vw, 1.1rem);
 }
 
 .hint-cell.column {
     flex-direction: column;
     justify-content: flex-end;
-    min-width: clamp(35px, 8vw, 60px);
-    padding-bottom: 5px;
+    width: var(--cell-size, 40px);
+    padding-bottom: 8px;
+    font-size: clamp(0.7rem, 2vw, 1.1rem);
+}
+
+.hint-num {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    padding: 2px 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.4rem;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    color: var(--text);
+    transition: all 0.3s ease;
 }
 
 .hint-num.done {
+    background: transparent;
+    border-color: transparent;
     color: rgba(255, 255, 255, 0.15);
     text-decoration: line-through;
 }
 
 .nono-cell {
-    width: clamp(35px, 8vw, 60px);
-    height: clamp(35px, 8vw, 60px);
+    width: var(--cell-size, 40px);
+    height: var(--cell-size, 40px);
     background: var(--bg);
     display: flex;
     align-items: center;
@@ -289,18 +305,11 @@
     .nonograma-grid-wrapper {
         padding: 5px;
     }
-    
-    .nono-cell {
-        width: clamp(18px, 8vw, 25px);
-        height: clamp(18px, 8vw, 25px);
-    }
-    
-    .hint-cell {
-        font-size: 0.6rem;
-    }
 
-    .hint-cell.row { min-height: clamp(18px, 8vw, 25px); }
-    .hint-cell.column { min-width: clamp(18px, 8vw, 25px); }
+    .hint-cell {
+        font-size: 0.55rem;
+        gap: 2px;
+    }
 
     .control-btn span {
         display: none;

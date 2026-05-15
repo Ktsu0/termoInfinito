@@ -8,7 +8,9 @@ class LabirintoGame {
         this.endPos = { r: 0, c: 0 };
         this.moves = 0;
         this.isGameOver = false;
-        this.selectedTile = null; // {r, c}
+        this.selectedTile = null;
+        this.stars = []; // {r, c, collected: false}
+        this.collectedStars = 0;
         
         this.timer = null;
         this.timeElapsed = 0;
@@ -66,6 +68,8 @@ class LabirintoGame {
 
         this.generateLevel();
         this.renderBoard();
+        this.updatePipeFlow();
+        this.updateStarStatus();
     }
 
     getDir(fr, fc, tr, tc) {
@@ -116,8 +120,23 @@ class LabirintoGame {
                 type: 'wood',
                 pipe: pipeKey,
                 dirs: this.pipeDefs[pipeKey].dirs,
-                svg: this.pipeDefs[pipeKey].svg
+                svg: this.pipeDefs[pipeKey].svg,
+                rotation: 0
             };
+        }
+
+        // Place Stars on the solution path
+        this.stars = [];
+        let pathIndices = [];
+        for(let i=1; i<path.length-1; i++) pathIndices.push(i);
+        pathIndices.sort(() => Math.random() - 0.5);
+        
+        const numStars = Math.min(3, pathIndices.length);
+        for(let i=0; i<numStars; i++) {
+            const idx = pathIndices[i];
+            const p = path[idx];
+            this.grid[p.r][p.c].hasStar = true;
+            this.stars.push({ r: p.r, c: p.c });
         }
 
         // Fill remaining spaces
@@ -158,8 +177,13 @@ class LabirintoGame {
                 type: 'wood',
                 pipe: randPipe,
                 dirs: this.pipeDefs[randPipe].dirs,
-                svg: this.pipeDefs[randPipe].svg
+                svg: this.pipeDefs[randPipe].svg,
+                rotation: Math.floor(Math.random() * 4) * 90
             };
+            // Apply initial rotation to dirs
+            for(let j=0; j < (this.grid[pos.r][pos.c].rotation/90); j++) {
+                this.grid[pos.r][pos.c].dirs = this.grid[pos.r][pos.c].dirs.map(d => (d + 1) % 4);
+            }
             decoysToPlace--;
         }
         
@@ -284,7 +308,12 @@ class LabirintoGame {
                 tileEl.dataset.c = c;
 
                 if (tileData.type !== 'empty') {
-                    tileEl.innerHTML = `<svg class="pipe-svg" viewBox="0 0 100 100">${tileData.svg}</svg>`;
+                    let rotationStyle = tileData.rotation ? `style="transform: rotate(${tileData.rotation}deg)"` : '';
+                    tileEl.innerHTML = `<svg class="pipe-svg" viewBox="0 0 100 100" ${rotationStyle}>${tileData.svg}</svg>`;
+                    
+                    if (tileData.hasStar) {
+                        tileEl.innerHTML += `<div class="tile-star ${tileData.starCollected ? 'collected' : ''}">⭐</div>`;
+                    }
                 }
 
                 if (tileData.type === 'metal') {
@@ -346,7 +375,13 @@ class LabirintoGame {
 
         // Case 2: Clicking a PIECE (wood or blank)
         if (clickedTile.type === 'wood' || clickedTile.type === 'blank') {
-            // Find empty neighbors
+            // New Mechanic: Single Click Rotates
+            if (clickedTile.type === 'wood') {
+                this.rotatePiece(r, c);
+                return;
+            }
+
+            // Find empty neighbors for sliding
             let emptyNeighbors = [];
             for (let [dr, dc] of dirs) {
                 const nr = r + dr, nc = c + dc;
@@ -374,6 +409,82 @@ class LabirintoGame {
         }
     }
 
+    rotatePiece(r, c) {
+        if (!this.timerStarted) {
+            this.timerStarted = true;
+            this.startTimer();
+        }
+        const tile = this.grid[r][c];
+        tile.rotation = (tile.rotation || 0) + 90;
+        // Update directions
+        tile.dirs = tile.dirs.map(d => (d + 1) % 4);
+        
+        this.renderBoard();
+        this.updatePipeFlow();
+        this.updateStarStatus();
+        this.checkSolution();
+    }
+
+    updateStarStatus() {
+        // A star is collected if it is part of the path connected to start
+        let currentR = this.startPos.r;
+        let currentC = this.startPos.c;
+        let currentDir = this.grid[currentR][currentC].dirs[0]; 
+        
+        this.collectedStars = 0;
+        // Reset all stars first
+        for(let r=0; r<this.size; r++) {
+            for(let c=0; c<this.size; c++) {
+                if(this.grid[r][c].hasStar) this.grid[r][c].starCollected = false;
+            }
+        }
+
+        while (true) {
+            let nextR = currentR;
+            let nextC = currentC;
+            if (currentDir === 0) nextR--;
+            if (currentDir === 1) nextC++;
+            if (currentDir === 2) nextR++;
+            if (currentDir === 3) nextC--;
+
+            if (nextR < 0 || nextR >= this.size || nextC < 0 || nextC >= this.size) break;
+
+            let nextTile = this.grid[nextR][nextC];
+            if (nextTile.type === 'empty' || nextTile.type === 'metal') break;
+
+            let requiredInDir = this.getOppositeDir(currentDir);
+            if (!nextTile.dirs || !nextTile.dirs.includes(requiredInDir)) break;
+
+            if (nextTile.hasStar) {
+                if (!nextTile.starCollected) {
+                    nextTile.starCollected = true;
+                    // Visual feedback: Trigger pop animation
+                    const starEl = document.querySelector(`.tile[data-r="${nextR}"][data-c="${nextC}"] .tile-star`);
+                    if (starEl) {
+                        starEl.classList.add('pop');
+                        setTimeout(() => starEl.classList.remove('pop'), 500);
+                    }
+                }
+                this.collectedStars++;
+            }
+
+            if (nextTile.type === 'end') break;
+
+            currentR = nextR;
+            currentC = nextC;
+            currentDir = nextTile.dirs[0] === requiredInDir ? nextTile.dirs[1] : nextTile.dirs[0];
+        }
+        
+        // Refresh board to show stars
+        const tilesWithStars = document.querySelectorAll('.tile-star');
+        tilesWithStars.forEach(s => {
+            const tile = s.closest('.tile');
+            const r = tile.dataset.r, c = tile.dataset.c;
+            if (this.grid[r][c].starCollected) s.classList.add('collected');
+            else s.classList.remove('collected');
+        });
+    }
+
     movePiece(fromR, fromC, toR, toC) {
         if (!this.timerStarted) {
             this.timerStarted = true;
@@ -389,7 +500,53 @@ class LabirintoGame {
         this.selectedTile = null;
         
         this.renderBoard();
+        this.updatePipeFlow();
         this.checkSolution();
+    }
+
+    updatePipeFlow() {
+        // Clear previous connection status
+        for (let r = 0; r < this.size; r++) {
+            for (let c = 0; c < this.size; c++) {
+                const el = document.querySelector(`.tile[data-r="${r}"][data-c="${c}"]`);
+                if (el) el.classList.remove('connected-to-start');
+            }
+        }
+
+        // Trace from start
+        let currentR = this.startPos.r;
+        let currentC = this.startPos.c;
+        let currentDir = this.grid[currentR][currentC].dirs[0]; 
+        
+        const startEl = document.querySelector(`.tile[data-r="${currentR}"][data-c="${currentC}"]`);
+        if (startEl) startEl.classList.add('connected-to-start');
+
+        while (true) {
+            let nextR = currentR;
+            let nextC = currentC;
+            if (currentDir === 0) nextR--;
+            if (currentDir === 1) nextC++;
+            if (currentDir === 2) nextR++;
+            if (currentDir === 3) nextC--;
+
+            if (nextR < 0 || nextR >= this.size || nextC < 0 || nextC >= this.size) break;
+
+            let nextTile = this.grid[nextR][nextC];
+            if (nextTile.type === 'empty' || nextTile.type === 'metal') break;
+
+            let requiredInDir = this.getOppositeDir(currentDir);
+            if (!nextTile.dirs || !nextTile.dirs.includes(requiredInDir)) break;
+
+            const nextEl = document.querySelector(`.tile[data-r="${nextR}"][data-c="${nextC}"]`);
+            if (nextEl) nextEl.classList.add('connected-to-start');
+
+            if (nextTile.type === 'end') break;
+
+            currentR = nextR;
+            currentC = nextC;
+            currentDir = nextTile.dirs[0] === requiredInDir ? nextTile.dirs[1] : nextTile.dirs[0];
+            if (currentDir === undefined) break;
+        }
     }
 
     checkSolution() {
@@ -438,10 +595,10 @@ class LabirintoGame {
         clearInterval(this.timer);
         this.saveStats(true);
 
-        // Highlight path
+        // Highlight path with animated flow
         pathCells.forEach(({r, c}) => {
             const el = document.querySelector(`.tile[data-r="${r}"][data-c="${c}"]`);
-            if (el) el.classList.add('connected');
+            if (el) el.classList.add('win-path');
         });
 
         setTimeout(() => {
@@ -460,6 +617,11 @@ class LabirintoGame {
 
             document.getElementById("res-stat-moves").textContent = this.moves;
             document.getElementById("res-stat-time").textContent = this.formatTime(this.timeElapsed);
+            
+            // Show stars in modal
+            const starDisplay = '⭐'.repeat(this.collectedStars) + 'outline_star'.repeat(3 - this.collectedStars)
+                .replace(/outline_star/g, '☆');
+            text.innerHTML += `<div style="font-size: 1.5rem; margin-top: 10px;">${starDisplay}</div>`;
 
             modal.classList.add('active');
 

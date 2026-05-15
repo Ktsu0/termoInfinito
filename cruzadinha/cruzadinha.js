@@ -627,12 +627,14 @@ class CruzadinhaGame {
             this.newGame();
         };
         
-        document.getElementById("btn-close-modal-x").onclick = () => {
-            this.modal.classList.remove("active");
-            // Mostra o botão de novo jogo no header apenas após fechar o modal de vitória
-            const headerNewBtn = document.getElementById("btn-persistent-new-game");
-            if (headerNewBtn) headerNewBtn.classList.add("visible");
-        };
+        const btnCloseX = document.getElementById("btn-close-modal-x");
+        if (btnCloseX) {
+            btnCloseX.onclick = () => {
+                this.modal.classList.remove("active");
+                const headerNewBtn = document.getElementById("btn-persistent-new-game");
+                if (headerNewBtn) headerNewBtn.classList.add("visible");
+            };
+        }
         document.getElementById("btn-help-trigger").onclick = () => document.getElementById("help-modal").classList.add("active");
         document.getElementById("btn-close-help").onclick = () => document.getElementById("help-modal").classList.remove("active");
 

@@ -28,15 +28,17 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-html,
-body {
-  height: 100%;
-  height: 100dvh;
-  overflow: clip;
+html {
+  height: auto !important;
   width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto !important;
 }
 
 body {
+  height: auto !important;
+  min-height: 100vh;
+  width: 100%;
   background: var(--bg);
   background-image: radial-gradient(
       at 0% 0%,
@@ -46,12 +48,27 @@ body {
     radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.1) 0px, transparent 50%),
     radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.05) 0px, transparent 50%);
   color: var(--text);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  /* Melhora o scroll nos modais e containers */
-  -webkit-overflow-scrolling: touch;
+  padding-bottom: 200px !important; /* Aumentei ainda mais o respiro */
+  display: block; /* Mudei para block para garantir o fluxo natural */
+  
+  /* Esconde a barra de scroll */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+body::-webkit-scrollbar, 
+html::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+}
+
+.app-container {
+  width: 100%;
+  height: auto !important;
+  min-height: 100vh;
+  display: block; /* Mudança para block para evitar compressão flex */
+  position: relative;
+  overflow: visible !important;
 }
 
 /* Base adjustment for ultra-wide or large screens */

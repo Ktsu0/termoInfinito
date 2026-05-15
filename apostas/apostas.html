@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apostas - Casino de Jogos</title>
+    <meta name="description" content="Jogue Adivinha e Blackjack com fichas virtuais. Teste sua sorte!">
+    <link rel="icon" href="../assets/t.png" type="image/png">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/utils.css">
+    <link rel="stylesheet" href="apostas.css">
+</head>
+<body class="apostas-body">
+    <div class="app-container">
+        <header>
+            <div class="header-left">
+                <button class="btn-outros-jogos" id="btn-outros-jogos" title="Outros Jogos">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                    Outros Jogos
+                </button>
+            </div>
+            <h1>APOSTAS</h1>
+            <div class="header-actions">
+                <div class="chips-display" id="chips-display">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M6 12h12"/></svg>
+                    <span id="chips-amount">5.000</span> fichas
+                </div>
+            </div>
+        </header>
+
+        <main class="apostas-main">
+            <!-- Chips Status Banner -->
+            <div class="chips-banner" id="chips-banner">
+                <div class="chips-banner-inner">
+                    <div class="chips-info">
+                        <div class="chips-icon">🎰</div>
+                        <div>
+                            <div class="chips-label">Suas Fichas</div>
+                            <div class="chips-value" id="chips-banner-value">5.000</div>
+                        </div>
+                    </div>
+                    <div class="chips-actions" id="chips-actions">
+                        <button class="btn-reset-chips" id="btn-reset-chips">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                            Reiniciar Fichas
+                        </button>
+                    </div>
+                    <div class="cooldown-display hidden" id="cooldown-display">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        <span id="cooldown-timer">1:00:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Cards -->
+            <div class="apostas-grid">
+
+                <div class="apostas-card" id="card-adivinha" onclick="window.location.href='../adivinha/adivinha.html'">
+                    <div class="apostas-card-badge">Já disponível</div>
+                    <div class="apostas-card-icon adivinha-icon">
+                        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="18" rx="2" ry="2"></rect>
+                            <line x1="12" y1="8" x2="12" y2="16"></line>
+                            <line x1="8" y1="12" x2="16" y2="12"></line>
+                        </svg>
+                    </div>
+                    <div class="apostas-card-content">
+                        <h2 class="apostas-card-title">Adivinha</h2>
+                        <p class="apostas-card-desc">Cartas misteriosas para adivinhar. Aposte fichas e tente descobrir a carta escondida antes do tempo acabar!</p>
+                        <div class="apostas-card-tags">
+                            <span class="tag">🎴 Cartas</span>
+                            <span class="tag">🧠 Estratégia</span>
+                        </div>
+                    </div>
+                    <button class="apostas-play-btn">Jogar Agora →</button>
+                </div>
+
+                <div class="apostas-card" id="card-blackjack" onclick="window.location.href='../blackjack/blackjack.html'">
+                    <div class="apostas-card-badge new">Novo!</div>
+                    <div class="apostas-card-icon blackjack-icon">
+                        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="12" height="16" rx="2"/>
+                            <rect x="10" y="5" width="12" height="16" rx="2"/>
+                            <text x="5" y="14" font-size="6" fill="white" stroke="none" font-weight="bold">21</text>
+                        </svg>
+                        <!-- Blackjack 21 visual -->
+                        <div class="bj-icon-cards">
+                            <span class="bj-card">A♠</span>
+                            <span class="bj-card bj-card-2">K♥</span>
+                        </div>
+                    </div>
+                    <div class="apostas-card-content">
+                        <h2 class="apostas-card-title">Blackjack 21</h2>
+                        <p class="apostas-card-desc">O clássico jogo de cartas! Chegue o mais perto de 21 sem ultrapassar. Aposte suas fichas contra a banca e vença!</p>
+                        <div class="apostas-card-tags">
+                            <span class="tag">🃏 Blackjack</span>
+                            <span class="tag">💰 Fichas</span>
+                            <span class="tag">🎲 Sorte</span>
+                        </div>
+                    </div>
+                    <button class="apostas-play-btn">Jogar Agora →</button>
+                </div>
+
+                <!-- Jogo 3: Video Poker -->
+                <div class="apostas-card" id="card-video-poker" onclick="window.location.href='../poker/poker.html?mode=video'">
+                    <div class="apostas-card-badge">Solo</div>
+                    <div class="apostas-card-icon" style="background: linear-gradient(135deg, #1e1b4b, #312e81); border: 1px solid rgba(255,255,255,0.1);">
+                        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 9V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-4"/>
+                            <path d="M10 9l2 2 2-2"/>
+                            <path d="M10 15l2-2 2 2"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </div>
+                    <div class="apostas-card-content">
+                        <h2 class="apostas-card-title">Video Poker</h2>
+                        <p class="apostas-card-desc">O clássico Draw Poker! Troque suas cartas e tente formar a melhor mão para ganhar multiplicadores.</p>
+                        <div class="apostas-card-tags">
+                            <span class="tag">🎰 Solo</span>
+                            <span class="tag">⚡ Rápido</span>
+                        </div>
+                    </div>
+                    <button class="apostas-play-btn" style="background: linear-gradient(135deg, #312e81, #1e1b4b);">Jogar Agora →</button>
+                </div>
+
+                <!-- Jogo 4: Texas Hold'em -->
+                <div class="apostas-card" id="card-texas-holdem" onclick="window.location.href='../poker/poker.html?mode=texas'">
+                    <div class="apostas-card-badge new">Com Bots</div>
+                    <div class="apostas-card-icon" style="background: linear-gradient(135deg, #064e3b, #065f46); border: 2px solid rgba(234,179,8,0.4);">
+                        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 8v8"/>
+                            <path d="M8 12h8"/>
+                            <path d="M15 15l-3-3-3 3"/>
+                        </svg>
+                    </div>
+                    <div class="apostas-card-content">
+                        <h2 class="apostas-card-title">Texas Hold'em</h2>
+                        <p class="apostas-card-desc">A modalidade mais famosa do mundo! Desafie Arthur e Sofia na mesa oval de cassino.</p>
+                        <div class="apostas-card-tags">
+                            <span class="tag">👥 Bots</span>
+                            <span class="tag">🧠 Estratégia</span>
+                        </div>
+                    </div>
+                    <button class="apostas-play-btn" style="background: linear-gradient(135deg, #065f46, #064e3b);">Jogar Agora →</button>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Reset Confirm Modal -->
+    <div id="reset-modal" class="modal-overlay">
+        <div class="modal">
+            <h2>🔄 Reiniciar Fichas?</h2>
+            <p style="text-align:center; color: var(--text-muted); margin-bottom: 1.5rem;">Você tem <strong id="current-chips-modal">0</strong> fichas. Deseja reiniciar para <strong>5.000 fichas</strong>?</p>
+            <div class="action-buttons">
+                <button class="btn btn-secondary" id="btn-cancel-reset">Cancelar</button>
+                <button class="btn btn-primary" id="btn-confirm-reset">Sim, reiniciar!</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+    <div id="global-outros-jogos-modal"></div>
+    
+    <!-- Scripts na ordem correta: Sistema de Fichas -> UI Components -> Lógica do Hub -->
+    <script src="../js/apostas-chips.js"></script>
+    <script src="../js/ui-components.js"></script>
+    <script src="apostas.js"></script>
+</body>
+</html>

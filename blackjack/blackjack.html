@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackjack 21 — Apostas</title>
+    <meta name="description" content="Jogue Blackjack 21 com fichas virtuais. Chegue mais perto de 21 sem ultrapassar!">
+    <link rel="icon" href="../assets/t.png" type="image/png">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/utils.css">
+    <link rel="stylesheet" href="blackjack.css">
+</head>
+<body data-root="false">
+    <div class="app-container">
+        <header>
+            <div class="header-left">
+                <button class="btn-back-apostas" onclick="window.location.href='../apostas/apostas.html'" title="Voltar para Apostas">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Apostas
+                </button>
+                <button class="btn-outros-jogos" id="btn-outros-jogos" title="Outros Jogos">
+                    Outros
+                </button>
+            </div>
+            <h1>BLACKJACK</h1>
+            <div class="header-actions">
+                <div class="chips-display-bj" id="chips-display-bj">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M6 12h12"/></svg>
+                    <span id="bj-chips-amount">5.000</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="bj-main">
+            <!-- Table -->
+            <div class="bj-table">
+
+                <!-- Dealer Zone -->
+                <div class="bj-zone dealer-zone">
+                    <div class="bj-zone-label">
+                        Banca
+                        <span class="bj-score-badge" id="dealer-score">?</span>
+                    </div>
+                    <div class="bj-cards" id="dealer-cards"></div>
+                </div>
+
+                <!-- Divider -->
+                <div class="bj-divider"></div>
+
+                <!-- Player Zone -->
+                <div class="bj-zone player-zone">
+                    <div class="bj-zone-label">
+                        Você
+                        <span class="bj-score-badge" id="player-score">0</span>
+                    </div>
+                    <div class="bj-cards" id="player-cards"></div>
+                </div>
+            </div>
+
+            <!-- Bet Controls -->
+            <div class="bj-controls" id="bj-controls">
+                <div class="bj-bet-section" id="bet-section">
+                    <div class="bj-bet-label">Sua aposta</div>
+                    <div class="bj-bet-amount" id="bet-display">0</div>
+                    <div class="bj-chips-row">
+                        <button class="chip chip-10"   data-val="10">10</button>
+                        <button class="chip chip-25"   data-val="25">25</button>
+                        <button class="chip chip-50"   data-val="50">50</button>
+                        <button class="chip chip-100"  data-val="100">100</button>
+                        <button class="chip chip-250"  data-val="250">250</button>
+                        <button class="chip chip-500"  data-val="500">500</button>
+                    </div>
+                    <div class="bj-bet-actions">
+                        <button class="bj-btn bj-btn-secondary" id="btn-clear-bet">Limpar</button>
+                        <button class="bj-btn bj-btn-primary" id="btn-deal">Distribuir Cartas</button>
+                    </div>
+                </div>
+
+                <!-- Game Actions -->
+                <div class="bj-game-actions hidden" id="game-actions">
+                    <button class="bj-btn bj-btn-secondary" id="btn-hit">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Pedir Carta
+                    </button>
+                    <button class="bj-btn bj-btn-double" id="btn-double" title="Dobrar aposta e receber 1 carta">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        Dobrar
+                    </button>
+                    <button class="bj-btn bj-btn-primary" id="btn-stand">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Parar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Casino Result Overlay -->
+            <div class="casino-result-overlay hidden" id="bj-result">
+                <div class="casino-result-card" id="casino-card-body">
+                    <div class="casino-result-content">
+                        <div class="casino-result-icon" id="result-icon">🏆</div>
+                        <h2 class="casino-result-title" id="result-title">BIG WIN!</h2>
+                        
+                        <div class="casino-result-payout">
+                            <span class="casino-payout-label">PRÊMIO</span>
+                            <span class="casino-payout-value" id="result-sub">+500</span>
+                        </div>
+
+                        <div class="casino-total-chips">
+                            Saldo: <strong id="result-chips-total">5.500</strong>
+                        </div>
+                    </div>
+
+                    <div class="casino-result-actions">
+                        <button class="casino-btn casino-btn-secondary" onclick="window.location.href='../apostas/apostas.html'">Sair</button>
+                        <button class="casino-btn casino-btn-primary" id="btn-play-again">Jogar de Novo</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="toast" class="toast"></div>
+    <div id="global-outros-jogos-modal"></div>
+    <script src="../js/apostas-chips.js"></script>
+    <script src="../js/ui-components.js"></script>
+    <script src="blackjack.js"></script>
+</body>
+</html>

@@ -127,8 +127,8 @@ class CalculoGame {
         });
 
         document.querySelectorAll('.modal-close').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const modal = e.target.closest('.modal-overlay');
+            btn.addEventListener('click', () => {
+                const modal = btn.closest('.modal-overlay');
                 if (modal) modal.classList.remove('active');
             });
         });

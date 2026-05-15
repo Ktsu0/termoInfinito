@@ -1,5 +1,5 @@
 /**
- * ADIVINHA - Lógica do Jogo
+ * ADIVINHA - Lógica do Jogo com Apostas
  */
 
 const SUITS = [
@@ -30,20 +30,35 @@ function showToast(message, type = "error") {
 class AdivinhaGame {
     constructor() {
         this.deck = [];
-        this.drawnCards = []; // Max 4 cards per game
-        this.currentPhase = 0; // 0: Cor, 1: Maior/Menor, 2: Entre/Fora, 3: Naipe
+        this.drawnCards = [];
+        this.currentPhase = 0;
         this.isAnimating = false;
+        this.isGameOver = false;
+        this.currentBet = 0;
         
-        // Stats
         this.stats = this.loadStats();
-
         this.init();
     }
 
     init() {
         this.setupEventListeners();
-        this.startNewGame();
+        this.updateChipsDisplay();
         this.updateStatsDisplay();
+        this.checkZeroChips();
+    }
+
+    updateChipsDisplay() {
+        const state = APOSTAS.getChips();
+        const el = document.getElementById('adivinha-chips-amount');
+        if (el) el.textContent = APOSTAS.formatChips(state.chips);
+    }
+
+    checkZeroChips() {
+        const state = APOSTAS.getChips();
+        if (state.chips <= 0) {
+            document.getElementById('btn-start-adivinha-game').disabled = true;
+            showToast("Você está sem fichas! Vá ao hub para restaurar.", "error");
+        }
     }
 
     createDeck() {
@@ -59,50 +74,62 @@ class AdivinhaGame {
                 });
             }
         }
-        // Embaralhamento Nível Cassino (Fisher-Yates usando Web Crypto API)
+        
+        // Embaralhamento Criptográfico (Nível Cassino)
         const shuffleDeck = (deckToShuffle) => {
+            const array = new Uint32Array(deckToShuffle.length);
+            window.crypto.getRandomValues(array);
+
             for (let i = deckToShuffle.length - 1; i > 0; i--) {
-                // Usando Crypto API para entropia verdadeira em vez do Math.random padrão
-                const array = new Uint32Array(1);
-                window.crypto.getRandomValues(array);
-                const randomFloat = array[0] / (0xffffffff + 1);
-                
-                const j = Math.floor(randomFloat * (i + 1));
+                const j = array[i] % (i + 1);
                 [deckToShuffle[i], deckToShuffle[j]] = [deckToShuffle[j], deckToShuffle[i]];
             }
         };
 
-        // Embaralha 5 vezes seguidas para garantir máxima dispersão
-        for (let s = 0; s < 5; s++) {
-            shuffleDeck(newDeck);
-        }
-        
+        // Embaralha 3 vezes para dispersão total
+        for (let s = 0; s < 3; s++) shuffleDeck(newDeck);
         this.deck = newDeck;
     }
 
     startNewGame() {
+        if (this.currentBet <= 0) {
+            document.getElementById('adivinha-bet-overlay').classList.remove('hidden');
+            return;
+        }
+
+        const state = APOSTAS.getChips();
+        if (state.chips < this.currentBet) {
+            showToast("Fichas insuficientes!", "error");
+            this.currentBet = 0;
+            document.getElementById('current-bet-val').textContent = '0';
+            document.getElementById('adivinha-bet-overlay').classList.remove('hidden');
+            return;
+        }
+
+        // Deduct chips
+        APOSTAS.setChips(state.chips - this.currentBet);
+        this.updateChipsDisplay();
+
+        document.getElementById('adivinha-bet-overlay').classList.add('hidden');
         this.createDeck();
         this.drawnCards = [];
         this.currentPhase = 0;
         this.isAnimating = false;
+        this.isGameOver = false;
 
         document.getElementById('current-phase').textContent = '1/4';
 
-        // Reset UI cards
         for (let i = 0; i < 4; i++) {
             const cardEl = document.getElementById(`card-${i}`);
-            cardEl.className = 'playing-card'; // reset classes
-            
+            cardEl.className = 'playing-card';
             const front = cardEl.querySelector('.card-front');
             front.className = 'card-front';
-            
             cardEl.querySelector('.card-value-top').textContent = '';
             cardEl.querySelector('.card-value-bottom').textContent = '';
             cardEl.querySelector('.card-suit-center').textContent = '';
         }
 
         this.updatePhaseUI();
-
         const btnHeaderNew = document.getElementById("btn-persistent-new-game");
         if (btnHeaderNew) btnHeaderNew.classList.remove("visible");
     }
@@ -110,18 +137,13 @@ class AdivinhaGame {
     updatePhaseUI() {
         const instructionEl = document.getElementById('phase-instruction');
         const containerEl = document.getElementById('controls-container');
-        containerEl.innerHTML = ''; // Clear buttons
-
+        containerEl.innerHTML = '';
         document.getElementById('current-phase').textContent = `${this.currentPhase + 1}/4`;
 
-        // Highlight active card
         for (let i = 0; i < 4; i++) {
             const cardEl = document.getElementById(`card-${i}`);
-            if (i === this.currentPhase) {
-                cardEl.classList.add('highlight');
-            } else {
-                cardEl.classList.remove('highlight');
-            }
+            if (i === this.currentPhase) cardEl.classList.add('highlight');
+            else cardEl.classList.remove('highlight');
         }
 
         switch (this.currentPhase) {
@@ -162,24 +184,20 @@ class AdivinhaGame {
     }
 
     makeGuess(guess) {
-        if (this.isAnimating) return;
+        if (this.isAnimating || this.isGameOver) return;
         this.isAnimating = true;
 
         const card = this.deck.pop();
         this.drawnCards.push(card);
-
         this.revealCard(this.currentPhase, card);
 
         setTimeout(() => {
             const isCorrect = this.checkGuess(guess, card);
-
             if (isCorrect) {
                 showToast("Correto!", "success");
                 if (this.currentPhase === 3) {
-                    // Won the game
                     setTimeout(() => this.gameOver(true), 1000);
                 } else {
-                    // Next phase
                     this.currentPhase++;
                     setTimeout(() => {
                         this.updatePhaseUI();
@@ -187,38 +205,31 @@ class AdivinhaGame {
                     }, 1000);
                 }
             } else {
-                // Wrong
-                document.getElementById('controls-container').closest('.adivinha-controls').classList.add('shake');
-                setTimeout(() => {
-                    document.getElementById('controls-container').closest('.adivinha-controls').classList.remove('shake');
-                }, 400);
+                document.querySelector('.adivinha-controls').classList.add('shake');
+                setTimeout(() => document.querySelector('.adivinha-controls').classList.remove('shake'), 400);
                 showToast("Errou! Fim de jogo.", "error");
-                
                 setTimeout(() => this.gameOver(false), 1500);
             }
-        }, 600); // Wait for flip animation
+        }, 600);
     }
 
     checkGuess(guess, card) {
         switch (this.currentPhase) {
-            case 0:
-                return card.color === guess;
+            case 0: return card.color === guess;
             case 1:
                 const prev1 = this.drawnCards[0].val;
                 if (guess === 'maior') return card.val > prev1;
                 if (guess === 'menor') return card.val < prev1;
-                return false; // Equal is a loss
+                return false;
             case 2:
                 const v1 = this.drawnCards[0].val;
                 const v2 = this.drawnCards[1].val;
                 const low = Math.min(v1, v2);
                 const high = Math.max(v1, v2);
-                
                 if (guess === 'entre') return card.val > low && card.val < high;
                 if (guess === 'fora') return card.val < low || card.val > high;
-                return false; // Equal to limits is a loss
-            case 3:
-                return card.suit === guess;
+                return false;
+            case 3: return card.suit === guess;
         }
         return false;
     }
@@ -226,57 +237,53 @@ class AdivinhaGame {
     revealCard(index, card) {
         const cardEl = document.getElementById(`card-${index}`);
         const front = cardEl.querySelector('.card-front');
-        const vTop = cardEl.querySelector('.card-value-top');
-        const vBot = cardEl.querySelector('.card-value-bottom');
-        const sCenter = cardEl.querySelector('.card-suit-center');
-
         front.classList.add(card.color === 'red' ? 'card-red' : 'card-black');
-        
-        vTop.textContent = card.display;
-        vBot.textContent = card.display;
-        sCenter.textContent = card.symbol;
-
-        // Animate
+        cardEl.querySelector('.card-value-top').textContent = card.display;
+        cardEl.querySelector('.card-value-bottom').textContent = card.display;
+        cardEl.querySelector('.card-suit-center').textContent = card.symbol;
         cardEl.classList.remove('highlight');
         cardEl.classList.add('revealed');
     }
 
     gameOver(won) {
-        this.saveStats(won);
-        
         const modal = document.getElementById('game-modal');
-        const modalContent = modal.querySelector('.modal');
+        const cardBody = document.getElementById('casino-card-body');
         const title = document.getElementById('modal-title');
         const text = document.getElementById('modal-text');
         const icon = document.getElementById('result-icon');
-
-        modalContent.classList.remove('win', 'lose');
+        const payoutDisplay = document.getElementById('res-payout-display');
 
         if (won) {
-            modalContent.classList.add('win');
-            title.textContent = "VITÓRIA!";
-            title.style.color = "var(--success)";
-            text.textContent = "Você sobreviveu às 4 fases do baralho!";
-            icon.innerHTML = '🏆';
-            icon.className = "result-icon success";
+            const payout = this.currentBet * 5;
+            const state = APOSTAS.getChips();
+            APOSTAS.setChips(state.chips + payout);
+            this.updateChipsDisplay();
+
+            cardBody.className = "casino-result-card win";
+            title.textContent = "BIG WIN!";
+            text.textContent = "Você sobreviveu às 4 fases!";
+            payoutDisplay.textContent = `+${APOSTAS.formatChips(payout)}`;
+            icon.textContent = '🏆';
             confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
         } else {
-            modalContent.classList.add('lose');
+            cardBody.className = "casino-result-card lose";
             title.textContent = "DERROTA";
-            title.style.color = "var(--error)";
-            text.textContent = "A sorte não estava do seu lado desta vez.";
-            icon.innerHTML = '❌';
-            icon.className = "result-icon error";
+            text.textContent = "A banca levou suas fichas.";
+            payoutDisplay.textContent = `−${APOSTAS.formatChips(this.currentBet)}`;
+            icon.textContent = '💔';
         }
 
+        this.saveStats(won);
         modal.classList.add('active');
         this.isAnimating = false;
+        this.isGameOver = true;
+        this.currentBet = 0; 
+        document.getElementById('current-bet-val').textContent = '0';
 
         const btnHeaderNew = document.getElementById("btn-persistent-new-game");
         if (btnHeaderNew) btnHeaderNew.classList.add("visible");
     }
 
-    // --- Stats ---
     loadStats() {
         const defaultStats = { played: 0, wins: 0, currentStreak: 0, maxStreak: 0 };
         const saved = localStorage.getItem('adivinha_stats');
@@ -288,17 +295,11 @@ class AdivinhaGame {
         if (won) {
             this.stats.wins++;
             this.stats.currentStreak++;
-            if (this.stats.currentStreak > this.stats.maxStreak) {
-                this.stats.maxStreak = this.stats.currentStreak;
-            }
-        } else {
-            this.stats.currentStreak = 0;
-        }
+            if (this.stats.currentStreak > this.stats.maxStreak) this.stats.maxStreak = this.stats.currentStreak;
+        } else this.stats.currentStreak = 0;
 
         localStorage.setItem('adivinha_stats', JSON.stringify(this.stats));
         this.updateStatsDisplay();
-
-        // Update modal immediately
         document.getElementById('res-stat-played').textContent = this.stats.played;
         document.getElementById('res-stat-wins').textContent = this.stats.wins;
     }
@@ -311,38 +312,63 @@ class AdivinhaGame {
     }
 
     setupEventListeners() {
-        document.getElementById('btn-persistent-new-game').addEventListener('click', () => {
+        // Bet Overlay chips
+        document.querySelectorAll('.chip').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const val = parseInt(btn.dataset.val);
+                const state = APOSTAS.getChips();
+                if (this.currentBet + val > state.chips) {
+                    showToast("Fichas insuficientes!", "error");
+                    return;
+                }
+                this.currentBet += val;
+                document.getElementById('current-bet-val').textContent = APOSTAS.formatChips(this.currentBet);
+            });
+        });
+
+        document.getElementById('btn-clear-adivinha-bet').addEventListener('click', () => {
+            this.currentBet = 0;
+            document.getElementById('current-bet-val').textContent = '0';
+        });
+
+        document.getElementById('btn-start-adivinha-game').addEventListener('click', () => {
+            if (this.currentBet <= 0) {
+                showToast("Escolha uma aposta!", "error");
+                return;
+            }
             this.startNewGame();
+        });
+
+        document.getElementById('btn-persistent-new-game').addEventListener('click', () => {
+            document.getElementById('adivinha-bet-overlay').classList.remove('hidden');
         });
 
         document.getElementById('btn-new-game-modal').addEventListener('click', () => {
-            document.getElementById('game-modal').classList.remove('active');
-            this.startNewGame();
+            const modal = document.getElementById('game-modal');
+            const betOverlay = document.getElementById('adivinha-bet-overlay');
+            
+            if (modal) modal.classList.remove('active');
+            if (betOverlay) betOverlay.classList.remove('hidden');
+            
+            this.isGameOver = false;
+            this.isAnimating = false;
         });
 
-        document.getElementById('btn-help-trigger').addEventListener('click', () => {
-            document.getElementById('help-modal').classList.add('active');
-        });
-
-        document.getElementById('btn-stats-trigger').addEventListener('click', () => {
-            document.getElementById('stats-modal').classList.add('active');
-        });
-
+        // Trigger Help/Stats
+        document.getElementById('btn-help-trigger').addEventListener('click', () => document.getElementById('help-modal').classList.add('active'));
+        document.getElementById('btn-stats-trigger').addEventListener('click', () => document.getElementById('stats-modal').classList.add('active'));
+        
         document.querySelectorAll('.modal-close').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const modal = e.target.closest('.modal-overlay');
+            btn.addEventListener('click', () => {
+                const modal = btn.closest('.modal-overlay');
                 if (modal) modal.classList.remove('active');
             });
         });
     }
 }
 
-// Initialize game
 let game;
 document.addEventListener('DOMContentLoaded', () => {
-    // Inject global UI first
-    if (typeof injectUI === 'function') {
-        injectUI();
-    }
+    if (typeof injectUI === 'function') injectUI();
     game = new AdivinhaGame();
 });

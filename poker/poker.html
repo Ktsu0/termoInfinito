@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Poker Hub - Apostas</title>
+    
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/utils.css">
+    <link rel="stylesheet" href="poker.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="poker-body">
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <button class="btn-back-apostas" onclick="window.location.href='../apostas/apostas.html'">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    Apostas
+                </button>
+            </div>
+            <h1 id="poker-title">POKER HUB</h1>
+            <div class="header-actions">
+                <div class="chips-display-bj">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M6 12h12"/></svg>
+                    <span id="poker-chips-amount">5.000</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="poker-main">
+            <!-- Mode Selection Screen -->
+            <div class="poker-mode-selection" id="poker-mode-selection">
+                <div class="mode-card" id="select-video-poker">
+                    <div class="mode-icon">🎰</div>
+                    <h2>Video Poker</h2>
+                    <p>Troque cartas e forme a melhor mão solo.</p>
+                </div>
+                <div class="mode-card" id="select-texas-holdem">
+                    <div class="mode-icon">👥</div>
+                    <h2>Texas Hold'em</h2>
+                    <p>Jogue contra Arthur e Sofia na mesa oval.</p>
+                </div>
+            </div>
+
+            <!-- Game Area (Hidden by default) -->
+            <div class="poker-game-area hidden" id="poker-game-area">
+                
+                <!-- Texas Layout -->
+                <div id="texas-layout" class="texas-layout hidden">
+                    <div class="poker-table-wrap">
+                        <div class="poker-table-oval">
+                            <div class="pot-area">
+                                <div class="pot-label">POTE TOTAL</div>
+                                <div class="pot-value" id="pote-valor">0</div>
+                            </div>
+                            <div class="community-cards" id="community-cards">
+                                <div class="card-slot"></div><div class="card-slot"></div><div class="card-slot"></div><div class="card-slot"></div><div class="card-slot"></div>
+                            </div>
+                            <div class="player-spot bot" id="player-bot-1">
+                                <div class="player-avatar">🤖</div>
+                                <div class="player-info"><span class="p-name">Arthur</span><span class="p-chips" id="bot1-chips">2500</span></div>
+                                <div class="player-cards" id="bot1-cards"></div>
+                                <div class="player-action-bubble" id="bot1-bubble">CHECK</div>
+                            </div>
+                            <div class="player-spot bot" id="player-bot-2">
+                                <div class="player-avatar">🤖</div>
+                                <div class="player-info"><span class="p-name">Sofia</span><span class="p-chips" id="bot2-chips">2500</span></div>
+                                <div class="player-cards" id="bot2-cards"></div>
+                                <div class="player-action-bubble" id="bot2-bubble">FOLD</div>
+                            </div>
+                            <div class="player-spot human" id="player-human">
+                                <div class="player-cards" id="human-cards"></div>
+                                <div class="player-avatar">👤</div>
+                                <div class="player-info"><span class="p-name">VOCÊ</span><span class="p-chips" id="human-current-chips">5000</span></div>
+                                <div class="player-action-bubble" id="human-bubble">...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Poker Layout (Placeholder) -->
+                <div id="video-layout" class="video-layout hidden">
+                    <div class="video-poker-table">
+                        <div class="video-paytable" id="video-paytable">
+                            <!-- Paytable logic will be here -->
+                        </div>
+                        <div class="video-cards" id="video-cards-container">
+                            <!-- 5 Cards here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sticky Control Panel -->
+                <div class="poker-panel">
+                    <div id="panel-betting" class="panel-view">
+                        <div class="bet-input-wrap">
+                            <span class="label">APOSTA</span>
+                            <div class="bet-value" id="current-bet-display">0</div>
+                        </div>
+                        <div class="bet-chips">
+                            <button class="chip chip-10" data-val="10">10</button>
+                            <button class="chip chip-50" data-val="50">50</button>
+                            <button class="chip chip-100" data-val="100">100</button>
+                            <button class="chip chip-500" data-val="500">500</button>
+                        </div>
+                        <div class="bet-actions">
+                            <button class="btn btn-secondary" id="btn-clear-bet">LIMPAR</button>
+                            <button class="btn btn-primary" id="btn-start-poker">ENTRAR NA MÃO</button>
+                        </div>
+                    </div>
+                    <div id="panel-actions" class="panel-view hidden">
+                        <div class="action-buttons-grid">
+                            <button class="btn btn-danger" id="btn-fold">CORRER</button>
+                            <button class="btn btn-secondary" id="btn-check">CHECK</button>
+                            <button class="btn btn-primary" id="btn-call">PAGAR</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Result Modal -->
+        <div class="casino-result-overlay hidden" id="poker-result">
+            <div class="casino-result-card">
+                <div class="casino-result-content">
+                    <div class="casino-result-icon">🏆</div>
+                    <h2 class="casino-result-title" id="res-title">VOCÊ VENCEU!</h2>
+                    <p id="res-hand-name">Straight Flush</p>
+                    <div class="casino-result-payout">
+                        <span class="casino-payout-label">GANHOS</span>
+                        <span class="casino-payout-value" id="res-payout">+750</span>
+                    </div>
+                </div>
+                <div class="casino-result-actions">
+                    <button class="casino-btn casino-btn-primary" id="btn-poker-again">Jogar Próxima Mão</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="../js/apostas-chips.js"></script>
+    <script src="../js/ui-components.js"></script>
+    <script src="poker.js"></script>
+</body>
+</html>

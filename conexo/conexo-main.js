@@ -140,6 +140,7 @@ function setupEventListeners() {
   if (btnCloseModalX)
     btnCloseModalX.addEventListener("click", () => {
       gameModal.classList.remove("active");
+      if (btnHeaderNew) btnHeaderNew.classList.add("visible");
     });
   if (gameModal)
     gameModal.addEventListener("click", (e) => {

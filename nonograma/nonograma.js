@@ -2,7 +2,7 @@
  * NONOGRAMA - Lógica do Jogo
  */
 
-const MAX_HINTS = 4;
+const MAX_HINTS = { easy: 3, medium: 5, hard: 7 };
 
 const PATTERNS = {
     5: [
@@ -230,8 +230,8 @@ class NonogramaGame {
         });
 
         document.querySelectorAll('.modal-close, #btn-close-help-confirm').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const modal = e.target.closest('.modal-overlay');
+            btn.addEventListener('click', () => {
+                const modal = btn.closest('.modal-overlay');
                 if (modal) modal.classList.remove('active');
             });
         });
@@ -288,61 +288,93 @@ class NonogramaGame {
     }
 
     generateProceduralGrid(size) {
-        let grid = Array(size).fill().map(() => 
-            Array(size).fill().map(() => Math.random() > 0.55 ? 1 : 0)
-        );
+        const grid = Array(size).fill().map(() => Array(size).fill(0));
+        const shapes = [
+            'blob', 'diagonal', 'frame', 'checkers', 'stripes', 'corners', 'random'
+        ];
+        const shape = shapes[Math.floor(Math.random() * shapes.length)];
 
-        const applyCA = (g) => {
-            let nextG = Array(size).fill().map(() => Array(size).fill(0));
-            for (let r = 0; r < size; r++) {
-                for (let c = 0; c < size; c++) {
-                    let neighbors = 0;
-                    for (let dr = -1; dr <= 1; dr++) {
-                        for (let dc = -1; dc <= 1; dc++) {
-                            if (dr === 0 && dc === 0) continue;
-                            let nr = r + dr, nc = c + dc;
-                            if (nr >= 0 && nr < size && nc >= 0 && nc < size) {
-                                neighbors += g[nr][nc];
+        if (shape === 'blob') {
+            // Random blob: seed and expand without symmetry
+            const seeds = Math.floor(size / 3) + 2;
+            for (let s = 0; s < seeds; s++) {
+                let r = Math.floor(Math.random() * size);
+                let c = Math.floor(Math.random() * size);
+                const radius = 1 + Math.floor(Math.random() * (size / 4));
+                for (let dr = -radius; dr <= radius; dr++) {
+                    for (let dc = -radius; dc <= radius; dc++) {
+                        const nr = r + dr, nc = c + dc;
+                        if (nr >= 0 && nr < size && nc >= 0 && nc < size) {
+                            if (dr*dr + dc*dc <= radius*radius + Math.random()) {
+                                grid[nr][nc] = 1;
                             }
                         }
                     }
-                    if (neighbors > 4) nextG[r][c] = 1;
-                    else if (neighbors < 4) nextG[r][c] = 0;
-                    else nextG[r][c] = g[r][c];
                 }
             }
-            return nextG;
-        };
-
-        for (let i = 0; i < 3; i++) {
-            grid = applyCA(grid);
-        }
-
-        if (Math.random() > 0.4) {
+        } else if (shape === 'diagonal') {
+            const w = Math.floor(size / 4) + 1;
+            const dir = Math.random() > 0.5 ? 1 : -1;
+            for (let i = 0; i < size; i++) {
+                for (let d = 0; d < w; d++) {
+                    const c = dir > 0 ? i + d : (size - 1 - i) + d;
+                    if (c >= 0 && c < size) grid[i][c] = 1;
+                }
+            }
+        } else if (shape === 'frame') {
+            const margin = Math.floor(size / 5);
+            for (let r = margin; r < size - margin; r++) {
+                for (let c = margin; c < size - margin; c++) {
+                    if (r === margin || r === size-margin-1 || c === margin || c === size-margin-1) {
+                        grid[r][c] = 1;
+                    }
+                }
+            }
+        } else if (shape === 'checkers') {
+            const step = 2 + Math.floor(Math.random() * 2);
             for (let r = 0; r < size; r++) {
-                for (let c = 0; c < Math.floor(size / 2); c++) {
-                    grid[r][size - 1 - c] = grid[r][c];
+                for (let c = 0; c < size; c++) {
+                    if ((Math.floor(r/step) + Math.floor(c/step)) % 2 === 0) grid[r][c] = 1;
+                }
+            }
+        } else if (shape === 'stripes') {
+            const horiz = Math.random() > 0.5;
+            const step = 2 + Math.floor(Math.random() * 2);
+            for (let r = 0; r < size; r++) {
+                for (let c = 0; c < size; c++) {
+                    const idx = horiz ? r : c;
+                    if (Math.floor(idx / step) % 2 === 0) grid[r][c] = 1;
+                }
+            }
+        } else if (shape === 'corners') {
+            const s = Math.floor(size * 0.4);
+            [[0,0],[0,size-s],[size-s,0],[size-s,size-s]].forEach(([sr,sc]) => {
+                for (let r = sr; r < sr+s && r < size; r++) {
+                    for (let c = sc; c < sc+s && c < size; c++) {
+                        if (Math.random() > 0.3) grid[r][c] = 1;
+                    }
+                }
+            });
+        } else {
+            // Truly random but with clustering
+            const density = 0.4 + Math.random() * 0.25;
+            for (let r = 0; r < size; r++) {
+                for (let c = 0; c < size; c++) {
+                    grid[r][c] = Math.random() < density ? 1 : 0;
                 }
             }
         }
 
+        // Ensure no fully empty row or column
         for (let r = 0; r < size; r++) {
             if (!grid[r].includes(1)) {
-                let center = Math.floor(size/2);
-                grid[r][center] = 1;
-                if (center > 0) grid[r][center-1] = 1;
+                grid[r][Math.floor(Math.random() * size)] = 1;
             }
         }
         for (let c = 0; c < size; c++) {
-            let hasFilled = false;
-            for (let r = 0; r < size; r++) {
-                if (grid[r][c] === 1) { hasFilled = true; break; }
-            }
-            if (!hasFilled) {
-                let center = Math.floor(size/2);
-                grid[center][c] = 1;
-                if (center > 0) grid[center-1][c] = 1;
-            }
+            let has = false;
+            for (let r = 0; r < size; r++) if (grid[r][c]) { has = true; break; }
+            if (!has) grid[Math.floor(Math.random() * size)][c] = 1;
         }
 
         return grid;
@@ -351,12 +383,12 @@ class NonogramaGame {
     generatePuzzle() {
         let attempts = 0;
         let valid = false;
+        const maxHints = MAX_HINTS[this.difficulty] || 4;
 
-        while (!valid && attempts < 100) {
+        while (!valid && attempts < 120) {
             attempts++;
             const patterns = PATTERNS[this.size] || [];
-            
-            // Reduzida a chance de usar pattern estático para focar no sistema inteligente
+
             if (patterns.length > 0 && Math.random() < 0.15) {
                 const pattern = patterns[Math.floor(Math.random() * patterns.length)];
                 this.grid = JSON.parse(JSON.stringify(pattern.grid));
@@ -365,12 +397,11 @@ class NonogramaGame {
             }
 
             this.calculateHints();
-            
-            // Check if any row or column has more than MAX_HINTS
+
             const maxRowHints = Math.max(...this.rowHints.map(h => h.length));
             const maxColHints = Math.max(...this.colHints.map(h => h.length));
-            
-            if (maxRowHints <= MAX_HINTS && maxColHints <= MAX_HINTS) {
+
+            if (maxRowHints <= maxHints && maxColHints <= maxHints) {
                 valid = true;
             }
         }
@@ -416,9 +447,14 @@ class NonogramaGame {
         const rowHintsEl = document.getElementById('row-hints');
         const colHintsEl = document.getElementById('col-hints');
 
-        container.style.gridTemplateColumns = `repeat(${this.size}, 1fr)`;
-        rowHintsEl.style.gridTemplateRows = `repeat(${this.size}, 1fr)`;
-        colHintsEl.style.gridTemplateColumns = `repeat(${this.size}, 1fr)`;
+        // Dynamic cell size based on difficulty
+        const cellSizes = { easy: 52, medium: 38, hard: 28 };
+        const cs = cellSizes[this.difficulty] || 38;
+        document.documentElement.style.setProperty('--cell-size', cs + 'px');
+
+        container.style.gridTemplateColumns = `repeat(${this.size}, ${cs}px)`;
+        rowHintsEl.style.gridTemplateRows = `repeat(${this.size}, ${cs}px)`;
+        colHintsEl.style.gridTemplateColumns = `repeat(${this.size}, ${cs}px)`;
 
         container.innerHTML = '';
         rowHintsEl.innerHTML = '';

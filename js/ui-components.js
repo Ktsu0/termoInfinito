@@ -58,110 +58,134 @@ function injectUI() {
   if (jogosContainer) {
     jogosContainer.outerHTML = `
         <div class="modal-overlay" id="outros-jogos-modal">
-          <div class="modal">
+          <div class="modal" style="width: min(96vw, 58rem);">
             <button class="modal-close" id="btn-close-outros-jogos" aria-label="Fechar">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
             <h2>🎮 Outros Jogos</h2>
             <p class="outros-jogos-subtitle">Escolha um jogo para jogar agora</p>
             <div class="outros-jogos-grid">
+
               <div class="jogo-card" onclick="window.location.href='${prefix}index.html'" title="Jogar Termo">
                 <div class="jogo-card-img jogo-card-termo">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="4 7 4 4 20 4 20 7" /><line x1="9" y1="20" x2="15" y2="20" /><line x1="12" y1="4" x2="12" y2="20" />
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/>
                   </svg>
                 </div>
                 <span class="jogo-card-nome">TERMO</span>
               </div>
+
               <div class="jogo-card" onclick="window.location.href='${prefix}sequence/sequence.html'" title="Jogar Sequence">
                 <div class="jogo-card-img jogo-card-sequence">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                     <path d="m21 2-19.6 19.6"/><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.4 9.4"/><path d="m15.5 7.5 3 3L22 7l-3-3"/>
                   </svg>
                 </div>
                 <span class="jogo-card-nome">SEQUENCE</span>
               </div>
+
               <div class="jogo-card" onclick="window.location.href='${prefix}conexo/conexo.html'" title="Jogar Conexo">
                 <div class="jogo-card-img jogo-card-conexo">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
                   </svg>
                 </div>
                 <span class="jogo-card-nome">CONEXO</span>
               </div>
+
               <div class="jogo-card" onclick="window.location.href='${prefix}sudoku/sudoku.html'" title="Jogar Sudoku">
                 <div class="jogo-card-img jogo-card-sudoku">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect width="18" height="18" x="3" y="3" rx="2" /><path d="M3 9h18" /><path d="M3 15h18" /><path d="M9 3v18" /><path d="M15 3v18" />
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/>
                   </svg>
                 </div>
                 <span class="jogo-card-nome">SUDOKU</span>
               </div>
+
               <div class="jogo-card" onclick="window.location.href='${prefix}cores/cores.html'" title="Jogar Cores">
                 <div class="jogo-card-img jogo-card-cores">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="13.5" cy="6.5" r=".5" /><circle cx="17.5" cy="10.5" r=".5" /><circle cx="8.5" cy="7.5" r=".5" /><circle cx="6.5" cy="12.5" r=".5" /><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.92 0 1.5-.58 1.5-1.5 0-.43-.17-.83-.44-1.13-.24-.27-.4-.64-.4-1.03 0-.88.72-1.6 1.6-1.6H16c2.2 0 4-1.8 4-4 0-4.42-3.58-8-8-8z" />
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.92 0 1.5-.58 1.5-1.5 0-.43-.17-.83-.44-1.13-.24-.27-.4-.64-.4-1.03 0-.88.72-1.6 1.6-1.6H16c2.2 0 4-1.8 4-4 0-4.42-3.58-8-8-8z"/>
                   </svg>
                 </div>
                 <span class="jogo-card-nome">CORES</span>
               </div>
+
               <div class="jogo-card" onclick="window.location.href='${prefix}palavras/palavras.html'" title="Jogar Caça Palavras">
                 <div class="jogo-card-img jogo-card-palavras">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
                   </svg>
                 </div>
                 <span class="jogo-card-nome">PALAVRAS</span>
               </div>
+
               <div class="jogo-card" onclick="window.location.href='${prefix}cruzadinha/cruzadinha.html'" title="Jogar Cruzadinha">
                 <div class="jogo-card-img jogo-card-cruzadinha">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.375 2.625a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z" />
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"/>
                   </svg>
                 </div>
                 <span class="jogo-card-nome">CRUZADINHA</span>
               </div>
+
               <div class="jogo-card" onclick="window.location.href='${prefix}secreta/secreta.html'" title="Jogar Palavra Secreta">
                 <div class="jogo-card-img jogo-card-secreta">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><path d="M11 8v2"></path><path d="M11 14h.01"></path>
                   </svg>
                 </div>
                 <span class="jogo-card-nome">SECRETA</span>
               </div>
+
+              <div class="jogo-card" onclick="window.location.href='${prefix}pokedex/pokedex.html'" title="Jogar PokéDex">
+                <div class="jogo-card-img" style="background: linear-gradient(160deg, #ef4444 0%, #dc2626 48%, #111827 48%); overflow:hidden;">
+                  <svg width="44" height="44" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="38" stroke="white" stroke-width="6"/>
+                    <line x1="12" y1="50" x2="88" y2="50" stroke="white" stroke-width="6"/>
+                    <circle cx="50" cy="50" r="13" fill="white"/>
+                    <circle cx="50" cy="50" r="7" fill="#111827"/>
+                  </svg>
+                </div>
+                <span class="jogo-card-nome">POKÉDEX</span>
+              </div>
+
               <div class="jogo-card" onclick="window.location.href='${prefix}labirinto/labirinto.html'" title="Jogar Labirinto">
                 <div class="jogo-card-img jogo-card-labirinto">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><path d="M3 9h18"></path><path d="M9 21V9"></path>
                   </svg>
                 </div>
                 <span class="jogo-card-nome">LABIRINTO</span>
               </div>
+
               <div class="jogo-card" onclick="window.location.href='${prefix}nonograma/nonograma.html'" title="Jogar Nonograma">
                 <div class="jogo-card-img jogo-card-nonograma">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect width="18" height="18" x="3" y="3" rx="2" /><path d="M3 9h18" /><path d="M3 15h18" /><path d="M9 3v18" /><path d="M15 3v18" />
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/>
                   </svg>
                 </div>
                 <span class="jogo-card-nome">NONOGRAMA</span>
               </div>
+
               <div class="jogo-card" onclick="window.location.href='${prefix}calculo/calculo.html'" title="Jogar Cálculo">
                 <div class="jogo-card-img jogo-card-calculo">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line>
                   </svg>
                 </div>
                 <span class="jogo-card-nome">CÁLCULO</span>
               </div>
-              <div class="jogo-card" onclick="window.location.href='${prefix}adivinha/adivinha.html'" title="Jogar Adivinha">
-                <div class="jogo-card-img jogo-card-adivinha" style="background: linear-gradient(135deg, #ef4444, #000);">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+              <div class="jogo-card" onclick="window.location.href='${prefix}apostas/apostas.html'" title="Apostas">
+                <div class="jogo-card-img" style="background: linear-gradient(135deg, #7c3aed, #4338ca);">
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="2" y="3" width="20" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line>
                   </svg>
                 </div>
-                <span class="jogo-card-nome">ADIVINHA</span>
+                <span class="jogo-card-nome">APOSTAS</span>
               </div>
+
             </div>
           </div>
         </div>
